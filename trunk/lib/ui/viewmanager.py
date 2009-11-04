@@ -18,8 +18,57 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+class ViewManager(gtk.VBox):
+
+    def __init__(self, container_notebook):
+        gtk.VBox.__init__(self)
+        self._container_notebook = container_notebook
+        self._container_notebook_page = self._container_notebook.append_page(self)
+        self._view_map = {}
+
+        self._toolbar = gtk.Toolbar()
+        self._toolbar.show()
+        self._notebook = gtk.Notebook()
+        self._notebook.show()
+
+        self.pack_start(self._toolbar, expand=False)
+        self.pack_start(self._notebook, expand=True)
+
+
+
+    def add_view(self, name, widget):
+        self._view_map[name] = self._notebook.append_page(widget, gtk.Label(name))
+
+
+
+    def get_container_notebook(self):
+        return self._container_notebook
+
+
+
+    def get_menu_icon(self):
+        """
+        Return the item to be shown in the TreeView.
+        """
+        raise Exception("Not Implemented!")
+
+
+
+    def get_menu_name(self):
+        raise Exception("Not Implemented!")
+
+
+
+    def selected(self):
+        if self._container_notebook_page != None:
+            self._container_notebook.set_current_page(self._container_notebook_page)
+
+
+    def destroy(self):
+        self._container_notebook.remove_page(self._container_notebook_page)
+
+
+
+

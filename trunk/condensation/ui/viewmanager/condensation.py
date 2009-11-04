@@ -18,42 +18,35 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gtk
+
+import lib.ui
 
 
-class ManagerObject(object):
-
-    def __init__(self, container_notebook):
-        self._container_notebook = container_notebook
-        self._container_notebook_page = self._container_notebook.append_page(self)
+class Condensation(lib.ui.ViewManager):
 
 
+    def __init__(self, containing_notebook, logsink):
+        lib.ui.ViewManager.__init__(self, containing_notebook)
 
-    def get_container_notebook(self):
-        return self._container_notebook
+        lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
+
+        logview = lib.ui.LogView(logsink)
+        logview.show()
+        self.add_view('Application Log', logview)
+
+        consoleview = lib.ui.PythonConsoleView()
+        consoleview.show()
+        self.add_view('Python Console', consoleview)
+
+
+
+    def get_menu_text(self):
+        return "Condensation"
 
 
 
     def get_menu_icon(self):
-        """
-        Return the item to be shown in the TreeView.
-        """
-        raise Exception("Not Implemented!")
-
-
-
-    def get_menu_name(self):
-        raise Exception("Not Implemented!")
-
-
-
-    def selected(self):
-        if self._container_notebook_page != None:
-            self._container_notebook.set_current_page(self._container_notebook_page)
-
-
-    def destroy(self):
-        self._container_notebook.remove_page(self._container_notebook_page)
-
-
+        return lib.ui.Resources.get_pixbuf('condensation-icon')
 
 

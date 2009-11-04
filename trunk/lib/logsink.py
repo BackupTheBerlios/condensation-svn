@@ -18,8 +18,41 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+import logging
+
+import lib.core
+
+
+class LogSink(logging.Handler, lib.core.SignalSource):
+    """
+    Shows the content of a text-file.
+    """
+
+    def __init__(self):
+        logging.Handler.__init__(self)
+        lib.core.SignalSource.__init__(self)
+        self._records = []
+        self._records_text = []
+        self._callbacks['new-record'] = list()
+
+
+
+    def emit(self, record):
+        #print record.__dict__
+        new_index = len(self._records)
+        self._records.append(record)
+        self._records_text.append(self.format(record))
+        self.raise_signal('new-record', new_index)
+
+
+
+    def get_text(self):
+        return "\n".join(self._records_text)
+
+
+
+    def get_record_text(self, index):
+        return self._records_text[index]
+
+

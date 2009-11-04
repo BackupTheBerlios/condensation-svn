@@ -39,6 +39,7 @@ class MainWindow(gtk.Window):
         sw_treemenu.set_size_request(200, 200)
 
         self._notebook = gtk.Notebook()
+        self._notebook.set_show_tabs(False)
         paned = gtk.HPaned()
         paned.add1(sw_treemenu)
         paned.add2(self._notebook)

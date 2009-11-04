@@ -18,8 +18,40 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+import string
+import random
+
+
+class Util(object):
+
+    @classmethod
+    def commonprefix(cls, m):
+        "Given a list of pathnames, returns the longest common leading component"
+        if not m: return ''
+        prefix = m[0]
+        for item in m:
+            for i in range(len(prefix)):
+                if prefix[:i+1] != item[:i+1]:
+                    prefix = prefix[:i]
+                    if i == 0:
+                        return ''
+                    break
+        return prefix
+
+
+
+    @classmethod
+    def random_string(cls, length):
+        chars = string.ascii_letters + string.digits
+        s = ''
+        for x in xrange(length):
+            s += random.choice(chars)
+        return s
+
+
+
+    @classmethod
+    def random_integer(cls, min, max):
+        return random.randint(min, max)
+

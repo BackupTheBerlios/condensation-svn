@@ -18,8 +18,40 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+class ConsoleHistory(object):
+    def __init__(self):
+        object.__init__(self)
+        self.items = ['']
+        self.ptr = 0
+        self.edited = {}
+
+
+    def commit(self, text):
+        if text:
+            self.items[-1] = text
+            self.items.append('')
+        self.ptr = len(self.items) - 1
+        self.edited = {}
+
+
+    def get(self, dir, text):
+        #print "get(self, %d, %s) [ptr=%d]" % (dir, text, self.ptr)
+        if len(self.items) == 1:
+            return None
+
+        if text != self.items[self.ptr]:
+            self.edited[self.ptr] = text
+        elif self.ptr in self.edited:
+            del self.edited[self.ptr]
+
+        self.ptr = self.ptr + dir
+        if self.ptr >= len(self.items):
+            self.ptr = len(self.items) - 1
+        elif self.ptr < 0:
+            self.ptr = 0
+
+        if self.ptr in self.edited:
+            return self.edited[self.ptr]
+        else:
+            return self.items[self.ptr]

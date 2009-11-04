@@ -18,8 +18,25 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+import lib.ui
+
+class ServerList(lib.ui.ViewManager):
+
+    def __init__(self, containing_notebook):
+        lib.ui.ViewManager.__init__(self, containing_notebook)
+
+        lib.ui.Resources.load_pixbuf('server', 'images/icons/server.svg')
+
+
+
+
+    def get_menu_text(self):
+        return "Server"
+
+
+    def get_menu_icon(self):
+        return lib.ui.Resources.get_pixbuf('server')
+
+

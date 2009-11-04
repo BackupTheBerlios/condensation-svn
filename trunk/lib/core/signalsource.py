@@ -18,8 +18,35 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+
+class SignalSource(object):
+
+
+    def __init__(self):
+        self.__dict__['_callbacks'] = {}
+
+
+    def connect_signal(self, signal, callback):
+        """
+        Connect a signal to a callback. One signal can have multiple callbacks (or none at all).
+
+        :param signal: signal identifier
+        :param callback: the callback
+        """
+        if signal not in self._callbacks:
+            raise Exception("Can not connect unregistered signal '%s'." % signal)
+        self._callbacks[signal].append(callback)
+
+
+
+    def raise_signal(self, signal, *args):
+        """
+        Raises a signal, ie. calling all callbacks connected to this signal.
+
+        :param signal: signal identifier
+        :param args: variable list of arguments for the callback(s)
+        """
+        for callback in self._callbacks[signal]:
+            callback(self, *args)
+

@@ -19,3 +19,6 @@
 ############################################################################
 
 __all__ = []
+
+from consolehistory import ConsoleHistory
+from logsink import LogSink

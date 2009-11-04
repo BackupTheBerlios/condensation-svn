@@ -18,8 +18,15 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from apacheconfigparser import ApacheConfigParser
-#from server import Server
-#from vhost import VHost
+from pythonconsole import PythonConsole
+
+class PythonConsoleView(gtk.ScrolledWindow):
+
+    def __init__(self):
+        gtk.ScrolledWindow.__init__(self)
+        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self._console = PythonConsole()
+        self.add(self._console)
+        self._console.show()

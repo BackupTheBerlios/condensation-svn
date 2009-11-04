@@ -20,7 +20,10 @@
 
 __all__ = []
 
-from managerobject import ManagerObject
+from logview import LogView
+from pythonconsole import PythonConsole
+from pythonconsoleview import PythonConsoleView
 from resources import Resources
 from splashscreen import SplashScreen
 from treemenu import TreeMenu
+from viewmanager import ViewManager

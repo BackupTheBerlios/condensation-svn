@@ -26,11 +26,15 @@ import logging
 import tempfile
 import time # only for sleep, remove later
 
+import lib
 import lib.ui
 import condensation
+import condensation.ui
+import condensation.ui.viewmanager
 
 
 def setup_logging():
+    global logsink
     # logging
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -48,25 +52,36 @@ def setup_logging():
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
-    # Log to DALogView
-    #self.logview = DALogView()
-    #self.logview.setFormatter(formatter)
-    #logger.addHandler(self.logview)
+    # Log to LogSink
+    logsink = lib.LogSink()
+    logsink.setFormatter(formatter)
+    logger.addHandler(logsink)
+
+    logging.info('Logging started ...')
 
 
 
 def start_up():
     try:
         global splash_screen
+        global logsink
         # basic stuff
         setup_logging()
 
 
         # gui stuff
-        main_window = condensation.MainWindow()
+        main_window = condensation.ui.MainWindow()
 
+        # create the manager objects
+        con_manager = condensation.ui.viewmanager.Condensation(main_window._notebook, logsink)
+        con_manager.show()
+        sl_manager = condensation.ui.viewmanager.ServerList(main_window._notebook)
+        sl_manager.show()
+
+        # populate treemenu
         treemenu = main_window._treemenu
-        treemenu.append(condensation.CondensationManager(main_window._notebook))
+        treemenu.append(con_manager)
+        treemenu.append(sl_manager, con_manager)
 
 
 
@@ -79,12 +94,13 @@ def start_up():
             gtk.main_iteration()
 
 
-        #time.sleep(2)
+        time.sleep(2)
 
 
         # finished, hide splash
         splash_screen.hide()
         splash_Screen = None
+        logging.info('setup finished!')
 
     except:
         gtk.main_quit()

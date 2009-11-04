@@ -18,29 +18,6 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-import gtk
+__all__ = []
 
-import lib.ui
-
-class CondensationManager(gtk.VBox, lib.ui.ManagerObject):
-
-    def __init__(self, containing_notebook):
-        gtk.VBox.__init__(self)
-        lib.ui.ManagerObject.__init__(self, containing_notebook)
-
-        lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
-
-        self.pack_start(gtk.Toolbar(), expand=False)
-        self.pack_start(gtk.Notebook(), expand=True)
-
-
-
-
-    def get_menu_text(self):
-        return "Condensation"
-
-
-    def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('condensation-icon')
-
-
+from mainwindow import MainWindow
