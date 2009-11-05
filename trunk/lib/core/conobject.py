@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 import re
 
 
-#from concollection import CONCollection
+from concollection import CONCollection
 from signalsource import SignalSource
 
 
@@ -181,7 +181,7 @@ class CONObject(SignalSource):
 
     @classmethod
     def _construct_collection(cls, basetype, indices=[], value=[]):
-        collection = DACollection(basetype)
+        collection = CONCollection(basetype)
         for index in indices:
             pass
 
@@ -271,7 +271,7 @@ class CONObject(SignalSource):
 
 
     @classmethod
-    def daobject_serializer(cls, element, value):
+    def object_serializer(cls, element, value):
         """
         Serializer function used by CONObject's serializing mechanism for serializing CONObject-objects.
 
@@ -303,7 +303,7 @@ class CONObject(SignalSource):
 
 
     @classmethod
-    def daobject_deserializer(cls, et):
+    def object_deserializer(cls, et):
         """
         Deserializer function used by CONObject's serializing mechanism for deserializing CONObject-objects.
 
@@ -342,7 +342,7 @@ class CONObject(SignalSource):
 CONObject.register_attribute_type('boolean', CONObject.boolean_serializer, CONObject.boolean_deserializer)
 CONObject.register_attribute_type('integer', CONObject.integer_serializer, CONObject.integer_deserializer)
 CONObject.register_attribute_type('string', CONObject.string_serializer, CONObject.string_deserializer)
-CONObject.register_attribute_type('CONObject', CONObject.daobject_serializer, CONObject.daobject_deserializer)
+CONObject.register_attribute_type('CONObject', CONObject.object_serializer, CONObject.object_deserializer)
 
 CONObject.register_class(CONObject, (()), ('attribute_changed',))
 

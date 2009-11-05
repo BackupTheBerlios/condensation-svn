@@ -61,6 +61,30 @@ def setup_logging():
 
 
 
+def load_config():
+    # load config into memory
+    import xml.etree.cElementTree as ET
+    et = ET.parse("condensation.conf.xml")
+
+
+    # load key manager
+    keys_elem = et.find("keys")
+    if keys_elem != None:
+        keymanager = lib.crypto.KeyManager.object_deserializer(keys_elem)
+    else:
+        keymanager = lib.crypto.KeyManager()
+    keymanager.get_ssh_auth_key() # generate key if neccessary
+
+
+    # load servers
+    server_elements = et.findall("server")
+    for server_elem in server_elements:
+        condensation.Server.object_deserializer(server_elem)
+
+    logging.info('configuration read ...')
+
+
+
 def start_up():
     try:
         global splash_screen
@@ -68,6 +92,8 @@ def start_up():
         # basic stuff
         setup_logging()
 
+
+        load_config()
 
         # gui stuff
         main_window = condensation.ui.MainWindow()

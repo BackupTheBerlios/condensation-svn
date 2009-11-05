@@ -19,14 +19,14 @@
 ############################################################################
 
 from apacheconfigparser import ApacheConfigParser
-from core.daobject import DAObject
+import lib.core
 
 
-class VHost(DAObject):
+class VHost(lib.core.CONObject):
 
 
     def __init__(self):
-        DAObject.__init__(self)
+        lib.core.CONObject.__init__(self)
         self._server = None
 
 
@@ -51,9 +51,9 @@ class VHost(DAObject):
 
 
 
-DAObject.register_attribute_type('da.VHost', VHost.daobject_serializer, VHost.daobject_deserializer)
+lib.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
 
-DAObject.register_class(VHost,
+lib.core.CONObject.register_class(VHost,
     (
         ('name', 'string', ''),
         ('domains', 'string[]', ["test.com", "test2.com", "test3.com"]),

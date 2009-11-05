@@ -14,8 +14,8 @@
     <projectname>condensation</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
-    <defaultencoding></defaultencoding>
+    <description/>
+    <defaultencoding/>
   </general>
   <kdevscriptproject>
     <general>
@@ -79,7 +79,7 @@
   <kdevfileview>
     <tree>
       <hidenonprojectfiles>false</hidenonprojectfiles>
-      <hidepatterns>*.o,*.lo,CVS,*~</hidepatterns>
+      <hidepatterns>*.o,*.lo,CVS,*~,*.pyc</hidepatterns>
     </tree>
     <groups>
       <group pattern="*.py" name="Python files" />
@@ -89,7 +89,7 @@
   </kdevfileview>
   <kdevfilecreate>
     <filetypes>
-      <type icon="source_py" ext="py" create="template" name="Python" >
+      <type icon="source_py" ext="py" name="Python" create="template" >
         <descr>A new empty Python source file.</descr>
       </type>
     </filetypes>
@@ -110,7 +110,7 @@
   </substmap>
   <kdevpythonsupport>
     <run>
-      <interpreter></interpreter>
+      <interpreter/>
       <terminal>false</terminal>
     </run>
   </kdevpythonsupport>

@@ -26,13 +26,12 @@ import logging
 import md5
 import socket
 
-from lib.crypto import CONKeyManager
+import lib.crypto
 import lib.core
+
 from vhost import VHost
-from sftpfilesystem import SFTPFileSystem
 
-
-class Server(CONObject):
+class Server(lib.core.CONObject):
     """
     A (remote) apache installation including several VHosts.
     """
@@ -46,7 +45,7 @@ class Server(CONObject):
 
         Registers the signals 'ask-password', 'changed' and 'unknown-key'.
         """
-        DAObject.__init__(self)
+        lib.core.CONObject.__init__(self)
 
         # get us a logger
         self._logger = logging.getLogger('da.daserver')
@@ -225,9 +224,9 @@ class Server(CONObject):
 
 
 
-DAObject.register_attribute_type('da.Server', Server.daobject_serializer, Server.daobject_deserializer)
+lib.core.CONObject.register_attribute_type('Server', Server.object_serializer, Server.object_deserializer)
 
-DAObject.register_class(Server,
+lib.core.CONObject.register_class(Server,
     (
         ('name', 'string', 'no name'),
         ('host', 'string', 'example.com'),
@@ -246,7 +245,7 @@ DAObject.register_class(Server,
         ('mysql_host', 'string', 'localhost'),
         ('mysql_user', 'string', 'root'),
         ('mysql_password', 'string', ''),
-        ('vhosts', 'da.VHost[]', []),
+        ('vhosts', 'VHost[]', []),
     ),
     ('ask-password', 'changed', 'unknown-key', 'connected', 'disconnected')
 )

@@ -18,12 +18,48 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import logging
 
-from concollection import CONCollection
-from conborg import CONBorg
-from conobject import CONObject
-from filesystem import FileSystem
-from localfilesystem import LocalFileSystem
-from signalsource import SignalSource
-from util import Util
+import lib.core
+
+class SFTPFileSystem(lib.core.FileSystem):
+
+
+    def __init__(self, paramiko_transport):
+        """
+        """
+        self.path_separator = '/'
+        self._logger = logging.getLogger('da.dasftpfilesystem')
+        self.sftp_client = paramiko_transport.open_sftp_client()
+
+
+
+    def listdir(self, path):
+        """
+        """
+        realpath = self.construct_path(path)
+        self._logger.debug("SFTP-FS : listdir %s" % realpath)
+        return self.sftp_client.listdir(realpath)
+
+
+
+    def mkdir(self, path):
+        """
+        """
+        realpath = self.construct_path(path)
+        self._logger.debug("SFTP-FS : mkdir %s" % realpath)
+        return self.sftp_client.mkdir(realpath)
+
+
+
+    def open(self, mode, path):
+        """
+        """
+        realpath = self.construct_path(path)
+        self._logger.debug("SFTP-FS : open %s" % realpath)
+        return self.sftp_client.open(realpath, mode)
+
+
+    def destroy(self):
+        self.sftp_client.close()
+

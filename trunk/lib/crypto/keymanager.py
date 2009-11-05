@@ -18,12 +18,33 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from concollection import CONCollection
-from conborg import CONBorg
-from conobject import CONObject
-from filesystem import FileSystem
-from localfilesystem import LocalFileSystem
-from signalsource import SignalSource
-from util import Util
+from key import Key
+import lib.core
+
+
+class KeyManager(lib.core.CONBorg):
+
+    def __init__(self):
+        lib.core.CONBorg.__init__(self)
+
+
+
+    def get_ssh_auth_key(self):
+        if self.ssh_auth_key == None:
+            print "generating new key"
+            new_key = Key.generate_rsa_key(4096)
+            self.ssh_auth_key = new_key
+        return self.ssh_auth_key
+
+
+
+
+lib.core.CONObject.register_attribute_type('KeyManager', KeyManager.object_serializer, KeyManager.object_deserializer)
+
+lib.core.CONObject.register_class(KeyManager, 
+    (
+        ('ssh_auth_key', 'Key', None),
+    ),
+    (())
+)

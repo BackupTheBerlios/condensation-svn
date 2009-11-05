@@ -18,12 +18,48 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from concollection import CONCollection
-from conborg import CONBorg
-from conobject import CONObject
+import os
+import os.path
+
 from filesystem import FileSystem
-from localfilesystem import LocalFileSystem
-from signalsource import SignalSource
-from util import Util
+
+
+class LocalFileSystem(FileSystem):
+
+    def __init__(self):
+        self.path_separator = '/'
+        self.home_dir = '/' # TODO: set home dir
+
+
+    def exists(self, path):
+        """
+        See `DAFileSystem.exists`.
+        """
+        return os.path.exists(self.construct_path(path))
+
+
+
+    def listdir(self, path):
+        """
+        See `DAFileSystem.listdir`.
+        """
+        return os.listdir(self.construct_path(path))
+
+
+
+    def open(self, path, mode="r"):
+        """
+        See `DAFileSystem.open`.
+        """
+        return open(self.construct_path(path), mode)
+
+
+
+    def mkdir(self, path):
+        """
+        See `DAFileSystem.mkdir`.
+        """
+        return os.mkdir(self.construct_path(path))
+
+
