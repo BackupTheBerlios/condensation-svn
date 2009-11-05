@@ -1,6 +1,6 @@
 #!/bin/sh
 
-epydoc --check drupaladmin.py da
+epydoc --check run-condensation.py lib condensation
 epydoc --config scripts/epydoc.config
 
 echo "cleaning up..."
