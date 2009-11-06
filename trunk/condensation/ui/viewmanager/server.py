@@ -32,11 +32,24 @@ class Server(lib.ui.ViewManager):
         lib.ui.Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
         lib.ui.Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
 
+        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+
         self._server = server
 
+        # add views
         serverconfig = ServerConfig(self._server)
-        serverconfig.show()
-        self.add_view('Config', serverconfig)
+        self.add_view(serverconfig, 'Config', 'configuration-icon')
+
+        # populate toolbar
+        connect_button = gtk.ToggleToolButton(gtk.STOCK_CONNECT)
+        self._toolbar.insert(connect_button, -1)
+        connect_button.show()
+
+        disconnect_button = gtk.ToolButton(gtk.STOCK_DISCONNECT)
+        self._toolbar.insert(disconnect_button, -1)
+        disconnect_button.show()
+
+        #self.show_all()
 
 
 
@@ -46,7 +59,10 @@ class Server(lib.ui.ViewManager):
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('server-disconnected')
+        if self._server.get_connected():
+            return lib.ui.Resources.get_pixbuf('server-connected')
+        else:
+            return lib.ui.Resources.get_pixbuf('server-disconnected')
 
 
 

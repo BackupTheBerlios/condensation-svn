@@ -20,6 +20,8 @@
 
 import gtk
 
+from resources import Resources
+
 class ViewManager(gtk.VBox):
 
     def __init__(self, container_notebook):
@@ -38,8 +40,18 @@ class ViewManager(gtk.VBox):
 
 
 
-    def add_view(self, name, widget):
-        self._view_map[name] = self._notebook.append_page(widget, gtk.Label(name))
+    def add_view(self, widget, name, image_id = None):
+        if image_id:
+            label = gtk.HBox()
+            image = gtk.Image()
+            image.set_from_pixbuf(Resources.get_pixbuf(image_id))
+            label.pack_start(image, False, False, 3)
+            label.pack_start(gtk.Label(name), False, False, 3)
+            label.show_all()
+        else:
+            label = gtk.Label(name)
+        self._view_map[name] = self._notebook.append_page(widget, label)
+        widget.show()
 
 
 

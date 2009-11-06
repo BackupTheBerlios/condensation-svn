@@ -30,14 +30,21 @@ class Condensation(lib.ui.ViewManager):
         lib.ui.ViewManager.__init__(self, containing_notebook)
 
         lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
+        lib.ui.Resources.load_pixbuf('view-log-icon', 'images/icons/view-log.svg')
+        lib.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
 
+        # add views
         logview = lib.ui.LogView(logsink)
-        logview.show()
-        self.add_view('Application Log', logview)
+        self.add_view(logview, 'Application Log', 'view-log-icon')
 
         consoleview = lib.ui.PythonConsoleView()
-        consoleview.show()
-        self.add_view('Python Console', consoleview)
+        self.add_view(consoleview, 'Python Console', 'python-console-icon')
+
+        # populate toolbar
+        save_button = gtk.ToolButton(gtk.STOCK_SAVE)
+        self._toolbar.insert(save_button, -1)
+        save_button.show()
+
 
 
 
