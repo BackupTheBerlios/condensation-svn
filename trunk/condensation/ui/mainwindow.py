@@ -39,6 +39,8 @@ class MainWindow(gtk.Window):
         sw_treemenu.set_size_request(200, 200)
 
         self._notebook = gtk.Notebook()
+        self._notebook.set_property('show-border', False)
+        self._notebook.set_property('scrollable', True)
         self._notebook.set_show_tabs(False)
         paned = gtk.HPaned()
         paned.add1(sw_treemenu)

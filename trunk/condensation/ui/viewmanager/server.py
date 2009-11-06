@@ -18,8 +18,35 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from condensation import Condensation
-from serverlist import ServerList
-from server import Server
+import lib.ui
+
+from serverconfig import ServerConfig
+
+class Server(lib.ui.ViewManager):
+
+    def __init__(self, containing_notebook, server):
+        lib.ui.ViewManager.__init__(self, containing_notebook)
+
+        lib.ui.Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
+        lib.ui.Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
+
+        self._server = server
+
+        serverconfig = ServerConfig(self._server)
+        serverconfig.show()
+        self.add_view('Config', serverconfig)
+
+
+
+    def get_menu_text(self):
+        return self._server.name
+
+
+
+    def get_menu_icon(self):
+        return lib.ui.Resources.get_pixbuf('server-disconnected')
+
+
+

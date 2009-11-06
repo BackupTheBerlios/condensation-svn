@@ -66,6 +66,7 @@ class ViewManager(gtk.VBox):
             self._container_notebook.set_current_page(self._container_notebook_page)
 
 
+
     def destroy(self):
         self._container_notebook.remove_page(self._container_notebook_page)
 

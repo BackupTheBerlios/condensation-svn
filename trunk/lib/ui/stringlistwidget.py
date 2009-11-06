@@ -1,0 +1,102 @@
+############################################################################
+#    Copyright (C) 2009 by Thomas Hille                                    #
+#    thomas.hille@nightsabers.org                                          #
+#                                                                          #
+#    This program is free software; you can redistribute it and#or modify  #
+#    it under the terms of the GNU General Public License as published by  #
+#    the Free Software Foundation; either version 2 of the License, or     #
+#    (at your option) any later version.                                   #
+#                                                                          #
+#    This program is distributed in the hope that it will be useful,       #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+#    GNU General Public License for more details.                          #
+#                                                                          #
+#    You should have received a copy of the GNU General Public License     #
+#    along with this program; if not, write to the                         #
+#    Free Software Foundation, Inc.,                                       #
+#    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
+############################################################################
+
+import gtk
+
+
+class StringListWidget(gtk.HBox):
+    """
+    'Widget' used for editing lists of strings
+    """
+
+    def __init__(self, stringlist=[]):
+        gtk.HBox.__init__(self)
+
+        self.liststore = gtk.ListStore(str)
+        self.treeview = gtk.TreeView(self.liststore)
+        self.tvcolumn = gtk.TreeViewColumn('Column 0')
+        self.treeview.append_column(self.tvcolumn)
+        self.cell = gtk.CellRendererText()
+        self.cell.set_property('editable', True)
+        self.cell.connect('edited', self.edited_callback)
+        self.tvcolumn.pack_start(self.cell, True)
+        self.tvcolumn.add_attribute(self.cell, 'text', 0)
+        self.tvcolumn.set_sort_column_id(0)
+        self.treeview.set_search_column(0)
+        self.treeview.set_reorderable(True)
+        self.treeview.set_headers_visible(False)
+        self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+
+        for item in stringlist:
+            self.liststore.append([item])
+
+        scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.add_with_viewport(self.treeview)
+        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+
+        vbuttonbox = gtk.VButtonBox()
+        vbuttonbox.set_layout(gtk.BUTTONBOX_START)
+        button = gtk.Button(stock=gtk.STOCK_ADD)
+        button.connect("clicked", self.add_button_callback)
+        vbuttonbox.add(button)
+        button = gtk.Button(stock=gtk.STOCK_DELETE)
+        button.connect("clicked", self.delete_button_callback)
+        vbuttonbox.add(button)
+        button = gtk.Button(stock=gtk.STOCK_SORT_ASCENDING)
+        button.connect("clicked", self.sort_asc_button_callback)
+        vbuttonbox.add(button)
+        vbuttonbox.set_child_secondary(button, True)
+        button = gtk.Button(stock=gtk.STOCK_SORT_DESCENDING)
+        button.connect("clicked", self.sort_dsc_button_callback)
+        vbuttonbox.add(button)
+        vbuttonbox.set_child_secondary(button, True)
+
+        self.pack_start(scrolled_window, expand=True, fill=True, padding=0)
+        self.pack_end(vbuttonbox, expand=False, fill=False, padding=10)
+
+        self.set_size_request(200, 150)
+        self.show_all()
+
+
+    def edited_callback(self, cell, path, new_text):
+        self.liststore[path][0] = new_text
+
+
+    def add_button_callback(self, button):
+        self.liststore.append(["new"])
+
+
+    def delete_button_callback(self, button):
+        (model, pathlist) = self.treeview.get_selection().get_selected_rows()
+        iterlist = []
+        for path in pathlist:
+            iterlist.append(self.liststore.get_iter(path))
+        for iter in iterlist:
+            self.liststore.remove(iter)
+
+
+    def sort_asc_button_callback(self, button):
+        raise Exception("NOT IMPLEMENTED!")
+
+
+    def sort_dsc_button_callback(self, button):
+        raise Exception("NOT IMPLEMENTED!")
+
+

@@ -89,11 +89,11 @@ def start_up():
     try:
         global splash_screen
         global logsink
+
         # basic stuff
         setup_logging()
-
-
         load_config()
+
 
         # gui stuff
         main_window = condensation.ui.MainWindow()
@@ -109,6 +109,10 @@ def start_up():
         treemenu.append(con_manager)
         treemenu.append(sl_manager, con_manager)
 
+        for server in condensation.Server.servers:
+            svm = condensation.ui.viewmanager.Server(main_window._notebook, server)
+            svm.show()
+            treemenu.append(svm, sl_manager)
 
 
         #time.sleep(2)
