@@ -21,5 +21,8 @@
 __all__ = []
 
 from condensation import Condensation
+from pythonconsoleview import PythonConsoleView
+from serverconfigview import ServerConfigView
 from serverlist import ServerList
 from server import Server
+from sshterminalview import SSHTerminalView

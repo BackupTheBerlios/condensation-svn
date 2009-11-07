@@ -23,7 +23,6 @@ __all__ = []
 from conobjectview import CONObjectView
 from logview import LogView
 from pythonconsole import PythonConsole
-from pythonconsoleview import PythonConsoleView
 from resources import Resources
 from splashscreen import SplashScreen
 from stringlistwidget import StringListWidget

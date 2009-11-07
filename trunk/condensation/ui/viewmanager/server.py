@@ -22,7 +22,8 @@ import gtk
 
 import lib.ui
 
-from serverconfig import ServerConfig
+from serverconfigview import ServerConfigView
+from sshterminalview import SSHTerminalView
 
 class Server(lib.ui.ViewManager):
 
@@ -33,24 +34,34 @@ class Server(lib.ui.ViewManager):
         lib.ui.Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
 
         lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+        lib.ui.Resources.load_pixbuf('ssh-terminal-icon', 'images/icons/ssh-terminal.svg')
 
         self._server = server
 
         # add views
-        serverconfig = ServerConfig(self._server)
+        serverconfig = ServerConfigView(self._server)
         self.add_view(serverconfig, 'Config', 'configuration-icon')
 
+        sshterminal = SSHTerminalView(self._server)
+        self.add_view(sshterminal, 'SSH Terminal', 'ssh-terminal-icon')
+
+
         # populate toolbar
-        connect_button = gtk.ToggleToolButton(gtk.STOCK_CONNECT)
-        self._toolbar.insert(connect_button, -1)
-        connect_button.show()
+        self.connect_button = gtk.ToolButton(gtk.STOCK_CONNECT)
+        self._toolbar.insert(self.connect_button, -1)
+        self.connect_button.show()
 
-        disconnect_button = gtk.ToolButton(gtk.STOCK_DISCONNECT)
-        self._toolbar.insert(disconnect_button, -1)
-        disconnect_button.show()
+        self.disconnect_button = gtk.ToolButton(gtk.STOCK_DISCONNECT)
+        self._toolbar.insert(self.disconnect_button, -1)
+        self.disconnect_button.show()
 
-        #self.show_all()
+        self.update()
 
+
+
+    def update(self):
+        self.connect_button.set_property('sensitive', not self._server.get_connected())
+        self.disconnect_button.set_property('sensitive', self._server.get_connected())
 
 
     def get_menu_text(self):

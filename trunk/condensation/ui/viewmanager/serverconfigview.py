@@ -25,7 +25,7 @@ import xml.etree.ElementTree as ET
 import lib.ui
 
 
-class ServerConfig(lib.ui.CONObjectView):
+class ServerConfigView(lib.ui.CONObjectView):
 
     categories = (
         ('General', (

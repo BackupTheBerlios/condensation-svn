@@ -22,6 +22,8 @@ import gtk
 
 import lib.ui
 
+from pythonconsoleview import PythonConsoleView
+
 
 class Condensation(lib.ui.ViewManager):
 
@@ -37,7 +39,7 @@ class Condensation(lib.ui.ViewManager):
         logview = lib.ui.LogView(logsink)
         self.add_view(logview, 'Application Log', 'view-log-icon')
 
-        consoleview = lib.ui.PythonConsoleView()
+        consoleview = PythonConsoleView()
         self.add_view(consoleview, 'Python Console', 'python-console-icon')
 
         # populate toolbar
