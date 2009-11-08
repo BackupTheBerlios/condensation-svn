@@ -22,3 +22,4 @@ __all__ = []
 
 from key import Key
 from keymanager import KeyManager
+from sftpfilesystem import SFTPFileSystem

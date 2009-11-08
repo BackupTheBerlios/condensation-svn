@@ -113,7 +113,12 @@ def start_up():
             svm = condensation.ui.viewmanager.Server(main_window._notebook, server)
             svm.show()
             treemenu.append(svm, sl_manager)
+            for vhost in server.vhosts:
+                vhvm = condensation.ui.viewmanager.VHost(main_window._notebook, vhost)
+                vhvm.show()
+                treemenu.append(vhvm, svm)
 
+        treemenu.expand_all()
 
         #time.sleep(2)
 

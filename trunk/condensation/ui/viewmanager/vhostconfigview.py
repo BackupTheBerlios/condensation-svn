@@ -24,52 +24,30 @@ import gtk
 import lib.ui
 
 
-class ServerConfigView(lib.ui.CONObjectView):
+class VHostConfigView(lib.ui.CONObjectView):
+
 
     categories = (
         ('General', (
             ('name', 'Name'),
-            ('host', 'Host'),
-        )),
-        ('SSH', (
-            ('ssh_port', 'Port'),
-            ('ssh_user', 'User'),
-            ('ssh_key_fingerprint', 'Key Fingerprint'),
-            ('ssh_autoconnect', 'Auto Connect'),
-        )),
-        ('Apache', (
-            ('apache_base', 'Base dir'),
-            ('apache_confbase', 'Config dir'),
-            ('apache_available', 'Available vhosts'),
-            ('apache_enabled', 'Enabled vhosts'),
-            ('apache_user', 'User'),
-            ('apache_group', 'Group'),
-        )),
-        ('Drupal', (
-            ('drupal_cronfile', 'Cronfile'),
-        )),
-        ('MySQL', (
-            ('mysql_host', 'Server host'),
-            ('mysql_user', 'Adminstrative user'),
-            ('mysql_password', 'Adminstrative password'),
+            ('domains', 'Domains'),
+            ('document_root', 'Document Root'),
         )),
     )
 
 
-    def __init__(self, server):
-        self._server = server
+    def __init__(self, vhost):
+        self._vhost = vhost
         lib.ui.CONObjectView.__init__(self)
 
 
 
-    #
-    # implementation of DAPage
-    #
     def get_field_value(self, field_name):
-        return self._server.__getattr__(field_name)
+        #print "Getting %s: %s" % (field_name, str(self.vhost.get_property(field_name)))
+        return self._vhost.__getattr__(field_name)
+
 
 
     def get_field_type(self, field_name):
-        return self._server.get_attribute_type(field_name)
-
+        return self._vhost.get_attribute_type(field_name)
 

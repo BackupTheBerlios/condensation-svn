@@ -37,6 +37,7 @@ class Server(lib.ui.ViewManager):
         lib.ui.Resources.load_pixbuf('ssh-terminal-icon', 'images/icons/ssh-terminal.svg')
 
         self._server = server
+        self._server.connect_signal('changed', self.on_server_changed)
 
         # add views
         serverconfig = ServerConfigView(self._server)
@@ -48,13 +49,30 @@ class Server(lib.ui.ViewManager):
 
         # populate toolbar
         self.connect_button = gtk.ToolButton(gtk.STOCK_CONNECT)
+        self.connect_button.connect('clicked', self.action_connect)
         self._toolbar.insert(self.connect_button, -1)
         self.connect_button.show()
 
         self.disconnect_button = gtk.ToolButton(gtk.STOCK_DISCONNECT)
+        self.disconnect_button.connect('clicked', self.action_disconnect)
         self._toolbar.insert(self.disconnect_button, -1)
         self.disconnect_button.show()
 
+        self.update()
+
+
+
+    def action_connect(self, action=None):
+         self._server.connect_to_server()
+
+
+
+    def action_disconnect(self, action=None):
+        self._server.disconnect()
+
+
+
+    def on_server_changed(self, server):
         self.update()
 
 

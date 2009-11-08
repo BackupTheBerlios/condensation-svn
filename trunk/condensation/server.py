@@ -48,7 +48,7 @@ class Server(lib.core.CONObject):
         lib.core.CONObject.__init__(self)
 
         # get us a logger
-        self._logger = logging.getLogger('da.daserver')
+        self._logger = logging.getLogger('server')
 
         # add to gloabl list of servers
         self.servers.append(self)
@@ -97,7 +97,7 @@ class Server(lib.core.CONObject):
         Raises a 'ask-password' signal, when no password is given.
         """
         if not self._transport_live:
-            keymanager = DAKeyManager()
+            keymanager = lib.crypto.KeyManager()
 
             self._logger.info("%s : connecting" % self.host)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -162,7 +162,7 @@ class Server(lib.core.CONObject):
         """
         fs = self.get_sftp_filesystem()
         for vhname in fs.listdir(self.apache_available):
-            vhost = DAVHost()
+            vhost = VHost()
             vhost.name = vhname
             self.add_vhost(vhost)
             vhost.read_config()
@@ -204,7 +204,7 @@ class Server(lib.core.CONObject):
         """
         self.connect_to_server()
         if self._sftpfs == None:
-            self._sftpfs = DASFTPFileSystem(self._transport)
+            self._sftpfs = lib.crypto.SFTPFileSystem(self._transport)
             self._sftpfs.home_dir = self.ssh_user_home
         return self._sftpfs
 

@@ -29,9 +29,18 @@ class SSHTerminalView(gtk.HBox):
 
 
     def __init__(self, server):
-        # Set up terminal
+        # init variables
         gtk.HBox.__init__(self)
+
+        # connection stuff
+        self.channel = None
+        self.server = server
+        self.server.connect_signal('connected', self.on_server_connected)
+        self.server.connect_signal('disconnected', self.on_server_disconnected)
+
+        # add/init terminal
         self.terminal =  vte.Terminal()
+        self.terminal.connect('commit', self.on_vte_commit)
         self.pack_start(self.terminal, True, True, 0)
 
         # add scrollbar
@@ -41,37 +50,56 @@ class SSHTerminalView(gtk.HBox):
 
         self.show_all()
 
-        # wire channel to terminal
-        self.server = server
         if self.server.get_connected():
             self.connect()
         else:
-            self.terminal.feed('Not connected\n\r')
+            self.terminal.feed('*** Not connected ***\n\r')
+
 
 
     def connect(self):
         #self.server._transport.set_hexdump(True)
+        self.terminal.reset(full=True, clear_history=False)
         self.channel = self.server._transport.open_session()
         self.channel.setblocking(True)
         self.channel.set_combine_stderr(True)
         self.channel.get_pty(term='xterm')
         self.channel.invoke_shell()
-        self.terminal.connect('commit', self.on_commit)
+        self.running = True
         writer = threading.Thread(target=self.writeall)
         writer.start()
+        self.connected = True
 
 
 
-    def on_commit(self, widget, text, size):
+    def disconnect(self):
+        self.running = False
+        self.channel = None # TODO: close channel, if possible
+        self.connected = False
+        self.terminal.feed('*** disconnected ***\n\r')
+
+
+
+    def on_server_connected(self, *args):
+        self.connect()
+
+
+
+    def on_server_disconnected(self, *args):
+        self.disconnect()
+
+
+
+    def on_vte_commit(self, widget, text, size):
         #print "Commit '%s' %d" % (text, size)
-        self.channel.send(text)
+        if self.channel:
+            self.channel.send(text)
         return True
 
 
 
     def writeall(self):
-        running = True
-        while running:
+        while self.running:
             data = self.channel.recv(256)
             gtk.gdk.threads_enter()
             if not data:

@@ -26,3 +26,5 @@ from serverconfigview import ServerConfigView
 from serverlist import ServerList
 from server import Server
 from sshterminalview import SSHTerminalView
+from vhostconfigview import VHostConfigView
+from vhost import VHost

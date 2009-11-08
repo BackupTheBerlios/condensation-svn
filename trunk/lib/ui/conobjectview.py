@@ -64,7 +64,7 @@ class CONObjectView(gtk.Notebook):
                     widget.set_width_chars(40)
 
                 elif type == 'string[]':
-                    widget = DAStringListWidget(self.get_field_value(field_id)).widget
+                    widget = StringListWidget(self.get_field_value(field_id))
                 else:
                     raise Exception("Unknown type '%s'" % type)
 

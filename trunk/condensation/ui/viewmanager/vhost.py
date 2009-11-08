@@ -18,58 +18,38 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-
 import gtk
 
 import lib.ui
 
-
-class ServerConfigView(lib.ui.CONObjectView):
-
-    categories = (
-        ('General', (
-            ('name', 'Name'),
-            ('host', 'Host'),
-        )),
-        ('SSH', (
-            ('ssh_port', 'Port'),
-            ('ssh_user', 'User'),
-            ('ssh_key_fingerprint', 'Key Fingerprint'),
-            ('ssh_autoconnect', 'Auto Connect'),
-        )),
-        ('Apache', (
-            ('apache_base', 'Base dir'),
-            ('apache_confbase', 'Config dir'),
-            ('apache_available', 'Available vhosts'),
-            ('apache_enabled', 'Enabled vhosts'),
-            ('apache_user', 'User'),
-            ('apache_group', 'Group'),
-        )),
-        ('Drupal', (
-            ('drupal_cronfile', 'Cronfile'),
-        )),
-        ('MySQL', (
-            ('mysql_host', 'Server host'),
-            ('mysql_user', 'Adminstrative user'),
-            ('mysql_password', 'Adminstrative password'),
-        )),
-    )
+from vhostconfigview import VHostConfigView
 
 
-    def __init__(self, server):
-        self._server = server
-        lib.ui.CONObjectView.__init__(self)
+class VHost(lib.ui.ViewManager):
+
+    def __init__(self, containing_notebook, vhost):
+        lib.ui.ViewManager.__init__(self, containing_notebook)
+
+        lib.ui.Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
+        lib.ui.Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
+
+        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+
+        self._vhost = vhost
+
+        # add views
+        vhostconfig = VHostConfigView(self._vhost)
+        self.add_view(vhostconfig, 'Config', 'configuration-icon')
 
 
 
-    #
-    # implementation of DAPage
-    #
-    def get_field_value(self, field_name):
-        return self._server.__getattr__(field_name)
+    def get_menu_text(self):
+        return self._vhost.name
 
 
-    def get_field_type(self, field_name):
-        return self._server.get_attribute_type(field_name)
+
+    def get_menu_icon(self):
+        return lib.ui.Resources.get_pixbuf('vhost-disabled')
+
 
 
