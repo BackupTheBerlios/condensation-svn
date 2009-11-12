@@ -48,8 +48,8 @@ class ProxyConfigView(lib.ui.CONObjectView):
         return self._proxy.__getattr__(field_name)
 
 
-    def get_field_type(self, field_name):
-        return self._proxy.get_attribute_type(field_name)
+    def get_field_definition(self, field_name):
+        return self._proxy.get_attribute_definition(field_name)
 
 
 

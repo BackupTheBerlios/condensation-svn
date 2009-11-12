@@ -29,7 +29,7 @@ from proxyrequesthandler import ProxyRequestHandler
 class ProxyServer(lib.core.CONBorg):
 
     _attribute_definitions = (
-        ('ports', 'integer[]', (8000,)),
+        {'name': 'ports', 'type': 'integer[]', 'default': (8000,), 'min':1, 'max': 65535},
     )
     _signal_list = (())
 

@@ -26,7 +26,7 @@ import lib.core
 class KeyManager(lib.core.CONBorg):
 
     _attribute_definitions = (
-        ('ssh_auth_key', 'Key', None),
+        {'name': 'ssh_auth_key', 'type':'Key', 'default':None},
     )
     _signal_list = (())
 

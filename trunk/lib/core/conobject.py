@@ -85,7 +85,7 @@ class CONObject(SignalSource):
             #this is something private, no checking done
             self.__dict__[name] = value
         else:
-            #daobject attribute, check stuff
+            #conobject attribute, check stuff
             if name not in self._attributes:
                 raise Exception("Attribute '%s' doesn't exist and therefore can't be set." % name)
 
@@ -102,14 +102,14 @@ class CONObject(SignalSource):
 
 
 
-    def get_attribute_type(self, name):
+    def get_attribute_definition(self, name):
         """
-        Returns the type of an object-attribute.
+        Returns the definition of an object-attribute.
 
         :param attribute: attribute identifier
         """
         #return self._attributes_type[name]
-        return CONObject._class_registry[self.__class__]['attributes_type'][name]
+        return CONObject._class_registry[self.__class__]['attributes_definition'][name]
 
 
 
@@ -148,7 +148,7 @@ class CONObject(SignalSource):
             raise Exception('Not a decendant of CONObject')
 
         eff_attributes = {}
-        eff_attributes_type = {}
+        eff_attributes_definition = {}
         eff_callbacks = set()
 
         for base in class_obj.__bases__:
@@ -159,30 +159,35 @@ class CONObject(SignalSource):
                     pass
             if base in cls._class_registry:
                 eff_attributes.update(cls._class_registry[base]['attributes'])
-                eff_attributes_type.update(cls._class_registry[base]['attributes_type'])
+                eff_attributes_definition.update(cls._class_registry[base]['attributes_definition'])
                 eff_callbacks.update(cls._class_registry[base]['callbacks'])
 
 
-        for (name, type, value) in class_obj._attribute_definitions:
-            if not isinstance(type, basestring):
-                #print CONObject._attribute_type_registry
+        for definition in class_obj._attribute_definitions:
+            if 'name' not in definition:
+                raise Exception("Error in attribute defintion of class %s: missing attribute name." % class_obj.__name__)
+            if 'type' not in definition:
+                raise Exception("Error in attribute defintion of class %s: missing attribute type." % class_obj.__name__)
+            if 'default' not in definition:
+                raise Exception("Error in attribute defintion of class %s: missing default attribute value." % class_obj.__name__)
+
+            if not isinstance(definition['type'], basestring):
                 raise Exception('String expected here, got %s' % type.__class__)
 
-            m = cls._re_collection.match(type)
+            m = cls._re_collection.match(definition['type'])
             basetype = m.group('basetype')
 
             if basetype not in cls._attribute_type_registry:
-                #print cls._attribute_type_registry
-                raise Exception("Cannot init attribute of unregistered type '%s'." % basetype)
+                raise Exception("Class %s tried to register attribute %s of unregistered type '%s'." % (class_obj.__name__, definition['name'], basetype))
 
             if m.group('indices') != None:
-                value = cls._construct_collection(basetype, [], value)
+                value = cls._construct_collection(basetype, [], definition['default'])
 
-            if name not in eff_attributes:
-                eff_attributes[name] = value
-                eff_attributes_type[name] = type
+            if definition['name'] not in eff_attributes:
+                eff_attributes[definition['name']] = definition['default']
+                eff_attributes_definition[definition['name']] = definition
             else:
-                raise Exception("tried to initialize the existing attribute '%s'." % name)
+                raise Exception("Class %s tried to override attribute '%s'." % (class_obj.__name__, definition['name']))
 
         for name in class_obj._signal_list:
             if name in eff_callbacks:
@@ -192,7 +197,7 @@ class CONObject(SignalSource):
 
         cls._class_registry[class_obj] = {
             'attributes': eff_attributes,
-            'attributes_type': eff_attributes_type,
+            'attributes_definition': eff_attributes_definition,
             'callbacks': eff_callbacks,
         }
 
@@ -328,14 +333,14 @@ class CONObject(SignalSource):
 
         :param et: the ElementTree containing the serialized object attributes
         """
-        daobj = cls()
-        attr_list = daobj.get_attribute_list()
+        conobj = cls()
+        attr_list = conobj.get_attribute_list()
         for element in et:
             name = element.tag
             if name not in attr_list:
                 raise Exception("No object attribute of name '%s'." % name)
 
-            type = daobj.get_attribute_type(name)
+            type = conobj.get_attribute_definition(name)['type']
             if not isinstance(type, basestring):
                 raise Exception('String expected here, got %s' % type.__class__)
 
@@ -346,13 +351,13 @@ class CONObject(SignalSource):
                 for subelement in element:
                     subvalue = CONObject._attribute_type_registry[basetype][1](subelement)
                     list.append(subvalue)
-                daobj.__setattr__(name, list)
+                conobj.__setattr__(name, list)
             else:
                 value = CONObject._attribute_type_registry[type][1](element)
-                daobj.__setattr__(name, value)
+                conobj.__setattr__(name, value)
 
-        daobj.wakeup()
-        return daobj
+        conobj.wakeup()
+        return conobj
 
 
 

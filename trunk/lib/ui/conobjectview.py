@@ -21,6 +21,7 @@
 
 import gtk
 
+from integerlistwidget import IntegerListWidget
 from stringlistwidget import StringListWidget
 
 
@@ -54,16 +55,16 @@ class CONObjectView(gtk.Notebook):
                     xpadding=10, ypadding=7)
 
                 # now, on to the field itself
-                type = self.get_field_type(field_id)
-                if type == 'boolean':
+                definition = self.get_field_definition(field_id)
+                if definition['type'] == 'boolean':
                     widget = gtk.CheckButton()
-                elif type == 'integer[]':
-                    widget = gtk.Label('type integer[] not implemented yet')
-                elif type == 'string':
+                elif definition['type'] == 'integer[]':
+                    widget = IntegerListWidget(definition['min'], definition['max'], self.get_field_value(field_id))
+                elif definition['type'] == 'string':
                     widget = gtk.Entry()
                     widget.connect('changed', self._entry_changed_callback, field_id)
                     widget.set_width_chars(40)
-                elif type == 'string[]':
+                elif definition['type'] == 'string[]':
                     widget = StringListWidget(self.get_field_value(field_id))
                 else:
                     raise Exception("Unknown type '%s'" % type)
@@ -102,7 +103,7 @@ class CONObjectView(gtk.Notebook):
         Reset all field of a category to their start values.
         """
         for (field_id, field_label) in self.categories[category_id][1]:
-            type = self.get_field_type(field_id)
+            type = self.get_field_definition(field_id)['type']
             widget = self._field_widgets[field_id]
             if type == 'boolean':
                 pass
@@ -145,9 +146,9 @@ class CONObjectView(gtk.Notebook):
 
 
 
-    def get_field_type(self, field_name):
+    def get_field_definition(self, field_name):
         """
-        Return the type of the field (see `DAObject` for property types).
+        Return the type of the field (see `CONObject` for property types).
 
         Must be implemented by subclasses.
         """

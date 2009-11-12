@@ -48,6 +48,6 @@ class VHostConfigView(lib.ui.CONObjectView):
 
 
 
-    def get_field_type(self, field_name):
-        return self._vhost.get_attribute_type(field_name)
+    def get_field_definition(self, field_name):
+        return self._vhost.get_attribute_definition(field_name)
 

@@ -25,9 +25,9 @@ import lib.core
 class VHost(lib.core.CONObject):
 
     _attribute_definitions = (
-        ('name', 'string', ''),
-        ('domains', 'string[]', ["test.com", "test2.com", "test3.com"]),
-        ('document_root', 'string', '/var/www'),
+        {'name': 'name', 'type': 'string', 'default': ''},
+        {'name': 'domains', 'type': 'string[]', 'default': ["test.com", "test2.com", "test3.com"]},
+        {'name': 'document_root', 'type': 'string', 'default': '/var/www'},
     )
     _signal_list = (())
 

@@ -114,13 +114,13 @@ class CONBorg(CONObject):
 
 
 
-    def get_attribute_type(self, name):
+    def get_attribute_definition(self, name):
         """
         Returns the type of an object-attribute.
 
         :param attribute: attribute identifier
         """
-        return CONObject._class_registry[self.__class__]['attributes_type'][name]
+        return CONObject._class_registry[self.__class__]['attributes_definition'][name]
 
 
 

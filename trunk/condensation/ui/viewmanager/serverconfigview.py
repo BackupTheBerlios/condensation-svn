@@ -66,7 +66,7 @@ class ServerConfigView(lib.ui.CONObjectView):
         return self._server.__getattr__(field_name)
 
 
-    def get_field_type(self, field_name):
-        return self._server.get_attribute_type(field_name)
+    def get_field_definition(self, field_name):
+        return self._server.get_attribute_definition(field_name)
 
 

@@ -21,6 +21,7 @@
 __all__ = []
 
 from conobjectview import CONObjectView
+from integerlistwidget import IntegerListWidget
 from logview import LogView
 from pythonconsole import PythonConsole
 from resources import Resources
