@@ -21,6 +21,7 @@
 
 import gtk
 
+from coloredframe import ColoredFrame
 from integerlistwidget import IntegerListWidget
 from stringlistwidget import StringListWidget
 
@@ -31,6 +32,7 @@ class CONObjectView(gtk.Notebook):
         gtk.Notebook.__init__(self)
         self._start_values = {} #: the initial field values (used by reset)
         self._field_widgets = {} #: the widgets for each field
+        self._field_frames = {} #: the frames for each field
 
         for (category_id, category) in enumerate(self.categories):
             num_rows = len(category[1]) + 1
@@ -69,13 +71,16 @@ class CONObjectView(gtk.Notebook):
                 else:
                     raise Exception("Unknown type '%s'" % type)
 
+                frame = ColoredFrame()
+                frame.add(widget)
 
-                table.attach(widget,
+                table.attach(frame,
                     left_attach = 1, right_attach = 2, top_attach = row, bottom_attach = row + 1,
                     xoptions=gtk.FILL, yoptions=gtk.EXPAND,
                     xpadding=10, ypadding=0)
 
                 self._field_widgets[field_id] = widget
+                self._field_frames[field_id] = frame
 
                 row += 1
 
@@ -130,9 +135,9 @@ class CONObjectView(gtk.Notebook):
         Callback for the changed signal of entry widgets.
         """
         if entry.get_text() == self._start_values[field_id]:
-            entry.modify_bg(gtk.STATE_NORMAL, gtk.widget_get_default_style().bg_gc[gtk.STATE_NORMAL])
+            self._field_frames[field_id].set_color()
         else:
-            entry.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color('#ff0000'))
+            self._field_frames[field_id].set_color('#ff0000')
 
 
 

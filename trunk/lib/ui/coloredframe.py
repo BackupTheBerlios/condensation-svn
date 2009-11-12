@@ -18,15 +18,31 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from coloredframe import ColoredFrame
-from conobjectview import CONObjectView
-from integerlistwidget import IntegerListWidget
-from logview import LogView
-from pythonconsole import PythonConsole
-from resources import Resources
-from splashscreen import SplashScreen
-from stringlistwidget import StringListWidget
-from treemenu import TreeMenu
-from viewmanager import ViewManager
+class ColoredFrame(gtk.EventBox):
+
+    def __init__(self):
+        gtk.EventBox.__init__(self)
+        self.inner_box = gtk.EventBox()
+        gtk.EventBox.add(self, self.inner_box)
+        self.set_width(2)
+
+
+
+    def add(self, child):
+        self.inner_box.add(child)
+
+
+
+    def set_color(self, color=None):
+        if color:
+            self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse(color))
+        else:
+            self.modify_bg(gtk.STATE_NORMAL, gtk.widget_get_default_style().bg_gc[gtk.STATE_NORMAL])
+
+
+
+    def set_width(self, width):
+        self.inner_box.set_property('border-width', width)
+
