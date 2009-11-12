@@ -80,7 +80,7 @@
     <tree>
       <hidenonprojectfiles>false</hidenonprojectfiles>
       <hidepatterns>*.o,*.lo,CVS,*~,*.pyc</hidepatterns>
-      <showvcsfields>false</showvcsfields>
+      <showvcsfields>true</showvcsfields>
     </tree>
     <groups>
       <group pattern="*.py" name="Python files" />

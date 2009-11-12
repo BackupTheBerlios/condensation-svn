@@ -18,45 +18,52 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-from apacheconfigparser import ApacheConfigParser
-import lib.core
+import gtk
+import gtkmozembed
+import logging
 
 
-class VHost(lib.core.CONObject):
-
-    _attribute_definitions = (
-        ('name', 'string', ''),
-        ('domains', 'string[]', ["test.com", "test2.com", "test3.com"]),
-        ('document_root', 'string', '/var/www'),
-    )
-    _signal_list = (())
+# work around for segfault (not needed?)
+# see: https://bugs.launchpad.net/firefox/+bug/26436/comments/58
+#import os
+#if os.path.exists('/usr/lib/xulrunner-1.9.1'):
+#    gtkmozembed.set_comp_path('/usr/lib/xulrunner-1.9.1')
 
 
-    def __init__(self):
-        lib.core.CONObject.__init__(self)
-        self._server = None
+class VHostMozEmbedView(gtk.VBox):
+
+
+    def __init__(self, vhost):
+        gtk.VBox.__init__(self)
+        self.vhost = vhost
+
+        # logging
+        self.logger = logging.getLogger('MozEmbed')
+
+        # controls
+        self.combobox = gtk.combo_box_entry_new_text()
+        for domain in vhost.domains:
+            self.combobox.append_text('http://'+domain)
+        self.pack_start(self.combobox, expand=False, fill=True, padding=0)
+
+        self.combobox.child.connect('activate', self.on_combobox_activate)
+
+
+        # mozembed
+        self.mozembed = gtkmozembed.MozEmbed()
+        self.pack_start(self.mozembed, expand=True, fill=True, padding=0)
+        self.mozembed.connect('open_uri', self.on_open_uri)
+
+        self.show_all()
 
 
 
-    def read_config(self):
-        fs = self._server.get_sftp_filesystem()
-        self._raw_config = fs.read_file((self._server.apache_available, self.name))
-        self._config = ApacheConfigParser.parse_string(self._raw_config)
-        #self.config.print_r()
+    def on_combobox_activate(self, entry):
+        self.mozembed.load_url(self.combobox.child.get_text())
 
 
 
-    def install_drupal(self, package):
-        if not package.isDrupal():
-            raise Exception("Only Drupal packages allowed here")
-        package.extract(self._install_callback)
-
-
-
-    def _install_callback(self):
-        pass
-
-
-
-lib.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
+    def on_open_uri(self, mozembed, uri, *data):
+        self.logger.info('open_uri: '+uri)
+        return False
 

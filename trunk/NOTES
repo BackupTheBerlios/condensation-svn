@@ -1,0 +1,5 @@
+
+
+
+gtkmozembed.MozEmbed
+    found the following bug/undocumented feature: calling render_data() before the widget is realized causes a segfault

@@ -23,6 +23,7 @@ import gtk
 import lib.ui
 
 from vhostconfigview import VHostConfigView
+from vhostmozembedview import VHostMozEmbedView
 
 
 class VHost(lib.ui.ViewManager):
@@ -40,6 +41,10 @@ class VHost(lib.ui.ViewManager):
         # add views
         vhostconfig = VHostConfigView(self._vhost)
         self.add_view(vhostconfig, 'Config', 'configuration-icon')
+
+        self.vhostmozembed = VHostMozEmbedView(self._vhost)
+        self.add_view(self.vhostmozembed, 'MozEmbed', None)
+
 
 
 

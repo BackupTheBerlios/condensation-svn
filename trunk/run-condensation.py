@@ -103,10 +103,13 @@ def start_up():
         con_manager.show()
         sl_manager = condensation.ui.viewmanager.ServerList(main_window._notebook)
         sl_manager.show()
+        pro_manager = condensation.ui.viewmanager.Proxy(main_window._notebook)
+        pro_manager.show()
 
         # populate treemenu
         treemenu = main_window._treemenu
         treemenu.append(con_manager)
+        treemenu.append(pro_manager, con_manager)
         treemenu.append(sl_manager, con_manager)
 
         for server in condensation.Server.servers:
@@ -129,7 +132,7 @@ def start_up():
             gtk.main_iteration()
 
 
-        time.sleep(2)
+        #time.sleep(2)
 
 
         # finished, hide splash

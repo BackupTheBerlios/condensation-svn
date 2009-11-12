@@ -62,9 +62,6 @@ class ServerConfigView(lib.ui.CONObjectView):
 
 
 
-    #
-    # implementation of DAPage
-    #
     def get_field_value(self, field_name):
         return self._server.__getattr__(field_name)
 

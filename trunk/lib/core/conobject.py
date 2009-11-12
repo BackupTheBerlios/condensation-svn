@@ -34,6 +34,10 @@ class CONObject(SignalSource):
     `raise_signal`) and attributes (`set_attribute` and `get_attribute`)
     """
 
+    _attribute_definitions = (())
+    _signal_list = ('attribute_changed',)
+
+
     #: list of known attributes
     _attribute_type_registry = {}
 
@@ -52,9 +56,16 @@ class CONObject(SignalSource):
         It is neccessary for each subclass to call CONObject's __init__, failing to do so
         will prevent the subclass to use signals and attributes.
         """
+        # register our class, if not registered before
+        if self.__class__ not in CONObject._class_registry:
+            CONObject._register_class(self.__class__)
+
+        # init signal callback list
         SignalSource.__init__(self)
         for signal in CONObject._class_registry[self.__class__]['callbacks']:
             self.__dict__['_callbacks'][signal] = []
+
+        # init attribute list
         self.__dict__['_attributes'] = CONObject._class_registry[self.__class__]['attributes'].copy()
 
 
@@ -129,22 +140,30 @@ class CONObject(SignalSource):
 
 
     @classmethod
-    def register_class(cls, class_obj, attributes, signals):
+    def _register_class(cls, class_obj):
         if class_obj in cls._class_registry:
             raise Exception('Class already registered')
+
+        if (CONObject not in class_obj.__bases__) and (cls != CONObject):
+            raise Exception('Not a decendant of CONObject')
 
         eff_attributes = {}
         eff_attributes_type = {}
         eff_callbacks = set()
 
         for base in class_obj.__bases__:
+            if base not in cls._class_registry:
+                try:
+                    cls._register_class(base)
+                except:
+                    pass
             if base in cls._class_registry:
                 eff_attributes.update(cls._class_registry[base]['attributes'])
                 eff_attributes_type.update(cls._class_registry[base]['attributes_type'])
                 eff_callbacks.update(cls._class_registry[base]['callbacks'])
 
 
-        for (name, type, value) in attributes:
+        for (name, type, value) in class_obj._attribute_definitions:
             if not isinstance(type, basestring):
                 #print CONObject._attribute_type_registry
                 raise Exception('String expected here, got %s' % type.__class__)
@@ -165,7 +184,7 @@ class CONObject(SignalSource):
             else:
                 raise Exception("tried to initialize the existing attribute '%s'." % name)
 
-        for name in signals:
+        for name in class_obj._signal_list:
             if name in eff_callbacks:
                 raise Exception("Already in list")
             eff_callbacks.add(name)
@@ -343,7 +362,4 @@ CONObject.register_attribute_type('boolean', CONObject.boolean_serializer, CONOb
 CONObject.register_attribute_type('integer', CONObject.integer_serializer, CONObject.integer_deserializer)
 CONObject.register_attribute_type('string', CONObject.string_serializer, CONObject.string_deserializer)
 CONObject.register_attribute_type('CONObject', CONObject.object_serializer, CONObject.object_deserializer)
-
-CONObject.register_class(CONObject, (()), ('attribute_changed',))
-
 

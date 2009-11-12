@@ -21,6 +21,7 @@
 __all__ = []
 
 from condensation import Condensation
+from proxy import Proxy
 from pythonconsoleview import PythonConsoleView
 from serverconfigview import ServerConfigView
 from serverlist import ServerList

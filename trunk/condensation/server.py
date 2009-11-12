@@ -36,6 +36,29 @@ class Server(lib.core.CONObject):
     A (remote) apache installation including several VHosts.
     """
 
+    _attribute_definitions = (
+        ('name', 'string', 'no name'),
+        ('host', 'string', 'example.com'),
+        ('ssh_port', 'string', '22'),
+        ('ssh_user', 'string', 'root'),
+        ('ssh_user_home', 'string', '/root'),
+        ('ssh_key_fingerprint', 'string', ''),
+        ('ssh_autoconnect', 'boolean', False),
+        ('apache_base', 'string', '/var/www'),
+        ('apache_confbase', 'string', '/etc/apache2'),
+        ('apache_available', 'string', '/etc/apache2/servers-available'),
+        ('apache_enabled', 'string', '/etc/apache2/servers-enabled'),
+        ('apache_user', 'string', 'www-data'),
+        ('apache_group', 'string', 'www-data'),
+        ('drupal_cronfile', 'string', '/etc/cron.hourly/drupal'),
+        ('mysql_host', 'string', 'localhost'),
+        ('mysql_user', 'string', 'root'),
+        ('mysql_password', 'string', ''),
+        ('vhosts', 'VHost[]', []),
+    )
+
+    _signal_list = ('ask-password', 'changed', 'unknown-key', 'connected', 'disconnected')
+
     servers = [] #: list of all Server objects
 
 
@@ -225,27 +248,3 @@ class Server(lib.core.CONObject):
 
 
 lib.core.CONObject.register_attribute_type('Server', Server.object_serializer, Server.object_deserializer)
-
-lib.core.CONObject.register_class(Server,
-    (
-        ('name', 'string', 'no name'),
-        ('host', 'string', 'example.com'),
-        ('ssh_port', 'string', '22'),
-        ('ssh_user', 'string', 'root'),
-        ('ssh_user_home', 'string', '/root'),
-        ('ssh_key_fingerprint', 'string', ''),
-        ('ssh_autoconnect', 'boolean', False),
-        ('apache_base', 'string', '/var/www'),
-        ('apache_confbase', 'string', '/etc/apache2'),
-        ('apache_available', 'string', '/etc/apache2/servers-available'),
-        ('apache_enabled', 'string', '/etc/apache2/servers-enabled'),
-        ('apache_user', 'string', 'www-data'),
-        ('apache_group', 'string', 'www-data'),
-        ('drupal_cronfile', 'string', '/etc/cron.hourly/drupal'),
-        ('mysql_host', 'string', 'localhost'),
-        ('mysql_user', 'string', 'root'),
-        ('mysql_password', 'string', ''),
-        ('vhosts', 'VHost[]', []),
-    ),
-    ('ask-password', 'changed', 'unknown-key', 'connected', 'disconnected')
-)

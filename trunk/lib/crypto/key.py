@@ -30,6 +30,10 @@ import lib.core
 class Key(lib.core.CONObject):
 
 
+    _attribute_definitions = (())
+    _signal_list = (())
+
+
     def __init__(self):
         lib.core.CONObject.__init__(self)
 
@@ -116,5 +120,3 @@ class Key(lib.core.CONObject):
 
 
 lib.core.CONObject.register_attribute_type('Key', Key.key_serializer, Key.key_deserializer)
-
-lib.core.CONObject.register_class(Key, (()), (()))

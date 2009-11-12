@@ -25,6 +25,12 @@ import lib.core
 
 class KeyManager(lib.core.CONBorg):
 
+    _attribute_definitions = (
+        ('ssh_auth_key', 'Key', None),
+    )
+    _signal_list = (())
+
+
     def __init__(self):
         lib.core.CONBorg.__init__(self)
 
@@ -41,10 +47,3 @@ class KeyManager(lib.core.CONBorg):
 
 
 lib.core.CONObject.register_attribute_type('KeyManager', KeyManager.object_serializer, KeyManager.object_deserializer)
-
-lib.core.CONObject.register_class(KeyManager, 
-    (
-        ('ssh_auth_key', 'Key', None),
-    ),
-    (())
-)

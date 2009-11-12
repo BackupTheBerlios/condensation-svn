@@ -18,45 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-from apacheconfigparser import ApacheConfigParser
-import lib.core
+__all__ = []
 
-
-class VHost(lib.core.CONObject):
-
-    _attribute_definitions = (
-        ('name', 'string', ''),
-        ('domains', 'string[]', ["test.com", "test2.com", "test3.com"]),
-        ('document_root', 'string', '/var/www'),
-    )
-    _signal_list = (())
-
-
-    def __init__(self):
-        lib.core.CONObject.__init__(self)
-        self._server = None
-
-
-
-    def read_config(self):
-        fs = self._server.get_sftp_filesystem()
-        self._raw_config = fs.read_file((self._server.apache_available, self.name))
-        self._config = ApacheConfigParser.parse_string(self._raw_config)
-        #self.config.print_r()
-
-
-
-    def install_drupal(self, package):
-        if not package.isDrupal():
-            raise Exception("Only Drupal packages allowed here")
-        package.extract(self._install_callback)
-
-
-
-    def _install_callback(self):
-        pass
-
-
-
-lib.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
+from lib_core import *
 

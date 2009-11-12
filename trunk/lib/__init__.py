@@ -22,3 +22,5 @@ __all__ = []
 
 from consolehistory import ConsoleHistory
 from logsink import LogSink
+from proxyrequesthandler import ProxyRequestHandler
+from proxyserver import ProxyServer

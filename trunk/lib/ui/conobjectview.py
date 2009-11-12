@@ -57,12 +57,12 @@ class CONObjectView(gtk.Notebook):
                 type = self.get_field_type(field_id)
                 if type == 'boolean':
                     widget = gtk.CheckButton()
-
+                elif type == 'integer[]':
+                    widget = gtk.Label('type integer[] not implemented yet')
                 elif type == 'string':
                     widget = gtk.Entry()
                     widget.connect('changed', self._entry_changed_callback, field_id)
                     widget.set_width_chars(40)
-
                 elif type == 'string[]':
                     widget = StringListWidget(self.get_field_value(field_id))
                 else:

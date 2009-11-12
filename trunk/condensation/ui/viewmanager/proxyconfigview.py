@@ -18,45 +18,38 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-from apacheconfigparser import ApacheConfigParser
-import lib.core
+#    options
+#        running
+#        port
+#        allowed clients (default: localhost only)
 
 
-class VHost(lib.core.CONObject):
+import gtk
 
-    _attribute_definitions = (
-        ('name', 'string', ''),
-        ('domains', 'string[]', ["test.com", "test2.com", "test3.com"]),
-        ('document_root', 'string', '/var/www'),
+import lib
+import lib.ui
+
+
+class ProxyConfigView(lib.ui.CONObjectView):
+
+    categories = (
+        ('General', (
+            ('ports', 'Ports'),
+        )),
     )
-    _signal_list = (())
 
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
-        self._server = None
+        self._proxy = lib.ProxyServer()
+        lib.ui.CONObjectView.__init__(self)
 
 
-
-    def read_config(self):
-        fs = self._server.get_sftp_filesystem()
-        self._raw_config = fs.read_file((self._server.apache_available, self.name))
-        self._config = ApacheConfigParser.parse_string(self._raw_config)
-        #self.config.print_r()
+    def get_field_value(self, field_name):
+        return self._proxy.__getattr__(field_name)
 
 
-
-    def install_drupal(self, package):
-        if not package.isDrupal():
-            raise Exception("Only Drupal packages allowed here")
-        package.extract(self._install_callback)
+    def get_field_type(self, field_name):
+        return self._proxy.get_attribute_type(field_name)
 
 
-
-    def _install_callback(self):
-        pass
-
-
-
-lib.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
 

@@ -27,6 +27,10 @@ from conobject import CONObject
 
 class CONBorg(CONObject):
 
+    _attribute_definitions = (())
+    _signal_list = (())
+
+
     def __init__(self):
         """
         Initializes variables and registers the 'attribute_changed' signal.
@@ -34,11 +38,17 @@ class CONBorg(CONObject):
         It is neccessary for each subclass to call CONObject's __init__, failing to do so
         will prevent the subclass to use signals and attributes.
         """
+        # register our class, if not registered before
+        if self.__class__ not in CONObject._class_registry:
+            CONObject._register_class(self.__class__)
+
+        # init signal callback lists
         if '_callbacks' not in self.__class__.__dict__:
             self.__class__._callbacks = {}
             for signal in CONObject._class_registry[self.__class__]['callbacks']:
                 self.__class__._callbacks[signal] = []
 
+        # init attribute list
         if '_attributes' not in self.__class__.__dict__:
             self.__class__._attributes = CONObject._class_registry[self.__class__]['attributes'].copy()
 
@@ -121,5 +131,4 @@ class CONBorg(CONObject):
 
 CONObject.register_attribute_type('CONBorg', CONBorg.object_serializer, CONBorg.object_deserializer)
 
-CONObject.register_class(CONBorg, (()), (()))
 
