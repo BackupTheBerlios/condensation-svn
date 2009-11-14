@@ -26,9 +26,9 @@ import lib.core
 class CONObjectTest(lib.core.CONObject):
 
     _attribute_definitions = (
-        ('string', 'string', 'string'),
-        ('integer', 'integer', 0),
-        ('stringlist', 'string[]', ['string1', 'string2']),
+        {'name': 'string', 'type': 'string', 'default': 'string'},
+        {'name': 'integer', 'type': 'integer', 'default': 0},
+        {'name': 'stringlist', 'type': 'string[]', 'default': ['string1', 'string2']},
     )
     _signal_list = (())
 
@@ -46,8 +46,8 @@ lib.core.CONObject.register_attribute_type(
 class CONBorgTest(lib.core.CONBorg):
 
     _attribute_definitions = (
-        ('string', 'string', 'string'),
-        ('stringlist', 'string[]', ['string1', 'string2']),
+        {'name': 'string', 'type': 'string', 'default': 'string'},
+        {'name': 'stringlist', 'type': 'string[]', 'default': ['string1', 'string2']},
     )
     _signal_list = (())
 
@@ -60,8 +60,8 @@ class CONBorgTest(lib.core.CONBorg):
 class CONBorgTest2(lib.core.CONBorg):
 
     _attribute_definitions = (
-        ('string', 'string', 'string'),
-        ('stringlist', 'string[]', ['string1', 'string2']),
+        {'name': 'string', 'type': 'string', 'default': 'string'},
+        {'name': 'stringlist', 'type': 'string[]', 'default': ['string1', 'string2']},
     )
     _signal_list = (())
 
@@ -75,9 +75,9 @@ class CONBorgTest2(lib.core.CONBorg):
 class CONObjectCollectionTest(lib.core.CONObject):
 
     _attribute_definitions = (
-        ('string', 'string[]', []),
-        ('integer', 'integer[]', []),
-        ('daobjtest', 'CONObjectTest[string, integer]', [])
+        {'name': 'string', 'type': 'string[]', 'default': []},
+        {'name': 'integer', 'type': 'integer[]', 'default': []},
+        {'name': 'conobjtest', 'type': 'CONObjectTest[string, integer]', 'default': []},
     )
     _signal_list = (())
 
@@ -198,7 +198,7 @@ class TestCore(unittest.TestCase):
             obj = CONObjectTest()
             obj.string = lib.core.Util.random_string(10)
             obj.integer = lib.core.Util.random_integer(0, 100000)
-            testobj.daobjtest.add(obj)
+            testobj.conobjtest.add(obj)
 
         print testobj.daobjtest
 

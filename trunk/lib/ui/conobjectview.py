@@ -60,6 +60,7 @@ class CONObjectView(gtk.Notebook):
                 definition = self.get_field_definition(field_id)
                 if definition['type'] == 'boolean':
                     widget = gtk.CheckButton()
+                    widget.connect('toggled', self._checkbutton_toggled_callback, field_id)
                 elif definition['type'] == 'integer[]':
                     widget = IntegerListWidget(definition['min'], definition['max'], self.get_field_value(field_id))
                 elif definition['type'] == 'string':
@@ -111,7 +112,7 @@ class CONObjectView(gtk.Notebook):
             type = self.get_field_definition(field_id)['type']
             widget = self._field_widgets[field_id]
             if type == 'boolean':
-                pass
+                widget.set_active(self._start_values[field_id])
             elif type == 'string':
                 text = self._start_values[field_id]
                 if text == None:
@@ -135,6 +136,14 @@ class CONObjectView(gtk.Notebook):
         Callback for the changed signal of entry widgets.
         """
         if entry.get_text() == self._start_values[field_id]:
+            self._field_frames[field_id].set_color()
+        else:
+            self._field_frames[field_id].set_color('#ff0000')
+
+
+
+    def _checkbutton_toggled_callback(self, checkbutton, field_id):
+        if checkbutton.get_active() == self._start_values[field_id]:
             self._field_frames[field_id].set_color()
         else:
             self._field_frames[field_id].set_color('#ff0000')
