@@ -63,12 +63,14 @@ class CONObjectView(gtk.Notebook):
                     widget.connect('toggled', self._checkbutton_toggled_callback, field_id)
                 elif definition['type'] == 'integer[]':
                     widget = IntegerListWidget(definition['min'], definition['max'], self.get_field_value(field_id))
+                    widget.connect('changed', self._integerlist_changed_callback, field_id)
                 elif definition['type'] == 'string':
                     widget = gtk.Entry()
                     widget.connect('changed', self._entry_changed_callback, field_id)
                     widget.set_width_chars(40)
                 elif definition['type'] == 'string[]':
                     widget = StringListWidget(self.get_field_value(field_id))
+                    widget.connect('changed', self._stringlist_changed_callback, field_id)
                 else:
                     raise Exception("Unknown type '%s'" % type)
 
@@ -113,13 +115,17 @@ class CONObjectView(gtk.Notebook):
             widget = self._field_widgets[field_id]
             if type == 'boolean':
                 widget.set_active(self._start_values[field_id])
+            elif type == 'integer[]':
+                widget.set_list(self._start_values[field_id])
             elif type == 'string':
                 text = self._start_values[field_id]
                 if text == None:
                     text = ''
                 widget.set_text(text)
             elif type == 'string[]':
-                pass
+                widget.set_list(self._start_values[field_id])
+            else:
+                print "Resetting for type '%s' not implemented" % type
 
 
 
@@ -144,6 +150,22 @@ class CONObjectView(gtk.Notebook):
 
     def _checkbutton_toggled_callback(self, checkbutton, field_id):
         if checkbutton.get_active() == self._start_values[field_id]:
+            self._field_frames[field_id].set_color()
+        else:
+            self._field_frames[field_id].set_color('#ff0000')
+
+
+
+    def _integerlist_changed_callback(self, integerlist, field_id):
+        if integerlist.get_list() == list(self._start_values[field_id]):
+            self._field_frames[field_id].set_color()
+        else:
+            self._field_frames[field_id].set_color('#ff0000')
+
+
+
+    def _stringlist_changed_callback(self, stringlist, field_id):
+        if stringlist.get_list() == list(self._start_values[field_id]):
             self._field_frames[field_id].set_color()
         else:
             self._field_frames[field_id].set_color('#ff0000')

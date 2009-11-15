@@ -18,6 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gobject
 import gtk
 
 
@@ -67,15 +68,38 @@ class IntegerListWidget(gtk.HBox):
         self.show_all()
 
 
+
+    def get_list(self):
+        values = []
+        iter = self.liststore.get_iter_first()
+        while iter != None:
+            values.append(self.liststore.get_value(iter, 0))
+            iter = self.liststore.iter_next(iter)
+        return values
+
+
+
+    def set_list(self, new_list):
+        self.liststore.clear()
+        for item in new_list:
+            self.liststore.append([item])
+        self.emit('changed')
+
+
+
     def edited_callback(self, cellrendererspin, path, new_text):
         try:
             self.liststore[path][0] = int(new_text)
+            self.emit('changed')
         except ValueError, e:
             pass
 
 
+
     def add_button_callback(self, button):
         self.liststore.append([0])
+        self.emit('changed')
+
 
 
     def delete_button_callback(self, button):
@@ -83,8 +107,13 @@ class IntegerListWidget(gtk.HBox):
         iterlist = []
         for path in pathlist:
             iterlist.append(self.liststore.get_iter(path))
-        for iter in iterlist:
-            self.liststore.remove(iter)
+        if iterlist:
+            for iter in iterlist:
+                self.liststore.remove(iter)
+            self.emit('changed')
 
 
 
+# register signal 'changed' with gobject
+gobject.type_register(IntegerListWidget)
+gobject.signal_new("changed", IntegerListWidget, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())

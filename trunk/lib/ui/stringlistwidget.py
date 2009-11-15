@@ -18,6 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gobject
 import gtk
 
 
@@ -35,7 +36,7 @@ class StringListWidget(gtk.HBox):
         self.treeview.append_column(self.tvcolumn)
         self.cell = gtk.CellRendererText()
         self.cell.set_property('editable', True)
-        self.cell.connect('edited', self.edited_callback)
+        self.cell.connect('edited', self._edited_callback)
         self.tvcolumn.pack_start(self.cell, True)
         self.tvcolumn.add_attribute(self.cell, 'text', 0)
         self.tvcolumn.set_sort_column_id(0)
@@ -55,17 +56,17 @@ class StringListWidget(gtk.HBox):
         vbuttonbox = gtk.VButtonBox()
         vbuttonbox.set_layout(gtk.BUTTONBOX_START)
         button = gtk.Button(stock=gtk.STOCK_ADD)
-        button.connect("clicked", self.add_button_callback)
+        button.connect("clicked", self._add_button_clicked_callback)
         vbuttonbox.add(button)
         button = gtk.Button(stock=gtk.STOCK_DELETE)
-        button.connect("clicked", self.delete_button_callback)
+        button.connect("clicked", self._delete_button_clicked_callback)
         vbuttonbox.add(button)
         button = gtk.Button(stock=gtk.STOCK_SORT_ASCENDING)
-        button.connect("clicked", self.sort_asc_button_callback)
+        button.connect("clicked", self._sort_asc_button_callback)
         vbuttonbox.add(button)
         vbuttonbox.set_child_secondary(button, True)
         button = gtk.Button(stock=gtk.STOCK_SORT_DESCENDING)
-        button.connect("clicked", self.sort_dsc_button_callback)
+        button.connect("clicked", self._sort_dsc_button_callback)
         vbuttonbox.add(button)
         vbuttonbox.set_child_secondary(button, True)
 
@@ -76,28 +77,60 @@ class StringListWidget(gtk.HBox):
         self.show_all()
 
 
-    def edited_callback(self, cell, path, new_text):
+
+    def get_list(self):
+        values = []
+        iter = self.liststore.get_iter_first()
+        while iter != None:
+            values.append(self.liststore.get_value(iter, 0))
+            iter = self.liststore.iter_next(iter)
+        return values
+
+
+
+    def set_list(self, new_list):
+        self.liststore.clear()
+        for item in new_list:
+            self.liststore.append([item])
+        self.emit('changed')
+
+
+
+    def _edited_callback(self, cell, path, new_text):
         self.liststore[path][0] = new_text
+        self.emit('changed')
 
 
-    def add_button_callback(self, button):
+
+    def _add_button_clicked_callback(self, button):
         self.liststore.append(["new"])
+        self.emit('changed')
 
 
-    def delete_button_callback(self, button):
+
+    def _delete_button_clicked_callback(self, button):
         (model, pathlist) = self.treeview.get_selection().get_selected_rows()
         iterlist = []
         for path in pathlist:
             iterlist.append(self.liststore.get_iter(path))
-        for iter in iterlist:
-            self.liststore.remove(iter)
+        if iterlist:
+            for iter in iterlist:
+                self.liststore.remove(iter)
+            self.emit('changed')
 
 
-    def sort_asc_button_callback(self, button):
+
+    def _sort_asc_button_callback(self, button):
         raise Exception("NOT IMPLEMENTED!")
 
 
-    def sort_dsc_button_callback(self, button):
+
+    def _sort_dsc_button_callback(self, button):
         raise Exception("NOT IMPLEMENTED!")
 
+
+
+# register signal 'changed' with gobject
+gobject.type_register(StringListWidget)
+gobject.signal_new("changed", StringListWidget, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
 
