@@ -32,6 +32,12 @@ import condensation
 import condensation.ui
 
 
+def delete_event(widget, event, data=None):
+    lib.ProxyServer().stop()
+    gtk.main_quit()
+
+
+
 def setup_logging():
     global logsink
     # logging
@@ -83,13 +89,13 @@ def load_config():
     logging.info('configuration read ...')
 
 
-    # load key manager
+    # load proxy
     proxy_elem = et.find("proxy")
     if proxy_elem != None:
         proxy = lib.ProxyServer.object_deserializer(proxy_elem)
     else:
         proxy = lib.ProxyServer()
-    proxy.restart()
+    proxy.start()
 
 
 
@@ -105,6 +111,7 @@ def start_up():
 
         # gui stuff
         main_window = condensation.ui.MainWindow()
+        main_window.connect("delete_event", delete_event)
 
         # create the manager objects
         con_manager = condensation.ui.CondensationViewManager(main_window._notebook, logsink)
@@ -131,7 +138,7 @@ def start_up():
 
         treemenu.expand_all()
 
-        #time.sleep(2)
+
 
 
         # show gui

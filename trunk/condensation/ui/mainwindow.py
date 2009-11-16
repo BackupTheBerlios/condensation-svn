@@ -28,7 +28,6 @@ class MainWindow(gtk.Window):
         gtk.Window.__init__(self)
         self.set_title("Condensation")
         self.set_default_size(800, 600)
-        self.connect("delete_event", self.delete_event)
 
         self._treemenu = TreeMenu()
 
@@ -49,7 +48,4 @@ class MainWindow(gtk.Window):
         paned.show_all()
 
 
-
-    def delete_event(self, widget, event, data=None):
-        gtk.main_quit()
 

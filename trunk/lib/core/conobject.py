@@ -253,7 +253,7 @@ class CONObject(SignalSource):
         :param element: the ElementTree element which will contain the serialized data
         :param value: the value (ie the integer) to be serialized
         """
-        element.text = value
+        element.text = str(value)
 
 
 

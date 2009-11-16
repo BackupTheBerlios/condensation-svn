@@ -94,7 +94,7 @@ class CONBorg(CONObject):
             #this is something private, no checking done
             self.__dict__[name] = value
         else:
-            #daobject attribute, check stuff
+            #attribute, check stuff, todo
             if name not in self.__class__._attributes:
                 raise Exception("Attribute '%s' doesn't exist and therefore can't be set." % name)
 

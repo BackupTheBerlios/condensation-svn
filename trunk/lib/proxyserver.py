@@ -21,6 +21,8 @@
 import BaseHTTPServer
 import SocketServer
 import logging
+import threading
+import select
 
 import lib.core
 
@@ -34,17 +36,64 @@ class ProxyServer(lib.core.CONBorg):
     )
     _signal_list = (())
 
+    _running_servers = {}
+    _running_server_threads = {}
 
-    class ThreadedHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer): pass
+    # need to implement serve_forever() and shutdown(), because python2.5 has no shutdown()
+    class ThreadedHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
+
+        def serve_forever(self, poll_interval=0.5):
+            self.__running = True
+            while self.__running:
+                r, w, e = select.select([self], [], [], poll_interval)
+                if r:
+                    self._handle_request_noblock()
+
+
+        def shutdown(self):
+            self.__running = False
+
 
 
     def __init__(self):
         lib.core.CONBorg.__init__(self)
-        self._logger = logging.getLogger("proxy")
 
 
 
-    def restart(self):
-        self._logger.info("Starting proxy ...")
+    def start(self):
+        if self._running_servers:
+            raise Exception("Servers are still running, stop them first")
+        # start one server for each port
+        for port in self.ports:
+            logging.getLogger("proxy").info("starting proxy on port %d" % port)
+            server = self.ThreadedHTTPServer(('127.0.0.1', port), ProxyRequestHandler)
+            name = "proxy%d" % port
+            thread = threading.Thread(target=server.serve_forever, name=name)
+            thread.daemon = True
+            thread.start()
+            self._running_servers[port] = server
+            self._running_server_threads[port] = thread
+        # check if they are running
+        for port, thread in self._running_server_threads.iteritems():
+            if thread.isAlive():
+                logging.getLogger("proxy").info("proxy on port %d is running" % port)
+            else:
+                logging.getLogger("proxy").error("proxy on port %d is NOT running" % port)
 
+
+
+    def stop(self):
+        if self._running_servers:
+            # signal all server threads to stop
+            for port in self._running_servers.keys():
+                logging.getLogger("proxy").info("stopping proxy on port %d" % port)
+                server = self._running_servers[port]
+                server.shutdown()
+                del self._running_servers[port]
+            # now wait until they have done so
+            for port in self._running_server_threads.keys():
+                thread = self._running_server_threads[port]
+                thread.join()
+                del self._running_server_threads[port]
+                logging.getLogger("proxy").info("proxy on port %d stopped" % port)
 
