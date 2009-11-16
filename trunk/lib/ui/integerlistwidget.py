@@ -31,7 +31,9 @@ class IntegerListWidget(gtk.HBox):
         gtk.HBox.__init__(self)
 
         self.liststore = gtk.ListStore(int)
-        self.treeview = gtk.TreeView(self.liststore)
+        self.treemodelsort = gtk.TreeModelSort(self.liststore)
+        self.treemodelsort.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.treeview = gtk.TreeView(self.treemodelsort)
         self.tvcolumn = gtk.TreeViewColumn('Column 0')
         self.treeview.append_column(self.tvcolumn)
         self.cell = gtk.CellRendererSpin()
@@ -45,9 +47,6 @@ class IntegerListWidget(gtk.HBox):
         self.treeview.set_reorderable(True)
         self.treeview.set_headers_visible(False)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-
-        for item in integerlist:
-            self.liststore.append([item])
 
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.add(self.treeview)
@@ -66,6 +65,8 @@ class IntegerListWidget(gtk.HBox):
         self.pack_end(vbuttonbox, expand=False, fill=False, padding=10)
 
         self.show_all()
+
+        self.set_list(integerlist)
 
 
 
@@ -87,8 +88,9 @@ class IntegerListWidget(gtk.HBox):
 
 
 
-    def edited_callback(self, cellrendererspin, path, new_text):
+    def edited_callback(self, cellrendererspin, sorted_path, new_text):
         try:
+            path = self.treemodelsort.convert_path_to_child_path(sorted_path)
             self.liststore[path][0] = int(new_text)
             self.emit('changed')
         except ValueError, e:
@@ -105,8 +107,10 @@ class IntegerListWidget(gtk.HBox):
     def delete_button_callback(self, button):
         (model, pathlist) = self.treeview.get_selection().get_selected_rows()
         iterlist = []
-        for path in pathlist:
-            iterlist.append(self.liststore.get_iter(path))
+        for sorted_path in pathlist:
+            unsorted_path = self.treemodelsort.convert_path_to_child_path(sorted_path)
+            iter = self.liststore.get_iter(unsorted_path)
+            iterlist.append(iter)
         if iterlist:
             for iter in iterlist:
                 self.liststore.remove(iter)
