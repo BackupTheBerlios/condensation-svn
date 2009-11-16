@@ -312,7 +312,8 @@ class CONObject(SignalSource):
             subelement = ET.SubElement(element, name)
             subelement.tail = "\n"
             attr_val = value.__getattr__(name)
-            m = cls._re_collection.match(value.get_attribute_type(name))
+            attr_def = value.get_attribute_definition(name)
+            m = cls._re_collection.match(attr_def['type'])
             if m.group('indices') != None:
                 if attr_val != None:
                     basetype = m.group('basetype')
@@ -322,7 +323,7 @@ class CONObject(SignalSource):
                         itemelement.tail = "\n"
                         CONObject._attribute_type_registry[basetype][0](itemelement, item)
             else:
-                CONObject._attribute_type_registry[type][0](subelement, attr_val)
+                CONObject._attribute_type_registry[attr_def['type']][0](subelement, attr_val)
 
 
 
