@@ -18,33 +18,13 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+# no redirect / redirect server domains / redirect all domains
+# map domain -> server
+
 import gtk
 
-import lib.ui
 
-from proxyconfigview import ProxyConfigView
-from proxyinterceptview import ProxyInterceptView
-from proxyredirectionsview import ProxyRedirectionsView
+class ProxyRedirectionsView(gtk.Label):
 
-
-class ProxyViewManager(lib.ui.ViewManager):
-
-
-    def __init__(self, containing_notebook):
-        lib.ui.ViewManager.__init__(self, containing_notebook)
-
-        lib.ui.Resources.load_pixbuf('proxy-icon', 'images/icons/proxy.svg')
-        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
-
-        self.add_view(ProxyConfigView(), "Config", 'configuration-icon')
-        self.add_view(ProxyRedirectionsView(), "Redirections", None)
-        self.add_view(ProxyInterceptView(), "Intercept", None)
-
-
-    def get_menu_text(self):
-        return "Proxy"
-
-
-    def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('proxy-icon')
-
+    def __init__(self):
+        gtk.Label.__init__(self, 'Placeholder')

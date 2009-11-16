@@ -23,10 +23,6 @@ __all__ = []
 from condensationviewmanager import CondensationViewManager
 from mainwindow import MainWindow
 from proxyviewmanager import ProxyViewManager
-from pythonconsoleview import PythonConsoleView
-from serverconfigview import ServerConfigView
 from serverlistviewmanager import ServerListViewManager
 from serverviewmanager import ServerViewManager
-from sshterminalview import SSHTerminalView
-from vhostconfigview import VHostConfigView
 from vhostviewmanager import VHostViewManager
