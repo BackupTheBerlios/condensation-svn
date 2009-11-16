@@ -92,7 +92,7 @@ class CONBorg(CONObject):
         """
         if name[0:1] == '_':
             #this is something private, no checking done
-            self.__class__.__dict__[name] = value
+            self.__dict__[name] = value
         else:
             #daobject attribute, check stuff
             if name not in self.__class__._attributes:
