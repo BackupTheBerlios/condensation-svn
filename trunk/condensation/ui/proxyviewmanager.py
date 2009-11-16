@@ -22,21 +22,25 @@ import gtk
 
 import lib.ui
 
-class ServerList(lib.ui.ViewManager):
+from proxyconfigview import ProxyConfigView
+
+
+class ProxyViewManager(lib.ui.ViewManager):
+
 
     def __init__(self, containing_notebook):
         lib.ui.ViewManager.__init__(self, containing_notebook)
 
-        lib.ui.Resources.load_pixbuf('server', 'images/icons/server.svg')
+        lib.ui.Resources.load_pixbuf('proxy-icon', 'images/icons/proxy.svg')
+        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
 
-
+        self.add_view(ProxyConfigView(), "Config", 'configuration-icon')
 
 
     def get_menu_text(self):
-        return "Server"
+        return "Proxy"
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('server')
-
+        return lib.ui.Resources.get_pixbuf('proxy-icon')
 

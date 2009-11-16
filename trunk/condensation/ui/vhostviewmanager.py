@@ -18,14 +18,43 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from condensation import Condensation
-from proxy import Proxy
-from pythonconsoleview import PythonConsoleView
-from serverconfigview import ServerConfigView
-from serverlist import ServerList
-from server import Server
-from sshterminalview import SSHTerminalView
+import lib.ui
+
 from vhostconfigview import VHostConfigView
-from vhost import VHost
+from vhostmozembedview import VHostMozEmbedView
+
+
+class VHostViewManager(lib.ui.ViewManager):
+
+    def __init__(self, containing_notebook, vhost):
+        lib.ui.ViewManager.__init__(self, containing_notebook)
+
+        lib.ui.Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
+        lib.ui.Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
+
+        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+
+        self._vhost = vhost
+
+        # add views
+        vhostconfig = VHostConfigView(self._vhost)
+        self.add_view(vhostconfig, 'Config', 'configuration-icon')
+
+        self.vhostmozembed = VHostMozEmbedView(self._vhost)
+        self.add_view(self.vhostmozembed, 'MozEmbed', None)
+
+
+
+
+    def get_menu_text(self):
+        return self._vhost.name
+
+
+
+    def get_menu_icon(self):
+        return lib.ui.Resources.get_pixbuf('vhost-disabled')
+
+
+

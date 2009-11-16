@@ -22,40 +22,21 @@ import gtk
 
 import lib.ui
 
-from pythonconsoleview import PythonConsoleView
+class ServerListViewManager(lib.ui.ViewManager):
 
-
-class Condensation(lib.ui.ViewManager):
-
-
-    def __init__(self, containing_notebook, logsink):
+    def __init__(self, containing_notebook):
         lib.ui.ViewManager.__init__(self, containing_notebook)
 
-        lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
-        lib.ui.Resources.load_pixbuf('view-log-icon', 'images/icons/view-log.svg')
-        lib.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
-
-        # add views
-        logview = lib.ui.LogView(logsink)
-        self.add_view(logview, 'Application Log', 'view-log-icon')
-
-        consoleview = PythonConsoleView()
-        self.add_view(consoleview, 'Python Console', 'python-console-icon')
-
-        # populate toolbar
-        save_button = gtk.ToolButton(gtk.STOCK_SAVE)
-        self._toolbar.insert(save_button, -1)
-        save_button.show()
+        lib.ui.Resources.load_pixbuf('server', 'images/icons/server.svg')
 
 
 
 
     def get_menu_text(self):
-        return "Condensation"
-
+        return "Server"
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('condensation-icon')
+        return lib.ui.Resources.get_pixbuf('server')
 
 

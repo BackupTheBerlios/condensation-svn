@@ -20,6 +20,7 @@
 
 import BaseHTTPServer
 import SocketServer
+import logging
 
 import lib.core
 
@@ -39,6 +40,11 @@ class ProxyServer(lib.core.CONBorg):
 
     def __init__(self):
         lib.core.CONBorg.__init__(self)
+        self._logger = logging.getLogger("proxy")
 
+
+
+    def restart(self):
+        self._logger.info("Starting proxy ...")
 
 

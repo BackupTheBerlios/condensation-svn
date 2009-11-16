@@ -25,7 +25,7 @@ import lib.ui
 from serverconfigview import ServerConfigView
 from sshterminalview import SSHTerminalView
 
-class Server(lib.ui.ViewManager):
+class ServerViewManager(lib.ui.ViewManager):
 
     def __init__(self, containing_notebook, server):
         lib.ui.ViewManager.__init__(self, containing_notebook)

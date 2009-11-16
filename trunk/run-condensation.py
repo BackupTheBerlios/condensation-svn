@@ -30,7 +30,6 @@ import lib
 import lib.ui
 import condensation
 import condensation.ui
-import condensation.ui.viewmanager
 
 
 def setup_logging():
@@ -84,6 +83,15 @@ def load_config():
     logging.info('configuration read ...')
 
 
+    # load key manager
+    proxy_elem = et.find("proxy")
+    if proxy_elem != None:
+        proxy = lib.ProxyServer.object_deserializer(proxy_elem)
+    else:
+        proxy = lib.ProxyServer()
+    proxy.restart()
+
+
 
 def start_up():
     try:
@@ -99,11 +107,11 @@ def start_up():
         main_window = condensation.ui.MainWindow()
 
         # create the manager objects
-        con_manager = condensation.ui.viewmanager.Condensation(main_window._notebook, logsink)
+        con_manager = condensation.ui.CondensationViewManager(main_window._notebook, logsink)
         con_manager.show()
-        sl_manager = condensation.ui.viewmanager.ServerList(main_window._notebook)
+        sl_manager = condensation.ui.ServerListViewManager(main_window._notebook)
         sl_manager.show()
-        pro_manager = condensation.ui.viewmanager.Proxy(main_window._notebook)
+        pro_manager = condensation.ui.ProxyViewManager(main_window._notebook)
         pro_manager.show()
 
         # populate treemenu
@@ -113,11 +121,11 @@ def start_up():
         treemenu.append(sl_manager, con_manager)
 
         for server in condensation.Server.servers:
-            svm = condensation.ui.viewmanager.Server(main_window._notebook, server)
+            svm = condensation.ui.ServerViewManager(main_window._notebook, server)
             svm.show()
             treemenu.append(svm, sl_manager)
             for vhost in server.vhosts:
-                vhvm = condensation.ui.viewmanager.VHost(main_window._notebook, vhost)
+                vhvm = condensation.ui.VHostViewManager(main_window._notebook, vhost)
                 vhvm.show()
                 treemenu.append(vhvm, svm)
 
