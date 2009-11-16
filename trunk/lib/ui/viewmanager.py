@@ -31,6 +31,7 @@ class ViewManager(gtk.VBox):
         self._view_map = {}
 
         self._toolbar = gtk.Toolbar()
+        self._toolbar.set_style(gtk.TOOLBAR_BOTH)
         self._toolbar.show()
         self._notebook = gtk.Notebook()
         self._notebook.show()
