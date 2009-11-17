@@ -24,9 +24,6 @@ import pango
 
 
 class LogView(gtk.VBox):
-    """
-    Shows the content of a text-file.
-    """
 
     def __init__(self, logsink):
         gtk.VBox.__init__(self)
@@ -35,22 +32,52 @@ class LogView(gtk.VBox):
         self.add(scrolled_window)
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        self.textview = gtk.TextView()
-        self.textview.set_editable(False)
-        self.textview.set_cursor_visible(False)
-        self.textview.set_wrap_mode(gtk.WRAP_NONE)
-        self.textview.modify_font(pango.FontDescription("Monospace"))
-        scrolled_window.add(self.textview)
-        scrolled_window.show_all()
+        col_defs = [
+            ('Time', self.record_time),
+            ('Level', self.record_level),
+            ('Name', self.record_name),
+            ('Message', self.record_message),
+        ]
+        self.liststore = gtk.ListStore(object)
+        self.treeview = gtk.TreeView(self.liststore)
+        self.treeview.set_reorderable(False)
 
-        self.buffer = self.textview.get_buffer()
-        self.buffer.set_text(logsink.get_text())
+        for col_def in col_defs:
+            cell = gtk.CellRendererText()
+            col = gtk.TreeViewColumn(col_def[0], cell)
+            col.set_cell_data_func(cell, col_def[1])
+            self.treeview.append_column(col)
+
+        for record in logsink.get_record_list():
+            self.liststore.append([record])
+
         logsink.connect_signal('new-record', self.new_record)
 
+        scrolled_window.add(self.treeview)
+        scrolled_window.show_all()
 
+
+
+    def record_time(self, column, cell, model, iter):
+        record = model.get_value(iter, 0)
+        cell.set_property('text', record.asctime)
+
+
+    def record_level(self, column, cell, model, iter):
+        record = model.get_value(iter, 0)
+        cell.set_property('text', record.levelname)
+
+
+    def record_name(self, column, cell, model, iter):
+        record = model.get_value(iter, 0)
+        cell.set_property('text', record.name)
+
+
+    def record_message(self, column, cell, model, iter):
+        record = model.get_value(iter, 0)
+        cell.set_property('text', record.message)
 
 
     def new_record(self, logsink, new_index):
-        self.buffer.insert_at_cursor("\n"+logsink.get_record_text(new_index))
-
+        self.liststore.append([logsink.get_record(new_index)])
 

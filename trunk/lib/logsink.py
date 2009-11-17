@@ -25,9 +25,7 @@ import lib.core
 
 
 class LogSink(logging.Handler, lib.core.SignalSource):
-    """
-    Shows the content of a text-file.
-    """
+
 
     def __init__(self):
         logging.Handler.__init__(self)
@@ -52,7 +50,16 @@ class LogSink(logging.Handler, lib.core.SignalSource):
 
 
 
+    def get_record_list(self):
+        return self._records
+
+
+
     def get_record_text(self, index):
         return self._records_text[index]
 
+
+
+    def get_record(self, index):
+        return self._records[index]
 

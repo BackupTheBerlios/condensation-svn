@@ -33,6 +33,8 @@ import condensation.ui
 
 
 def delete_event(widget, event, data=None):
+    for server in condensation.Server.servers:
+        server.disconnect()
     lib.ProxyServer().stop()
     gtk.main_quit()
 
