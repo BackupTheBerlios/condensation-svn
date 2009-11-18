@@ -100,6 +100,13 @@ class CONBorg(CONObject):
 
             oldvalue = self.__class__._attributes[name]
             self.__class__._attributes[name] = value
+
+            # try calling any _on_..._changed method
+            mname = '_on_'+name+'_changed'
+            if hasattr(self, mname):
+                method = getattr(self, mname)
+                method(oldvalue, value)
+
             self.raise_signal('attribute_changed', name, oldvalue, value)
 
 

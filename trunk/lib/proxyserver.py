@@ -61,18 +61,9 @@ class ProxyServer(lib.core.CONBorg):
 
 
     def start(self):
-        if self._running_servers:
-            raise Exception("Servers are still running, stop them first")
         # start one server for each port
         for port in self.ports:
-            logging.getLogger("proxy").info("starting proxy on port %d" % port)
-            server = self.ThreadedHTTPServer(('127.0.0.1', port), ProxyRequestHandler)
-            name = "proxy%d" % port
-            thread = threading.Thread(target=server.serve_forever, name=name)
-            thread.daemon = True
-            thread.start()
-            self._running_servers[port] = server
-            self._running_server_threads[port] = thread
+            self._start_server(port)
         # check if they are running
         for port, thread in self._running_server_threads.iteritems():
             if thread.isAlive():
@@ -81,19 +72,44 @@ class ProxyServer(lib.core.CONBorg):
                 logging.getLogger("proxy").error("proxy on port %d is NOT running" % port)
 
 
-
     def stop(self):
-        if self._running_servers:
-            # signal all server threads to stop
-            for port in self._running_servers.keys():
-                logging.getLogger("proxy").info("stopping proxy on port %d" % port)
-                server = self._running_servers[port]
-                server.shutdown()
-                del self._running_servers[port]
-            # now wait until they have done so
-            for port in self._running_server_threads.keys():
-                thread = self._running_server_threads[port]
-                thread.join()
-                del self._running_server_threads[port]
-                logging.getLogger("proxy").info("proxy on port %d stopped" % port)
+        for port in self._running_servers.keys():
+            self._stop_server(port)
+
+
+
+    def _start_server(self, port):
+        if port in self._running_servers:
+            raise Exception("A proxy already runs on port %d." % port)
+        logging.getLogger("proxy").info("starting proxy on port %d" % port)
+        server = self.ThreadedHTTPServer(('127.0.0.1', port), ProxyRequestHandler)
+        name = "proxy%d" % port
+        thread = threading.Thread(target=server.serve_forever, name=name)
+        thread.daemon = True
+        thread.start()
+        self._running_servers[port] = server
+        self._running_server_threads[port] = thread
+
+
+
+    def _stop_server(self, port):
+        logging.getLogger("proxy").info("stopping proxy on port %d" % port)
+        server = self._running_servers[port]
+        server.shutdown()
+        del self._running_servers[port]
+        thread = self._running_server_threads[port]
+        thread.join()
+        del self._running_server_threads[port]
+        logging.getLogger("proxy").info("proxy on port %d stopped" % port)
+
+
+
+    def _on_ports_changed(self, old_value, new_value):
+        if self._running_servers: # don't start servers, if there are none running already
+            for port in old_value:
+                if port not in new_value:
+                    self._stop_server(port)
+            for port in new_value:
+                if port not in old_value:
+                    self._start_server(port)
 

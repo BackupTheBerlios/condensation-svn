@@ -82,7 +82,7 @@ class CONObject(SignalSource):
         :param value: the new value
         """
         if name[0:1] == '_':
-            #this is something private, no checking done
+            #this is something private, no special handling
             self.__dict__[name] = value
         else:
             #conobject attribute, check stuff
@@ -91,6 +91,13 @@ class CONObject(SignalSource):
 
             oldvalue = self._attributes[name]
             self._attributes[name] = value
+
+            # try calling any _on_..._changed method
+            mname = '_on_'+name+'_changed'
+            if hasattr(self, mname):
+                method = getattr(self, mname)
+                method(oldvalue, value)
+
             self.raise_signal('attribute_changed', name, oldvalue, value)
 
 
@@ -98,7 +105,10 @@ class CONObject(SignalSource):
     def __getattr__(self, name):
         """
         """
-        return self.__dict__['_attributes'][name]
+        if name in self.__dict__['_attributes']:
+            return self.__dict__['_attributes'][name]
+        else:
+            raise AttributeError('No attribute with the name %s' % name)
 
 
 
