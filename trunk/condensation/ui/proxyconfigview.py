@@ -40,16 +40,6 @@ class ProxyConfigView(lib.ui.CONObjectView):
 
 
     def __init__(self):
-        self._proxy = lib.ProxyServer()
-        lib.ui.CONObjectView.__init__(self)
-
-
-    def get_field_value(self, field_name):
-        return self._proxy.__getattr__(field_name)
-
-
-    def get_field_definition(self, field_name):
-        return self._proxy.get_attribute_definition(field_name)
-
+        lib.ui.CONObjectView.__init__(self, lib.ProxyServer())
 
 

@@ -56,17 +56,3 @@ class ServerConfigView(lib.ui.CONObjectView):
     )
 
 
-    def __init__(self, server):
-        self._server = server
-        lib.ui.CONObjectView.__init__(self)
-
-
-
-    def get_field_value(self, field_name):
-        return self._server.__getattr__(field_name)
-
-
-    def get_field_definition(self, field_name):
-        return self._server.get_attribute_definition(field_name)
-
-

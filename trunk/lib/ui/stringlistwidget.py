@@ -22,13 +22,14 @@ import gobject
 import gtk
 
 
-class StringListWidget(gtk.HBox):
+class StringListWidget(gtk.Frame):
     """
     'Widget' used for editing lists of strings
     """
 
     def __init__(self, stringlist=[]):
-        gtk.HBox.__init__(self)
+        gtk.Frame.__init__(self)
+        hbox = gtk.HBox()
 
         self.liststore = gtk.ListStore(str)
         self.treeview = gtk.TreeView(self.liststore)
@@ -49,7 +50,6 @@ class StringListWidget(gtk.HBox):
             self.liststore.append([item])
 
         scrolled_window = gtk.ScrolledWindow()
-        #scrolled_window.add_with_viewport(self.treeview)
         scrolled_window.add(self.treeview)
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 
@@ -70,10 +70,13 @@ class StringListWidget(gtk.HBox):
         vbuttonbox.add(button)
         vbuttonbox.set_child_secondary(button, True)
 
-        self.pack_start(scrolled_window, expand=True, fill=True, padding=0)
-        self.pack_end(vbuttonbox, expand=False, fill=False, padding=10)
+        hbox.pack_start(scrolled_window, expand=True, fill=True, padding=0)
+        hbox.pack_end(vbuttonbox, expand=False, fill=False, padding=10)
 
-        self.set_size_request(200, 150)
+        self.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        self.add(hbox)
+        self.set_list(stringlist)
+        #self.set_size_request(200, 150)
         self.show_all()
 
 

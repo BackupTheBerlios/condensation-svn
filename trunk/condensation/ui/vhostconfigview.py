@@ -36,18 +36,3 @@ class VHostConfigView(lib.ui.CONObjectView):
     )
 
 
-    def __init__(self, vhost):
-        self._vhost = vhost
-        lib.ui.CONObjectView.__init__(self)
-
-
-
-    def get_field_value(self, field_name):
-        #print "Getting %s: %s" % (field_name, str(self.vhost.get_property(field_name)))
-        return self._vhost.__getattr__(field_name)
-
-
-
-    def get_field_definition(self, field_name):
-        return self._vhost.get_attribute_definition(field_name)
-

@@ -22,13 +22,14 @@ import gobject
 import gtk
 
 
-class IntegerListWidget(gtk.HBox):
+class IntegerListWidget(gtk.Frame):
     """
     Widget used for editing a list of integers
     """
 
     def __init__(self, min, max, integerlist=[]):
-        gtk.HBox.__init__(self)
+        gtk.Frame.__init__(self)
+        hbox = gtk.HBox()
 
         self.liststore = gtk.ListStore(int)
         self.treemodelsort = gtk.TreeModelSort(self.liststore)
@@ -61,12 +62,13 @@ class IntegerListWidget(gtk.HBox):
         button.connect("clicked", self.delete_button_callback)
         vbuttonbox.add(button)
 
-        self.pack_start(scrolled_window, expand=True, fill=True, padding=0)
-        self.pack_end(vbuttonbox, expand=False, fill=False, padding=10)
+        hbox.pack_start(scrolled_window, expand=True, fill=True, padding=0)
+        hbox.pack_end(vbuttonbox, expand=False, fill=False, padding=10)
 
-        self.show_all()
-
+        self.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        self.add(hbox)
         self.set_list(integerlist)
+        self.show_all()
 
 
 

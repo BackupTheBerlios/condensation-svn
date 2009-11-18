@@ -28,13 +28,21 @@ from stringlistwidget import StringListWidget
 
 class CONObjectView(gtk.Notebook):
 
-    def __init__(self):
+    def __init__(self, object):
         gtk.Notebook.__init__(self)
+        self.object = object
         self._start_values = {} #: the initial field values (used by reset)
         self._field_widgets = {} #: the widgets for each field
         self._field_frames = {} #: the frames for each field
+        self._field_changed = {} #: wether the field was changed or not
+        self._field_category = {} #: maps the field_id to it's category
+        self._category_changed_counter = {} #: number of changed fields in the category
+        self._category_apply_buttons = {} # apply buttons for each category
+        self._category_reset_buttons = {} # apply buttons for each category
 
         for (category_id, category) in enumerate(self.categories):
+            self._category_changed_counter[category_id] = 0
+
             num_rows = len(category[1]) + 1
             table = gtk.Table(rows=num_rows, columns=1, homogeneous=False)
             vbox = gtk.VBox()
@@ -43,8 +51,11 @@ class CONObjectView(gtk.Notebook):
 
             row = 0
             for (field_id, field_label) in category[1]:
+                self._field_category[field_id] = category_id
+
                 # remember the field's current value
-                self._start_values[field_id] = self.get_field_value(field_id)
+                self._start_values[field_id] = self.object.__getattr__(field_id)
+                self._field_changed[field_id] = False
 
                 # create the label
                 label = gtk.Label()
@@ -57,19 +68,19 @@ class CONObjectView(gtk.Notebook):
                     xpadding=10, ypadding=7)
 
                 # now, on to the field itself
-                definition = self.get_field_definition(field_id)
+                definition = self.object.get_attribute_definition(field_id)
                 if definition['type'] == 'boolean':
                     widget = gtk.CheckButton()
                     widget.connect('toggled', self._checkbutton_toggled_callback, field_id)
                 elif definition['type'] == 'integer[]':
-                    widget = IntegerListWidget(definition['min'], definition['max'], self.get_field_value(field_id))
+                    widget = IntegerListWidget(definition['min'], definition['max'], self.object.__getattr__(field_id))
                     widget.connect('changed', self._integerlist_changed_callback, field_id)
                 elif definition['type'] == 'string':
                     widget = gtk.Entry()
                     widget.connect('changed', self._entry_changed_callback, field_id)
                     widget.set_width_chars(40)
                 elif definition['type'] == 'string[]':
-                    widget = StringListWidget(self.get_field_value(field_id))
+                    widget = StringListWidget(self.object.__getattr__(field_id))
                     widget.connect('changed', self._stringlist_changed_callback, field_id)
                 else:
                     raise Exception("Unknown type '%s'" % type)
@@ -93,16 +104,61 @@ class CONObjectView(gtk.Notebook):
             hbuttonbox.set_spacing(20)
             vbox.pack_end(hbuttonbox, expand=False, fill=False, padding=5)
 
-            applyb = gtk.Button(stock=gtk.STOCK_APPLY)
-            hbuttonbox.add(applyb)
+            apply_button = gtk.Button(stock=gtk.STOCK_APPLY)
+            hbuttonbox.add(apply_button)
+            apply_button.connect('clicked', self._apply_callback, category_id)
+            self._category_apply_buttons[category_id] = apply_button
 
-            resetb = gtk.Button(stock=gtk.STOCK_REVERT_TO_SAVED)
-            hbuttonbox.add(resetb)
-            resetb.connect('clicked', self._reset_callback, category_id)
+            reset_button = gtk.Button(stock=gtk.STOCK_REVERT_TO_SAVED)
+            hbuttonbox.add(reset_button)
+            reset_button.connect('clicked', self._reset_callback, category_id)
+            self._category_reset_buttons[category_id] = reset_button
 
             self.reset_category(category_id)
 
         self.show_all()
+
+
+    def _set_widget_value(self, field_id, value):
+        """
+        Sets the value in the widget to the one given.
+        """
+        type = self.object.get_attribute_definition(field_id)['type']
+        widget = self._field_widgets[field_id]
+        if type == 'boolean':
+            widget.set_active(value)
+        elif type == 'integer[]':
+            widget.set_list(value)
+        elif type == 'string':
+            text = value
+            if text == None:
+                text = ''
+            widget.set_text(text)
+        elif type == 'string[]':
+            widget.set_list(value)
+        else:
+            print "Setting for type '%s' not implemented" % type
+
+        self._set_changed(field_id, value != self._start_values[field_id])
+
+
+
+    def _get_widget_value(self, field_id):
+        """
+        Gets the value from the widget.
+        """
+        type = self.object.get_attribute_definition(field_id)['type']
+        widget = self._field_widgets[field_id]
+        if type == 'boolean':
+            return widget.get_active()
+        elif type == 'integer[]':
+            return widget.get_list()
+        elif type == 'string':
+            return widget.get_text()
+        elif type == 'string[]':
+            return widget.get_list()
+        else:
+            print "Getting for type '%s' not implemented" % type
 
 
 
@@ -111,22 +167,24 @@ class CONObjectView(gtk.Notebook):
         Reset all field of a category to their start values.
         """
         for (field_id, field_label) in self.categories[category_id][1]:
-            type = self.get_field_definition(field_id)['type']
-            widget = self._field_widgets[field_id]
-            if type == 'boolean':
-                widget.set_active(self._start_values[field_id])
-            elif type == 'integer[]':
-                widget.set_list(self._start_values[field_id])
-            elif type == 'string':
-                text = self._start_values[field_id]
-                if text == None:
-                    text = ''
-                widget.set_text(text)
-            elif type == 'string[]':
-                widget.set_list(self._start_values[field_id])
-            else:
-                print "Resetting for type '%s' not implemented" % type
+            self._set_widget_value(field_id, self._start_values[field_id])
 
+        self._category_changed_counter[category_id] = 0
+        self._category_apply_buttons[category_id].set_sensitive(False)
+        self._category_reset_buttons[category_id].set_sensitive(False)
+
+
+
+    def _apply_callback(self, button, category_id):
+        """
+        Callback for the apply buttons on each notebook page.
+        """
+        self._category_changed_counter[category_id] = 0
+        for (field_id, field_label) in self.categories[category_id][1]:
+            value = self._get_widget_value(field_id)
+            self.object.__setattr__(field_id, value)
+            self._set_changed(field_id, False)
+            self._start_values[field_id] = value
 
 
     def _reset_callback(self, button, category_id):
@@ -139,54 +197,58 @@ class CONObjectView(gtk.Notebook):
 
     def _entry_changed_callback(self, entry, field_id):
         """
-        Callback for the changed signal of entry widgets.
+        Callback for gtk.Entry widgets.
         """
-        if entry.get_text() == self._start_values[field_id]:
-            self._field_frames[field_id].set_color()
-        else:
-            self._field_frames[field_id].set_color('#ff0000')
+        self._set_changed(field_id, entry.get_text() != self._start_values[field_id])
 
 
 
     def _checkbutton_toggled_callback(self, checkbutton, field_id):
-        if checkbutton.get_active() == self._start_values[field_id]:
-            self._field_frames[field_id].set_color()
-        else:
-            self._field_frames[field_id].set_color('#ff0000')
+        """
+        Callback for gtk.CheckButton widgets.
+        """
+        self._set_changed(field_id, checkbutton.get_active() != self._start_values[field_id])
 
 
 
     def _integerlist_changed_callback(self, integerlist, field_id):
-        if integerlist.get_list() == list(self._start_values[field_id]):
-            self._field_frames[field_id].set_color()
-        else:
-            self._field_frames[field_id].set_color('#ff0000')
+        """
+        Callback for lib.ui.IntegerList widgets.
+        """
+        self._set_changed(field_id, integerlist.get_list() != list(self._start_values[field_id]))
 
 
 
     def _stringlist_changed_callback(self, stringlist, field_id):
-        if stringlist.get_list() == list(self._start_values[field_id]):
-            self._field_frames[field_id].set_color()
-        else:
+        """
+        Callback for lib.ui.StringList widgets.
+        """
+        self._set_changed(field_id, stringlist.get_list() != list(self._start_values[field_id]))
+
+
+
+    def _set_changed(self, field_id, changed):
+        """
+        Called whenever the changed status of a widget has changed.
+        """
+        category_id = self._field_category[field_id]
+        if self._field_changed[field_id] == changed:
+            return # nothing happened ... really
+
+        #print "Setting field '%s' to %s" % (field_id, str(changed))
+
+        if changed:
+            self._category_changed_counter[category_id] += 1
             self._field_frames[field_id].set_color('#ff0000')
+        else:
+            self._category_changed_counter[category_id] -= 1
+            self._field_frames[field_id].set_color()
 
-
-
-    def get_field_value(self, field_name):
-        """
-        Return the content for the form field.
-
-        Must be implemented by subclasses.
-        """
-        raise Exception("Not Implemented!")
-
-
-
-    def get_field_definition(self, field_name):
-        """
-        Return the type of the field (see `CONObject` for property types).
-
-        Must be implemented by subclasses.
-        """
-        raise Exception("Not Implemented!")
+        self._field_changed[field_id] = changed
+        if self._category_changed_counter[category_id] == 0:
+            self._category_apply_buttons[category_id].set_sensitive(False)
+            self._category_reset_buttons[category_id].set_sensitive(False)
+        else:
+            self._category_apply_buttons[category_id].set_sensitive(True)
+            self._category_reset_buttons[category_id].set_sensitive(True)
 
