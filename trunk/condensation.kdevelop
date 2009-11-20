@@ -90,7 +90,7 @@
   </kdevfileview>
   <kdevfilecreate>
     <filetypes>
-      <type icon="source_py" ext="py" name="Python" create="template" >
+      <type icon="source_py" ext="py" create="template" name="Python" >
         <descr>A new empty Python source file.</descr>
       </type>
     </filetypes>
