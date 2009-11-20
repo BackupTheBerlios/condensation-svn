@@ -110,7 +110,6 @@ def start_up():
         setup_logging()
         load_config()
 
-
         # gui stuff
         main_window = condensation.ui.MainWindow()
         main_window.connect("delete_event", delete_event)
@@ -140,9 +139,6 @@ def start_up():
 
         treemenu.expand_all()
 
-
-
-
         # show gui
         main_window.show()
         while gtk.events_pending():
@@ -158,6 +154,8 @@ def start_up():
         logging.info('setup finished!')
 
     except:
+        print "ERROR occured, shutting down..."
+        lib.ProxyServer().stop()
         gtk.main_quit()
         raise
 
