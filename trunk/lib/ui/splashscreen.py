@@ -24,7 +24,7 @@ import gtk
 class SplashScreen(gtk.Window):
 
     def __init__(self, image_path, size_x, size_y):
-        gtk.Window.__init__(self)
+        gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
         self.set_size_request(size_x, size_y)
         self.set_decorated(False)
         self.set_resizable(False)
