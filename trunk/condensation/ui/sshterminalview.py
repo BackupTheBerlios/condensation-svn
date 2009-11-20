@@ -33,6 +33,7 @@ class SSHTerminalView(gtk.HBox):
         gtk.HBox.__init__(self)
 
         # connection stuff
+        self.connected = False
         self.channel = None
         self.server = server
         self.server.connect_signal('connected', self.on_server_connected)
@@ -41,6 +42,7 @@ class SSHTerminalView(gtk.HBox):
         # add/init terminal
         self.terminal =  vte.Terminal()
         self.terminal.connect('commit', self.on_vte_commit)
+        self.terminal.connect('size-allocate', self.on_size_allocate)
         self.pack_start(self.terminal, True, True, 0)
 
         # add scrollbar
@@ -63,7 +65,11 @@ class SSHTerminalView(gtk.HBox):
         self.channel = self.server._transport.open_session()
         self.channel.setblocking(True)
         self.channel.set_combine_stderr(True)
-        self.channel.get_pty(term='xterm')
+        self.channel.get_pty(
+            term='xterm',
+            width=self.terminal.get_column_count(),
+            height=self.terminal.get_row_count()
+        )
         self.channel.invoke_shell()
         self.running = True
         writer = threading.Thread(target=self.writeall)
@@ -107,7 +113,14 @@ class SSHTerminalView(gtk.HBox):
                 running = False
             else:
                 self.terminal.feed(data)
-        print "leaving writeall"
 
+
+
+    def on_size_allocate(self, widget, allocation):
+        if self.connected:
+            self.channel.resize_pty(
+                width=self.terminal.get_column_count(),
+                height=self.terminal.get_row_count()
+            )
 
 
