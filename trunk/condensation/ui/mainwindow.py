@@ -20,7 +20,7 @@
 
 import gtk
 
-from lib.ui import TreeMenu
+import lib.ui
 
 class MainWindow(gtk.Window):
 
@@ -29,7 +29,11 @@ class MainWindow(gtk.Window):
         self.set_title("Condensation")
         self.set_default_size(800, 600)
 
-        self._treemenu = TreeMenu()
+        lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
+        self.set_icon(lib.ui.Resources.get_pixbuf('condensation-icon'))
+
+
+        self._treemenu = lib.ui.TreeMenu()
 
         # scrolled window for treeview
         sw_treemenu = gtk.ScrolledWindow()

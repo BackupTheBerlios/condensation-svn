@@ -143,9 +143,10 @@ def start_up():
         main_window.show()
         while gtk.events_pending():
             gtk.main_iteration()
-
-
-        #time.sleep(2)
+        time.sleep(0.5)
+        while gtk.events_pending():
+            gtk.main_iteration()
+        time.sleep(1)
 
 
         # finished, hide splash
