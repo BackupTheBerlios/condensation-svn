@@ -32,17 +32,25 @@ class SSHTerminalView(gtk.HBox):
         # init variables
         gtk.HBox.__init__(self)
 
+        # define actions
+        self._menuitems = [
+            ('_Copy', self._copy),
+            ('_Paste', self._paste),
+        ]
+
         # connection stuff
         self.connected = False
         self.channel = None
         self.server = server
-        self.server.connect_signal('connected', self.on_server_connected)
-        self.server.connect_signal('disconnected', self.on_server_disconnected)
+        self.server.connect_signal('connected', self._server_connected)
+        self.server.connect_signal('disconnected', self._server_disconnected)
 
         # add/init terminal
         self.terminal =  vte.Terminal()
-        self.terminal.connect('commit', self.on_vte_commit)
-        self.terminal.connect('size-allocate', self.on_size_allocate)
+        self.terminal.connect('commit', self._vte_commit)
+        self.terminal.connect('size-allocate', self._size_allocate)
+        self.terminal.connect('button-press-event', self._button_press)
+        self.terminal.connect('key-press-event', self._key_press)
         self.pack_start(self.terminal, True, True, 0)
 
         # add scrollbar
@@ -51,6 +59,7 @@ class SSHTerminalView(gtk.HBox):
         self.pack_start(scrollbar, False, False, 0)
 
         self.show_all()
+
 
         if self.server.get_connected():
             self.connect()
@@ -72,7 +81,7 @@ class SSHTerminalView(gtk.HBox):
         )
         self.channel.invoke_shell()
         self.running = True
-        writer = threading.Thread(target=self.writeall)
+        writer = threading.Thread(target=self._writeall)
         writer.start()
         self.connected = True
 
@@ -82,21 +91,21 @@ class SSHTerminalView(gtk.HBox):
         self.running = False
         self.channel = None # TODO: close channel, if possible
         self.connected = False
-        self.terminal.feed('*** disconnected ***\n\r')
+        self.terminal.feed('\n\r*** disconnected ***\n\r')
 
 
 
-    def on_server_connected(self, *args):
+    def _server_connected(self, *args):
         self.connect()
 
 
 
-    def on_server_disconnected(self, *args):
+    def _server_disconnected(self, *args):
         self.disconnect()
 
 
 
-    def on_vte_commit(self, widget, text, size):
+    def _vte_commit(self, widget, text, size):
         #print "Commit '%s' %d" % (text, size)
         if self.channel:
             self.channel.send(text)
@@ -104,7 +113,7 @@ class SSHTerminalView(gtk.HBox):
 
 
 
-    def writeall(self):
+    def _writeall(self):
         while self.running:
             data = self.channel.recv(256)
             gtk.gdk.threads_enter()
@@ -116,11 +125,56 @@ class SSHTerminalView(gtk.HBox):
 
 
 
-    def on_size_allocate(self, widget, allocation):
+    def _size_allocate(self, widget, allocation):
         if self.connected:
             self.channel.resize_pty(
                 width=self.terminal.get_column_count(),
                 height=self.terminal.get_row_count()
             )
+
+
+
+    def _copy(self, event=None):
+        self.terminal.copy_clipboard()
+
+
+
+    def _paste(self, event=None):
+        self.terminal.paste_clipboard()
+
+
+
+    def _button_press(self, term, event):
+        if event.button == 3:
+            menu = gtk.Menu()
+
+            for itemdef in self._menuitems:
+                menuitem =  gtk.MenuItem(itemdef[0], True)
+                menuitem.connect('activate', itemdef[1])
+                menu.append(menuitem)
+
+            menu.show_all()
+            menu.popup(None, None, None, event.button, event.time)
+            return True
+        return False
+
+
+
+    def _key_press(self, term, event):
+        mask = gtk.gdk.SHIFT_MASK | gtk.gdk.CONTROL_MASK
+        if event.state & mask == mask:
+            if event.keyval == ord('C'):
+                self._copy()
+            elif event.keyval == ord('V'):
+                self._paste()
+            return True
+        return False
+
+
+    def _get_topmost_window(self):
+        parent = self.get_parent()
+        while parent.get_parent():
+            parent = parent.get_parent()
+        return parent
 
 
