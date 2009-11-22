@@ -37,9 +37,10 @@ class TreeMenu(gtk.TreeView):
         self.treestore = gtk.TreeStore(object)
         self.set_model(self.treestore)
         self.append_column(self.tvcol_icon_name)
-        self.connect("cursor_changed", self.cursor_changed_callback)
+        self.connect("cursor_changed", self._cursor_changed)
         self.set_enable_search(False)
         self.set_headers_visible(False)
+        self.set_enable_tree_lines(True)
         self.get_selection().set_mode(gtk.SELECTION_SINGLE)
 
         # id => path mapping for inserting new children
@@ -58,27 +59,27 @@ class TreeMenu(gtk.TreeView):
 
 
     # callback for TreeView
-    def cursor_changed_callback(self, treeview):
+    def _cursor_changed(self, treeview):
         (path, col) = self.get_cursor()
         self.treestore[path][0].selected()
 
 
     # add dapage to tree
-    def append(self, obj, parent=None):
+    def append(self, viewmanager, parent=None):
         if parent != None:
             piter = self._id_to_treeiter[id(parent)] # TODO: raise something if not found
-            self._id_to_treeiter[id(obj)] = self.treestore.append(piter, (obj,))
+            self._id_to_treeiter[id(viewmanager)] = self.treestore.append(piter, (viewmanager,))
         else:
-            self._id_to_treeiter[id(obj)] = self.treestore.append(None, (obj,))
+            self._id_to_treeiter[id(viewmanager)] = self.treestore.append(None, (viewmanager,))
         (path, col) = self.get_cursor()
         if path == None:
             self.set_cursor((0,))
 
 
     # remove dapage from tree
-    def remove(self, dapage):
-        self.treestore.remove(self._id_to_treeiter[id(dapage)])
-        del self._id_to_treeiter[id(dapage)]
+    def remove(self, viewmanager):
+        self.treestore.remove(self._id_to_treeiter[id(viewmanager)])
+        del self._id_to_treeiter[id(viewmanager)]
 
 
     # get selected dapage
