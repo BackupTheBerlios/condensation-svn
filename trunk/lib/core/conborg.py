@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-
+import uuid
 import xml.etree.ElementTree as ET
 
 from conobject import CONObject
@@ -117,6 +117,8 @@ class CONBorg(CONObject):
         if name[0:1] == '_':
             return self.__class__.__dict__[name]
         else:
+            if (name == 'uuid') and (self.__class__.__dict__['_attributes']['uuid'] == None):
+                self.__class__.__dict__['_attributes']['uuid'] = uuid.uuid4()
             return self.__class__.__dict__['_attributes'][name]
 
 

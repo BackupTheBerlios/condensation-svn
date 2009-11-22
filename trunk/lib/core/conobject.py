@@ -20,7 +20,7 @@
 
 import xml.etree.ElementTree as ET
 import re
-
+import uuid
 
 from concollection import CONCollection
 from signalsource import SignalSource
@@ -34,7 +34,9 @@ class CONObject(SignalSource):
     `raise_signal`) and attributes (`set_attribute` and `get_attribute`)
     """
 
-    _attribute_definitions = (())
+    _attribute_definitions = (
+            {'name': 'uuid', 'type': 'uuid', 'default': None},
+    )
     _signal_list = ('attribute_changed',)
 
 
@@ -106,6 +108,9 @@ class CONObject(SignalSource):
         """
         """
         if name in self.__dict__['_attributes']:
+            # when the uuid is requested and not set yet, create a new one
+            if (name == 'uuid') and (self.__dict__['_attributes']['uuid'] == None):
+                self.__dict__['_attributes']['uuid'] = uuid.uuid4()
             return self.__dict__['_attributes'][name]
         else:
             raise AttributeError('No attribute with the name %s' % name)
@@ -305,6 +310,32 @@ class CONObject(SignalSource):
 
 
     @classmethod
+    def uuid_serializer(cls, element, value):
+        """
+        Serializer function used by CONObject's serializing mechanism for serializing uuids.
+
+        :param element: the ElementTree element which will contain the serialized data
+        :param value: the value (ie the uuid) to be serialized
+        """
+        element.text = value.hex
+
+
+
+    @classmethod
+    def uuid_deserializer(cls, element):
+        """
+        Deserializer function used by CONObject's serializing mechanism for deserializing uuids.
+
+        :param element: the ElementTree containing the serialized uuid
+        """
+        if not element.text:
+            return uuid.uuid4() # create a new one (is this the right thing to do here?)
+        else:
+            return uuid.UUID(element.text)
+
+
+
+    @classmethod
     def object_serializer(cls, element, value):
         """
         Serializer function used by CONObject's serializing mechanism for serializing CONObject-objects.
@@ -377,5 +408,6 @@ class CONObject(SignalSource):
 CONObject.register_attribute_type('boolean', CONObject.boolean_serializer, CONObject.boolean_deserializer)
 CONObject.register_attribute_type('integer', CONObject.integer_serializer, CONObject.integer_deserializer)
 CONObject.register_attribute_type('string', CONObject.string_serializer, CONObject.string_deserializer)
+CONObject.register_attribute_type('uuid', CONObject.uuid_serializer, CONObject.uuid_deserializer)
 CONObject.register_attribute_type('CONObject', CONObject.object_serializer, CONObject.object_deserializer)
 
