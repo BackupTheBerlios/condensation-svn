@@ -18,6 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gobject
 import gtk
 
 from resources import Resources
@@ -77,6 +78,7 @@ class ViewManager(gtk.VBox):
     def selected(self):
         if self._container_notebook_page != None:
             self._container_notebook.set_current_page(self._container_notebook_page)
+            self.emit('view-selected')
 
 
 
@@ -84,5 +86,9 @@ class ViewManager(gtk.VBox):
         self._container_notebook.remove_page(self._container_notebook_page)
 
 
+
+# register signal 'changed' with gobject
+gobject.type_register(ViewManager)
+gobject.signal_new("view-selected", ViewManager, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
 
 
