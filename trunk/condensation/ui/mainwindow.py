@@ -19,8 +19,16 @@
 ############################################################################
 
 import gtk
+import gtk.gdk
+import logging
+import xml.etree.cElementTree as ET
 
+import lib.crypto
 import lib.ui
+
+import condensation
+
+
 
 class MainWindow(gtk.Window):
 
@@ -32,24 +40,91 @@ class MainWindow(gtk.Window):
         lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
         self.set_icon(lib.ui.Resources.get_pixbuf('condensation-icon'))
 
+        # toolbar
+        self._toolbar = gtk.Toolbar()
+        self._toolbar.set_property('toolbar-style', gtk.TOOLBAR_BOTH)
 
+        button = gtk.ToolButton(gtk.STOCK_GO_BACK)
+        #button.connect('clicked', self._save_button_clicked)
+        self._toolbar.insert(button, -1)
+
+        self._forward_button = gtk.MenuToolButton(gtk.STOCK_GO_FORWARD)
+        #button.connect('clicked', self._save_button_clicked)
+        self._toolbar.insert(self._forward_button, -1)
+
+        self._toolbar.insert(gtk.SeparatorToolItem(), -1)
+
+        button = gtk.ToolButton(gtk.STOCK_SAVE)
+        button.connect('clicked', self._save_button_clicked)
+        self._toolbar.insert(button, -1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.set_expand(True)
+        separator.set_draw(False)
+        self._toolbar.insert(separator, -1)
+
+        button = gtk.ToolButton(gtk.STOCK_QUIT)
+        button.connect('clicked', self._quit_button_clicked)
+        self._toolbar.insert(button, -1)
+
+
+        # treemenu
         self._treemenu = lib.ui.TreeMenu()
-
-        # scrolled window for treeview
         sw_treemenu = gtk.ScrolledWindow()
-        sw_treemenu.add_with_viewport(self._treemenu)
+        sw_treemenu.add(self._treemenu)
         sw_treemenu.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw_treemenu.set_size_request(200, 200)
 
+        # notebook
         self._notebook = gtk.Notebook()
         self._notebook.set_property('show-border', False)
         self._notebook.set_property('scrollable', True)
         self._notebook.set_show_tabs(False)
+
         paned = gtk.HPaned()
         paned.add1(sw_treemenu)
         paned.add2(self._notebook)
-        self.add(paned)
-        paned.show_all()
+
+        vbox = gtk.VBox()
+        vbox.pack_start(self._toolbar, expand=False, fill=True)
+        vbox.pack_start(paned, expand=True, fill=True)
+        self.add(vbox)
+        vbox.show_all()
+
+
+
+    def _save_button_clicked(self, button):
+        logging.info("saving configuration ... ")
+        doc_elem = ET.Element("configuration")
+        doc_elem.text = "\n"
+        tree = ET.ElementTree(doc_elem)
+
+        # save keymanager
+        key_elem = ET.SubElement(doc_elem, "keys")
+        key_elem.tail = "\n"
+        lib.crypto.KeyManager.object_serializer(key_elem, lib.crypto.KeyManager())
+
+        # save servers
+        for server in condensation.Server.servers:
+            server_elem = ET.SubElement(doc_elem, "server")
+            server_elem.tail = "\n"
+            condensation.Server.object_serializer(server_elem, server)
+
+        # save proxy
+        key_elem = ET.SubElement(doc_elem, "proxy")
+        key_elem.tail = "\n"
+        lib.ProxyServer.object_serializer(key_elem, lib.ProxyServer())
+
+        # write file
+        tree.write("new-condensation.conf.xml", "UTF-8")
+        logging.info("saving configuration done")
+
+
+
+    def _quit_button_clicked(self, button):
+        self.emit('delete-event', gtk.gdk.Event(gtk.gdk.DELETE))
+
+
 
 
 

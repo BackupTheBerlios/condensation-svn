@@ -170,11 +170,3 @@ class SSHTerminalView(gtk.HBox):
             return True
         return False
 
-
-    def _get_topmost_window(self):
-        parent = self.get_parent()
-        while parent.get_parent():
-            parent = parent.get_parent()
-        return parent
-
-
