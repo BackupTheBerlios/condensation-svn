@@ -18,12 +18,22 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import lib.core
 
-from condensationviewmanager import CondensationViewManager
-from mainwindow import MainWindow
-from navigationhistory import NavigationHistory
-from proxyviewmanager import ProxyViewManager
-from serverlistviewmanager import ServerListViewManager
-from serverviewmanager import ServerViewManager
-from vhostviewmanager import VHostViewManager
+from server import Server
+
+
+class ServerList(lib.core.CONObject):
+
+    _attribute_definitions = (
+        {'name': 'servers', 'type': 'Server[]', 'default': []},
+    )
+
+    _signal_list = (())
+
+
+    def __init__(self):
+        lib.core.CONObject.__init__(self)
+
+
+lib.core.CONObject.register_attribute_type('ServerList', ServerList.object_serializer, ServerList.object_deserializer)

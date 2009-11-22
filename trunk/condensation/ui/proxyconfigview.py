@@ -26,7 +26,6 @@
 
 import gtk
 
-import lib
 import lib.ui
 
 
@@ -37,9 +36,5 @@ class ProxyConfigView(lib.ui.CONObjectView):
             ('ports', 'Ports'),
         )),
     )
-
-
-    def __init__(self):
-        lib.ui.CONObjectView.__init__(self, lib.ProxyServer())
 
 

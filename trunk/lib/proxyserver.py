@@ -113,3 +113,5 @@ class ProxyServer(lib.core.CONBorg):
                 if port not in old_value:
                     self._start_server(port)
 
+
+lib.core.CONObject.register_attribute_type('ProxyServer', ProxyServer.object_serializer, ProxyServer.object_deserializer)

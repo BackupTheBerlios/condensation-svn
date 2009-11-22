@@ -19,13 +19,47 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gobject
+import gtk
 import cProfile
+import time
+import xml.etree.cElementTree as ET
+
+import lib.ui
+
 import condensation
 
 
+def start_up():
+    global splash_screen
+
+    et = ET.parse("condensation.conf.xml")
+    condensation.Main.object_deserializer(et.getroot())
+
+    while gtk.events_pending():
+        gtk.main_iteration()
+    time.sleep(0.5)
+    while gtk.events_pending():
+        gtk.main_iteration()
+    time.sleep(1)
+
+    # finished, hide splash
+    splash_screen.hide()
+    splash_screen = None
+
+    #con = condensation.Main()
+    #con.setup()
+
+
 def main():
-    con = condensation.Main()
-    con.run()
+    global splash_screen
+    gobject.threads_init()
+
+    splash_screen = lib.ui.SplashScreen('images/splash.svg', 600, 400)
+    splash_screen.show()
+
+    gobject.idle_add(start_up)
+    gtk.main()
 
 
 # this is needed so pydoc doesn't run the module while importing it

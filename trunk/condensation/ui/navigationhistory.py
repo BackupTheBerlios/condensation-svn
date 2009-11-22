@@ -18,12 +18,13 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from condensationviewmanager import CondensationViewManager
-from mainwindow import MainWindow
-from navigationhistory import NavigationHistory
-from proxyviewmanager import ProxyViewManager
-from serverlistviewmanager import ServerListViewManager
-from serverviewmanager import ServerViewManager
-from vhostviewmanager import VHostViewManager
+class NavigationHistory(object):
+
+    def __init__(self):
+        pass
+
+
+
+    def append(self, state):
+        pass

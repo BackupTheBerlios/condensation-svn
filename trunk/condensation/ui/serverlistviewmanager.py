@@ -24,8 +24,8 @@ import lib.ui
 
 class ServerListViewManager(lib.ui.ViewManager):
 
-    def __init__(self, containing_notebook):
-        lib.ui.ViewManager.__init__(self, containing_notebook)
+    def __init__(self, containing_notebook, view_object):
+        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
         lib.ui.Resources.load_pixbuf('server', 'images/icons/server.svg')
 

@@ -25,11 +25,13 @@ from resources import Resources
 
 class ViewManager(gtk.VBox):
 
-    def __init__(self, container_notebook):
+    def __init__(self, container_notebook, view_object):
         gtk.VBox.__init__(self)
         self._container_notebook = container_notebook
         self._container_notebook_page = self._container_notebook.append_page(self)
         self._view_map = {}
+
+        self.view_object = view_object
 
         self._toolbar = gtk.Toolbar()
         self._toolbar.set_style(gtk.TOOLBAR_BOTH)

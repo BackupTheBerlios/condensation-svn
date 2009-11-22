@@ -20,6 +20,7 @@
 
 import gtk
 
+import lib
 import lib.ui
 
 from proxyconfigview import ProxyConfigView
@@ -30,14 +31,16 @@ from proxyredirectionsview import ProxyRedirectionsView
 class ProxyViewManager(lib.ui.ViewManager):
 
 
-    def __init__(self, containing_notebook):
-        lib.ui.ViewManager.__init__(self, containing_notebook)
+    def __init__(self, containing_notebook, view_object):
+        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
         lib.ui.Resources.load_pixbuf('proxy-icon', 'images/icons/proxy.svg')
         lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
 
-        self.add_view(ProxyConfigView(), "Config", 'configuration-icon')
-        self.add_view(ProxyRedirectionsView(), "Redirections", None)
+        proxy = lib.ProxyServer()
+
+        self.add_view(ProxyConfigView(proxy), "Config", 'configuration-icon')
+        self.add_view(ProxyRedirectionsView(proxy), "Redirections", None)
         self.add_view(ProxyInterceptView(), "Intercept", None)
 
 

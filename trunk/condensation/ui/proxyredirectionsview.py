@@ -23,8 +23,36 @@
 
 import gtk
 
+import condensation
 
-class ProxyRedirectionsView(gtk.Label):
+from proxymappingwidget import ProxyMappingWidget
 
-    def __init__(self):
-        gtk.Label.__init__(self, 'Placeholder')
+class ProxyRedirectionsView(gtk.VBox):
+
+    def __init__(self, proxy):
+        gtk.VBox.__init__(self)
+
+        domains_suggested ={'*': []}
+        domain_map = {}
+
+        for server in condensation.Server.servers:
+            for vhost in server.vhosts:
+                for domain in vhost.domains:
+                    if domain not in domains_suggested:
+                        domains_suggested[domain] = []
+                    domains_suggested[domain].append(vhost)
+                    if domain not in domain_map:
+                        domain_map[domain] = (False, vhost._server.name)
+
+        if '*' not in domain_map:
+            domain_map['*'] = (False, '')
+
+        #print domains_suggested
+        #print domain_map
+
+
+        self.mappingwidget = ProxyMappingWidget(domain_map)
+        self.add(self.mappingwidget)
+
+
+

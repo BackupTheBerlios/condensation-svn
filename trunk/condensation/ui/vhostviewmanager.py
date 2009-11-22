@@ -28,28 +28,26 @@ from vhostmozembedview import VHostMozEmbedView
 
 class VHostViewManager(lib.ui.ViewManager):
 
-    def __init__(self, containing_notebook, vhost):
-        lib.ui.ViewManager.__init__(self, containing_notebook)
+    def __init__(self, containing_notebook, view_object):
+        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
         lib.ui.Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
         lib.ui.Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
 
         lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
 
-        self._vhost = vhost
-
         # add views
-        vhostconfig = VHostConfigView(self._vhost)
+        vhostconfig = VHostConfigView(self.view_object)
         self.add_view(vhostconfig, 'Config', 'configuration-icon')
 
-        self.vhostmozembed = VHostMozEmbedView(self._vhost)
+        self.vhostmozembed = VHostMozEmbedView(self.view_object)
         self.add_view(self.vhostmozembed, 'MozEmbed', None)
 
 
 
 
     def get_menu_text(self):
-        return self._vhost.name
+        return self.view_object.name
 
 
 

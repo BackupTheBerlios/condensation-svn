@@ -18,10 +18,10 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gobject
 import gtk
 import gtk.gdk
 import logging
-import xml.etree.cElementTree as ET
 
 import lib.crypto
 import lib.ui
@@ -94,36 +94,18 @@ class MainWindow(gtk.Window):
 
 
     def _save_button_clicked(self, button):
-        logging.info("saving configuration ... ")
-        doc_elem = ET.Element("configuration")
-        doc_elem.text = "\n"
-        tree = ET.ElementTree(doc_elem)
-
-        # save keymanager
-        key_elem = ET.SubElement(doc_elem, "keys")
-        key_elem.tail = "\n"
-        lib.crypto.KeyManager.object_serializer(key_elem, lib.crypto.KeyManager())
-
-        # save servers
-        for server in condensation.Server.servers:
-            server_elem = ET.SubElement(doc_elem, "server")
-            server_elem.tail = "\n"
-            condensation.Server.object_serializer(server_elem, server)
-
-        # save proxy
-        key_elem = ET.SubElement(doc_elem, "proxy")
-        key_elem.tail = "\n"
-        lib.ProxyServer.object_serializer(key_elem, lib.ProxyServer())
-
-        # write file
-        tree.write("new-condensation.conf.xml", "UTF-8")
-        logging.info("saving configuration done")
+        self.emit("save-action")
 
 
 
     def _quit_button_clicked(self, button):
         self.emit('delete-event', gtk.gdk.Event(gtk.gdk.DELETE))
 
+
+
+# register signal 'changed' with gobject
+gobject.type_register(MainWindow)
+gobject.signal_new("save-action", MainWindow, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
 
 
 

@@ -27,8 +27,8 @@ from sshterminalview import SSHTerminalView
 
 class ServerViewManager(lib.ui.ViewManager):
 
-    def __init__(self, containing_notebook, server):
-        lib.ui.ViewManager.__init__(self, containing_notebook)
+    def __init__(self, containing_notebook, view_object):
+        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
         lib.ui.Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
         lib.ui.Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
@@ -36,14 +36,13 @@ class ServerViewManager(lib.ui.ViewManager):
         lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
         lib.ui.Resources.load_pixbuf('ssh-terminal-icon', 'images/icons/ssh-terminal.svg')
 
-        self._server = server
-        self._server.connect_signal('changed', self.on_server_changed)
+        self.view_object.connect_signal('changed', self.on_server_changed)
 
         # add views
-        serverconfig = ServerConfigView(self._server)
+        serverconfig = ServerConfigView(self.view_object)
         self.add_view(serverconfig, 'Config', 'configuration-icon')
 
-        sshterminal = SSHTerminalView(self._server)
+        sshterminal = SSHTerminalView(self.view_object)
         self.add_view(sshterminal, 'SSH Terminal', 'ssh-terminal-icon')
 
 
@@ -63,12 +62,12 @@ class ServerViewManager(lib.ui.ViewManager):
 
 
     def action_connect(self, action=None):
-         self._server.connect_to_server()
+         self.view_object.connect_to_server()
 
 
 
     def action_disconnect(self, action=None):
-        self._server.disconnect()
+        self.view_object.disconnect()
 
 
 
@@ -78,17 +77,17 @@ class ServerViewManager(lib.ui.ViewManager):
 
 
     def update(self):
-        self.connect_button.set_property('sensitive', not self._server.get_connected())
-        self.disconnect_button.set_property('sensitive', self._server.get_connected())
+        self.connect_button.set_property('sensitive', not self.view_object.get_connected())
+        self.disconnect_button.set_property('sensitive', self.view_object.get_connected())
 
 
     def get_menu_text(self):
-        return self._server.name
+        return self.view_object.name
 
 
 
     def get_menu_icon(self):
-        if self._server.get_connected():
+        if self.view_object.get_connected():
             return lib.ui.Resources.get_pixbuf('server-connected')
         else:
             return lib.ui.Resources.get_pixbuf('server-disconnected')

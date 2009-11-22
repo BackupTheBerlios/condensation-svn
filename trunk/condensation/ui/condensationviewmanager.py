@@ -28,15 +28,15 @@ from pythonconsoleview import PythonConsoleView
 class CondensationViewManager(lib.ui.ViewManager):
 
 
-    def __init__(self, containing_notebook, logsink):
-        lib.ui.ViewManager.__init__(self, containing_notebook)
+    def __init__(self, containing_notebook, view_object):
+        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
         lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
         lib.ui.Resources.load_pixbuf('view-log-icon', 'images/icons/view-log.svg')
         lib.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
 
         # add views
-        logview = lib.ui.LogView(logsink)
+        logview = lib.ui.LogView(self.view_object._logsink)
         self.add_view(logview, 'Application Log', 'view-log-icon')
 
         consoleview = PythonConsoleView()

@@ -23,4 +23,5 @@ __all__ = []
 from apacheconfigparser import ApacheConfigParser
 from main import Main
 from server import Server
+from serverlist import ServerList
 from vhost import VHost
