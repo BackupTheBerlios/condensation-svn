@@ -1,0 +1,20 @@
+
+Project-Description (sketch):
+
+A program to (easily) setup & administer several (web-)servers, the focus is on web-application development.
+
+incomplete list of features (some already implemented):
+clone (replicate) whole servers/vms/vhosts
+access control management
+certificate management (ssl/ssh)
+debugging
+        tools for skimming through logs
+        a proxy to inspect communication browser<->application)
+deployment
+install software (from a list to set up a 'clean' environment)
+ssh console/file manager
+
+
+
+gtkmozembed.MozEmbed
+    found the following bug/undocumented feature: calling render_data() before the widget is realized causes a segfault
