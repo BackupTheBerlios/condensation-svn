@@ -37,7 +37,7 @@ class VHostViewManager(ViewManager):
 
         # add views
         vhostconfig = VHostConfigView(self.view_object)
-        self.add_view(vhostconfig, 'Config', 'configuration-icon')
+        self.add_view(vhostconfig)
 
 
 

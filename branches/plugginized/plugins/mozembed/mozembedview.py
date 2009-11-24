@@ -22,6 +22,7 @@ import gtk
 import gtkmozembed
 import logging
 
+import condensation.ui
 
 class MozEmbedView(gtk.VBox):
 
@@ -48,6 +49,16 @@ class MozEmbedView(gtk.VBox):
         self.mozembed.connect('open_uri', self.on_open_uri)
 
         self.show_all()
+
+
+
+    def get_icon(self):
+        return None
+
+
+
+    def get_name(self):
+        return "MozEmbed"
 
 
 

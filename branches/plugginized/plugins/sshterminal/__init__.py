@@ -21,8 +21,11 @@
 __plugin_name__ = 'SSH Terminal'
 __doc__ = """Provides a SSH Terminal for each server."""
 
+import os.path
+
 def __install_plugin__():
     import condensation
     import condensation.ui
     from sshterminalview import SSHTerminalView
     condensation.ui.ViewManager.register_view(condensation.Server, SSHTerminalView)
+    condensation.ui.Resources.load_pixbuf('ssh-terminal-icon', os.path.join(__path__[0], 'ssh-terminal.svg'))

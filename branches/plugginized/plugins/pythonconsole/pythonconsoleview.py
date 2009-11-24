@@ -20,6 +20,8 @@
 
 import gtk
 
+import condensation.ui
+
 from pythonconsole import PythonConsole
 
 
@@ -31,3 +33,14 @@ class PythonConsoleView(gtk.ScrolledWindow):
         self._console = PythonConsole()
         self.add(self._console)
         self._console.show()
+
+
+
+    def get_icon(self):
+        return condensation.ui.Resources.get_pixbuf('python-console-icon')
+
+
+
+    def get_name(self):
+        return "SSH Terminal"
+

@@ -24,6 +24,7 @@ import gtk.gdk
 import gtk
 import threading
 
+import condensation.ui
 
 class SSHTerminalView(gtk.HBox):
 
@@ -65,6 +66,15 @@ class SSHTerminalView(gtk.HBox):
             self.connect()
         else:
             self.terminal.feed('*** Not connected ***\n\r')
+
+
+    def get_icon(self):
+        return condensation.ui.Resources.get_pixbuf('ssh-terminal-icon')
+
+
+
+    def get_name(self):
+        return "SSH Terminal"
 
 
 

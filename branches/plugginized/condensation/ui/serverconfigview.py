@@ -22,7 +22,7 @@
 import gtk
 
 from conobjectview import CONObjectView
-
+from resources import Resources
 
 class ServerConfigView(CONObjectView):
 
@@ -55,4 +55,13 @@ class ServerConfigView(CONObjectView):
         )),
     )
 
+
+
+    def get_icon(self):
+        return Resources.get_pixbuf('configuration-icon')
+
+
+
+    def get_name(self):
+        return self.object.name
 

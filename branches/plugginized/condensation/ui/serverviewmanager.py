@@ -35,17 +35,16 @@ class ServerViewManager(ViewManager):
         Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
 
         Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
-        Resources.load_pixbuf('ssh-terminal-icon', 'images/icons/ssh-terminal.svg')
 
         self.view_object.connect_signal('changed', self.on_server_changed)
 
         # add views
         serverconfig = ServerConfigView(self.view_object)
-        self.add_view(serverconfig, 'Config', 'configuration-icon')
+        self.add_view(serverconfig)
 
         for view_class in ViewManager._available_views[condensation.Server]:
             view = view_class(view_object)
-            self.add_view(view, 'Python Console', 'python-console-icon')
+            self.add_view(view)
 
         # populate toolbar
         self.connect_button = gtk.ToolButton(gtk.STOCK_CONNECT)

@@ -50,11 +50,13 @@ class ViewManager(gtk.VBox):
 
 
 
-    def add_view(self, widget, name, image_id = None):
-        if image_id:
+    def add_view(self, widget):
+        icon = widget.get_icon()
+        name = widget.get_name()
+        if icon:
             label = gtk.HBox()
             image = gtk.Image()
-            image.set_from_pixbuf(Resources.get_pixbuf(image_id))
+            image.set_from_pixbuf(icon)
             label.pack_start(image, False, False, 3)
             label.pack_start(gtk.Label(name), False, False, 3)
             label.show_all()

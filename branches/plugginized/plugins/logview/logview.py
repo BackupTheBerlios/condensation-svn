@@ -22,6 +22,7 @@ import gtk
 import logging
 import pango
 
+import condensation
 
 class LogView(gtk.VBox):
 
@@ -55,6 +56,16 @@ class LogView(gtk.VBox):
 
         scrolled_window.add(self.treeview)
         scrolled_window.show_all()
+
+
+
+    def get_icon(self):
+        return condensation.ui.Resources.get_pixbuf('log-view-icon')
+
+
+
+    def get_name(self):
+        return "Log View"
 
 
 

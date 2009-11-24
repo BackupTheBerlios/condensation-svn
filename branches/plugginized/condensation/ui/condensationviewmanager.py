@@ -31,13 +31,11 @@ class CondensationViewManager(ViewManager):
         ViewManager.__init__(self, containing_notebook, view_object)
 
         condensation.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
-        condensation.ui.Resources.load_pixbuf('view-log-icon', 'images/icons/view-log.svg')
-        condensation.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
 
         # add views
         for view_class in ViewManager._available_views[condensation.Main]:
             view = view_class(view_object)
-            self.add_view(view, 'Python Console', 'python-console-icon')
+            self.add_view(view)
 
 
 
