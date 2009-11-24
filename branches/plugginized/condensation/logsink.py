@@ -21,15 +21,15 @@
 
 import logging
 
-import lib.core
+import condensation.core
 
 
-class LogSink(logging.Handler, lib.core.SignalSource):
+class LogSink(logging.Handler, condensation.core.SignalSource):
 
 
     def __init__(self):
         logging.Handler.__init__(self)
-        lib.core.SignalSource.__init__(self)
+        condensation.core.SignalSource.__init__(self)
         self._records = []
         self._records_text = []
         self._callbacks['new-record'] = list()

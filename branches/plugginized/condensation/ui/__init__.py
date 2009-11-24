@@ -28,8 +28,6 @@ from integerlistwidget import IntegerListWidget
 from logview import LogView
 from mainwindow import MainWindow
 from navigationhistory import NavigationHistory
-from proxyviewmanager import ProxyViewManager
-from pythonconsole import PythonConsole
 from resources import Resources
 from splashscreen import SplashScreen
 from serverlistviewmanager import ServerListViewManager

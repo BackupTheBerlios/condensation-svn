@@ -20,16 +20,15 @@
 
 import gtk
 
-import lib.ui
-
+from resources import Resources
 from vhostconfigview import VHostConfigView
-from vhostmozembedview import VHostMozEmbedView
+from viewmanager import ViewManager
 
 
-class VHostViewManager(lib.ui.ViewManager):
+class VHostViewManager(ViewManager):
 
     def __init__(self, containing_notebook, view_object):
-        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
+        ViewManager.__init__(self, containing_notebook, view_object)
 
         lib.ui.Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
         lib.ui.Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
@@ -40,8 +39,8 @@ class VHostViewManager(lib.ui.ViewManager):
         vhostconfig = VHostConfigView(self.view_object)
         self.add_view(vhostconfig, 'Config', 'configuration-icon')
 
-        self.vhostmozembed = VHostMozEmbedView(self.view_object)
-        self.add_view(self.vhostmozembed, 'MozEmbed', None)
+        #self.vhostmozembed = VHostMozEmbedView(self.view_object)
+        #self.add_view(self.vhostmozembed, 'MozEmbed', None)
 
 
 

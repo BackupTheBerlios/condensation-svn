@@ -19,10 +19,10 @@
 ############################################################################
 
 from apacheconfigparser import ApacheConfigParser
-import lib.core
+import condensation.core
 
 
-class VHost(lib.core.CONObject):
+class VHost(condensation.core.CONObject):
 
     _attribute_definitions = (
         {'name': 'name', 'type': 'string', 'default': ''},
@@ -33,7 +33,7 @@ class VHost(lib.core.CONObject):
 
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
         self._server = None
 
 
@@ -58,5 +58,5 @@ class VHost(lib.core.CONObject):
 
 
 
-lib.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
+condensation.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
 

@@ -18,11 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
-
-from apacheconfigparser import ApacheConfigParser
-from logsink import LogSink
-from main import Main
-from server import Server
-from serverlist import ServerList
-from vhost import VHost
+__plugin_name__ = 'SSH Terminal'
+__plugin_type__ = 'view'
+__plugin_object__ = 'Server'
+__doc__ = """Provides a SSH Terminal for each server."""

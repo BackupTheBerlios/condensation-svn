@@ -20,10 +20,10 @@
 
 
 from key import Key
-import lib.core
+import condensation.core
 
 
-class KeyManager(lib.core.CONBorg):
+class KeyManager(condensation.core.CONBorg):
 
     _attribute_definitions = (
         {'name': 'ssh_auth_key', 'type':'Key', 'default':None},
@@ -32,7 +32,7 @@ class KeyManager(lib.core.CONBorg):
 
 
     def __init__(self):
-        lib.core.CONBorg.__init__(self)
+        condensation.core.CONBorg.__init__(self)
 
 
 
@@ -46,4 +46,4 @@ class KeyManager(lib.core.CONBorg):
 
 
 
-lib.core.CONObject.register_attribute_type('KeyManager', KeyManager.object_serializer, KeyManager.object_deserializer)
+condensation.core.CONObject.register_attribute_type('KeyManager', KeyManager.object_serializer, KeyManager.object_deserializer)

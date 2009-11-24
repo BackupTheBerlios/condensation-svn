@@ -20,9 +20,9 @@
 
 import logging
 
-import lib.core
+import condensation.core
 
-class SFTPFileSystem(lib.core.FileSystem):
+class SFTPFileSystem(condensation.core.FileSystem):
 
 
     def __init__(self, paramiko_transport):

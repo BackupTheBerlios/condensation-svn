@@ -25,9 +25,8 @@ import cProfile
 import time
 import xml.etree.cElementTree as ET
 
-import lib.ui
-
 import condensation
+import condensation.ui
 
 
 def start_up():

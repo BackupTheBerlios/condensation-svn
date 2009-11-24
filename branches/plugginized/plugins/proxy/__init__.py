@@ -18,11 +18,8 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
 
-from apacheconfigparser import ApacheConfigParser
-from logsink import LogSink
-from main import Main
-from server import Server
-from serverlist import ServerList
-from vhost import VHost
+__plugin_name__ = 'Proxy Server'
+__plugin_type__ = 'global'
+__plugin_object__ = None # doesn't apply
+__doc__ = """With this Proxy Server you can redirect and intercept the communication between your browser and the server. This can be used in setting up and developing web-applications."""

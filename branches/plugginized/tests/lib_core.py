@@ -20,10 +20,10 @@
 
 import unittest
 
-import lib.core
+import condensation.core
 
 
-class CONObjectTest(lib.core.CONObject):
+class CONObjectTest(condensation.core.CONObject):
 
     _attribute_definitions = (
         {'name': 'string', 'type': 'string', 'default': 'string'},
@@ -33,17 +33,17 @@ class CONObjectTest(lib.core.CONObject):
     _signal_list = (())
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
 
 
-lib.core.CONObject.register_attribute_type(
+condensation.core.CONObject.register_attribute_type(
     'CONObjectTest',
     CONObjectTest.object_serializer,
     CONObjectTest.object_deserializer)
 
 
 
-class CONBorgTest(lib.core.CONBorg):
+class CONBorgTest(condensation.core.CONBorg):
 
     _attribute_definitions = (
         {'name': 'string', 'type': 'string', 'default': 'string'},
@@ -52,12 +52,12 @@ class CONBorgTest(lib.core.CONBorg):
     _signal_list = (())
 
     def __init__(self):
-        lib.core.CONBorg.__init__(self)
+        condensation.core.CONBorg.__init__(self)
 
 
 
 
-class CONBorgTest2(lib.core.CONBorg):
+class CONBorgTest2(condensation.core.CONBorg):
 
     _attribute_definitions = (
         {'name': 'string', 'type': 'string', 'default': 'string'},
@@ -66,13 +66,13 @@ class CONBorgTest2(lib.core.CONBorg):
     _signal_list = (())
 
     def __init__(self):
-        lib.core.CONBorg.__init__(self)
+        condensation.core.CONBorg.__init__(self)
 
 
 
 
 
-class CONObjectCollectionTest(lib.core.CONObject):
+class CONObjectCollectionTest(condensation.core.CONObject):
 
     _attribute_definitions = (
         {'name': 'string', 'type': 'string[]', 'default': []},
@@ -82,10 +82,10 @@ class CONObjectCollectionTest(lib.core.CONObject):
     _signal_list = (())
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
 
 
-lib.core.CONObject.register_attribute_type(
+condensation.core.CONObject.register_attribute_type(
     'CONObjectCollectionTest',
     CONObjectCollectionTest.object_serializer,
     CONObjectCollectionTest.object_deserializer)
@@ -148,7 +148,7 @@ class TestCore(unittest.TestCase):
 
     def test_CONObject_inter_object(self):
         """
-        Test the locality of attributes. (In lib.core.CONObject the attributes are local to each object)
+        Test the locality of attributes. (In condensation.core.CONObject the attributes are local to each object)
         """
         obj1 = CONObjectTest()
         obj2 = CONObjectTest()
@@ -161,7 +161,7 @@ class TestCore(unittest.TestCase):
 
     def test_CONBorg_inter_object(self):
         """
-        Test the locality of attributes. (In lib.core.CONBorg the attributes are local to the class)
+        Test the locality of attributes. (In condensation.core.CONBorg the attributes are local to the class)
         """
         obj1 = CONBorgTest()
         obj2 = CONBorgTest()
@@ -173,7 +173,7 @@ class TestCore(unittest.TestCase):
 
     def test_CONBorg_inter_class(self):
         """
-        Test the locality of attributes. (In lib.core.CONBorg the attributes are local to the class)
+        Test the locality of attributes. (In condensation.core.CONBorg the attributes are local to the class)
         """
         obj1 = CONBorgTest()
         obj2 = CONBorgTest2()

@@ -24,14 +24,12 @@ import logging
 import tempfile
 import xml.etree.cElementTree as ET
 
-import lib
-import lib.core
-import lib.ui
 import condensation
+import condensation.core
 import condensation.ui
 
 
-class Main(lib.core.CONObject):
+class Main(condensation.core.CONObject):
 
     _attribute_definitions = (
         {'name': 'keymanager', 'type': 'KeyManager', 'default': None},
@@ -44,7 +42,7 @@ class Main(lib.core.CONObject):
 
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
 
 
 

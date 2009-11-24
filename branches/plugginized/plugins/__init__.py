@@ -17,12 +17,3 @@
 #    Free Software Foundation, Inc.,                                       #
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
-
-__all__ = []
-
-from apacheconfigparser import ApacheConfigParser
-from logsink import LogSink
-from main import Main
-from server import Server
-from serverlist import ServerList
-from vhost import VHost

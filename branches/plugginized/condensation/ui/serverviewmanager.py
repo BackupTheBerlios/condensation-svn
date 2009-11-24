@@ -20,21 +20,20 @@
 
 import gtk
 
-import lib.ui
-
+from resources import Resources
 from serverconfigview import ServerConfigView
-from sshterminalview import SSHTerminalView
+from viewmanager import ViewManager
 
-class ServerViewManager(lib.ui.ViewManager):
+class ServerViewManager(ViewManager):
 
     def __init__(self, containing_notebook, view_object):
-        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
+        ViewManager.__init__(self, containing_notebook, view_object)
 
-        lib.ui.Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
-        lib.ui.Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
+        Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
+        Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
 
-        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
-        lib.ui.Resources.load_pixbuf('ssh-terminal-icon', 'images/icons/ssh-terminal.svg')
+        Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+        Resources.load_pixbuf('ssh-terminal-icon', 'images/icons/ssh-terminal.svg')
 
         self.view_object.connect_signal('changed', self.on_server_changed)
 
@@ -42,8 +41,8 @@ class ServerViewManager(lib.ui.ViewManager):
         serverconfig = ServerConfigView(self.view_object)
         self.add_view(serverconfig, 'Config', 'configuration-icon')
 
-        sshterminal = SSHTerminalView(self.view_object)
-        self.add_view(sshterminal, 'SSH Terminal', 'ssh-terminal-icon')
+        #sshterminal = SSHTerminalView(self.view_object)
+        #self.add_view(sshterminal, 'SSH Terminal', 'ssh-terminal-icon')
 
 
         # populate toolbar
@@ -88,9 +87,9 @@ class ServerViewManager(lib.ui.ViewManager):
 
     def get_menu_icon(self):
         if self.view_object.get_connected():
-            return lib.ui.Resources.get_pixbuf('server-connected')
+            return Resources.get_pixbuf('server-connected')
         else:
-            return lib.ui.Resources.get_pixbuf('server-disconnected')
+            return Resources.get_pixbuf('server-disconnected')
 
 
 

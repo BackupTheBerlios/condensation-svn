@@ -24,8 +24,7 @@ import logging
 import threading
 import select
 
-import lib.core
-
+import condensation.core
 from proxyrequesthandler import ProxyRequestHandler
 
 

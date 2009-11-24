@@ -20,14 +20,16 @@
 
 import gtk
 
-import lib.ui
+from resources import Resources
+from viewmanager import ViewManager
 
-class ServerListViewManager(lib.ui.ViewManager):
+
+class ServerListViewManager(ViewManager):
 
     def __init__(self, containing_notebook, view_object):
-        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
+        ViewManager.__init__(self, containing_notebook, view_object)
 
-        lib.ui.Resources.load_pixbuf('server', 'images/icons/server.svg')
+        Resources.load_pixbuf('server', 'images/icons/server.svg')
 
 
 
@@ -37,6 +39,6 @@ class ServerListViewManager(lib.ui.ViewManager):
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('server')
+        return Resources.get_pixbuf('server')
 
 

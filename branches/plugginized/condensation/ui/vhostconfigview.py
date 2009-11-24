@@ -21,10 +21,9 @@
 
 import gtk
 
-import lib.ui
+from conobjectview import CONObjectView
 
-
-class VHostConfigView(lib.ui.CONObjectView):
+class VHostConfigView(CONObjectView):
 
 
     categories = (

@@ -26,12 +26,12 @@ import logging
 import md5
 import socket
 
-import lib.crypto
-import lib.core
+import condensation.crypto
+import condensation.core
 
 from vhost import VHost
 
-class Server(lib.core.CONObject):
+class Server(condensation.core.CONObject):
     """
     A (remote) apache installation including several VHosts.
     """
@@ -68,7 +68,7 @@ class Server(lib.core.CONObject):
 
         Registers the signals 'ask-password', 'changed' and 'unknown-key'.
         """
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
 
         # get us a logger
         self._logger = logging.getLogger('server')
@@ -120,7 +120,7 @@ class Server(lib.core.CONObject):
         Raises a 'ask-password' signal, when no password is given.
         """
         if not self._transport_live:
-            keymanager = lib.crypto.KeyManager()
+            keymanager = condensation.crypto.KeyManager()
 
             self._logger.info("%s : connecting" % self.host)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -227,7 +227,7 @@ class Server(lib.core.CONObject):
         """
         self.connect_to_server()
         if self._sftpfs == None:
-            self._sftpfs = lib.crypto.SFTPFileSystem(self._transport)
+            self._sftpfs = condensation.crypto.SFTPFileSystem(self._transport)
             self._sftpfs.home_dir = self.ssh_user_home
         return self._sftpfs
 
@@ -247,4 +247,4 @@ class Server(lib.core.CONObject):
 
 
 
-lib.core.CONObject.register_attribute_type('Server', Server.object_serializer, Server.object_deserializer)
+condensation.core.CONObject.register_attribute_type('Server', Server.object_serializer, Server.object_deserializer)

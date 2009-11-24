@@ -24,10 +24,10 @@ import xml.etree.ElementTree as ET
 from StringIO import StringIO
 
 
-import lib.core
+import condensation.core
 
 
-class Key(lib.core.CONObject):
+class Key(condensation.core.CONObject):
 
 
     _attribute_definitions = (())
@@ -35,7 +35,7 @@ class Key(lib.core.CONObject):
 
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
 
 
 
@@ -119,4 +119,4 @@ class Key(lib.core.CONObject):
 
 
 
-lib.core.CONObject.register_attribute_type('Key', Key.key_serializer, Key.key_deserializer)
+condensation.core.CONObject.register_attribute_type('Key', Key.key_serializer, Key.key_deserializer)

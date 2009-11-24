@@ -21,10 +21,10 @@
 
 import gtk
 
-import lib.ui
+from conobjectview import CONObjectView
 
 
-class ServerConfigView(lib.ui.CONObjectView):
+class ServerConfigView(CONObjectView):
 
     categories = (
         ('General', (

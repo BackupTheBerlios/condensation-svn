@@ -18,12 +18,12 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-import lib.core
+import condensation.core
 
 from server import Server
 
 
-class ServerList(lib.core.CONObject):
+class ServerList(condensation.core.CONObject):
 
     _attribute_definitions = (
         {'name': 'servers', 'type': 'Server[]', 'default': []},
@@ -33,7 +33,7 @@ class ServerList(lib.core.CONObject):
 
 
     def __init__(self):
-        lib.core.CONObject.__init__(self)
+        condensation.core.CONObject.__init__(self)
 
 
-lib.core.CONObject.register_attribute_type('ServerList', ServerList.object_serializer, ServerList.object_deserializer)
+condensation.core.CONObject.register_attribute_type('ServerList', ServerList.object_serializer, ServerList.object_deserializer)

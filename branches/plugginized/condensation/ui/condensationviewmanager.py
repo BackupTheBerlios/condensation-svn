@@ -20,27 +20,25 @@
 
 import gtk
 
-import lib.ui
-
-from pythonconsoleview import PythonConsoleView
+from viewmanager import ViewManager
 
 
-class CondensationViewManager(lib.ui.ViewManager):
+class CondensationViewManager(ViewManager):
 
 
     def __init__(self, containing_notebook, view_object):
-        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
+        ViewManager.__init__(self, containing_notebook, view_object)
 
-        lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
-        lib.ui.Resources.load_pixbuf('view-log-icon', 'images/icons/view-log.svg')
-        lib.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
+        condensation.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
+        condensation.ui.Resources.load_pixbuf('view-log-icon', 'images/icons/view-log.svg')
+        condensation.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
 
         # add views
-        logview = lib.ui.LogView(self.view_object._logsink)
+        logview = condensation.ui.LogView(self.view_object._logsink)
         self.add_view(logview, 'Application Log', 'view-log-icon')
 
-        consoleview = PythonConsoleView()
-        self.add_view(consoleview, 'Python Console', 'python-console-icon')
+        #consoleview = PythonConsoleView()
+        #self.add_view(consoleview, 'Python Console', 'python-console-icon')
 
 
 
@@ -50,5 +48,5 @@ class CondensationViewManager(lib.ui.ViewManager):
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('condensation-icon')
+        return condensation.ui.Resources.get_pixbuf('condensation-icon')
 

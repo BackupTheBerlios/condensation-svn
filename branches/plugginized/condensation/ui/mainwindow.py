@@ -23,11 +23,9 @@ import gtk
 import gtk.gdk
 import logging
 
-import lib.crypto
-import lib.ui
-
 import condensation
-
+from resources import Resources
+from treemenu import TreeMenu
 
 
 class MainWindow(gtk.Window):
@@ -37,8 +35,8 @@ class MainWindow(gtk.Window):
         self.set_title("Condensation")
         self.set_default_size(800, 600)
 
-        lib.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
-        self.set_icon(lib.ui.Resources.get_pixbuf('condensation-icon'))
+        Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
+        self.set_icon(Resources.get_pixbuf('condensation-icon'))
 
         # toolbar
         self._toolbar = gtk.Toolbar()
@@ -69,7 +67,7 @@ class MainWindow(gtk.Window):
 
 
         # treemenu
-        self._treemenu = lib.ui.TreeMenu()
+        self._treemenu = TreeMenu()
         sw_treemenu = gtk.ScrolledWindow()
         sw_treemenu.add(self._treemenu)
         sw_treemenu.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
