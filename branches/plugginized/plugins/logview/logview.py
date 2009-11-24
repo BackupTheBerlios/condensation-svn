@@ -25,7 +25,7 @@ import pango
 
 class LogView(gtk.VBox):
 
-    def __init__(self, logsink):
+    def __init__(self, main):
         gtk.VBox.__init__(self)
 
         scrolled_window =  gtk.ScrolledWindow()
@@ -48,10 +48,10 @@ class LogView(gtk.VBox):
             col.set_cell_data_func(cell, col_def[1])
             self.treeview.append_column(col)
 
-        for record in logsink.get_record_list():
+        for record in main._logsink.get_record_list():
             self.liststore.append([record])
 
-        logsink.connect_signal('new-record', self.new_record)
+        main._logsink.connect_signal('new-record', self.new_record)
 
         scrolled_window.add(self.treeview)
         scrolled_window.show_all()

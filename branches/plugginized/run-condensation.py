@@ -19,9 +19,11 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import cProfile
 import gobject
 import gtk
-import cProfile
+import logging
+import tempfile
 import time
 import xml.etree.cElementTree as ET
 
@@ -29,11 +31,57 @@ import condensation
 import condensation.ui
 
 
+def setup_logging():
+    # logging
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter("%(asctime)s|%(levelname)-7s|%(name)-18s - %(message)s")
+
+    # Log to a temporary file.
+    templog = tempfile.mkstemp('.log', 'condensation-')[1]
+    ch = logging.FileHandler(templog)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+    # Log to sys.stderr
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+    # Log to LogSink
+    logsink = condensation.LogSink()
+    logsink.setFormatter(formatter)
+    logger.addHandler(logsink)
+
+    logging.info('Logging started ...')
+
+
+
+
+
 def start_up():
     global splash_screen
 
-    et = ET.parse("condensation.conf.xml")
-    condensation.Main.object_deserializer(et.getroot())
+    setup_logging()
+
+    # load plugins
+    pluginmanager = condensation.PluginManager()
+    pluginmanager.load_plugins()
+
+    try:
+        # try to load configuraion
+        et = ET.parse("condensation.conf.xml")
+        condensation.Main.object_deserializer(et.getroot())
+    except IOError, e:
+        # probably file not found
+        logging.warn("Could not load configuration file")
+        main = condensation.Main()
+        main.setup()
+    except:
+        # oh, oh....
+        gtk.main_quit()
+        raise
 
     while gtk.events_pending():
         gtk.main_iteration()
@@ -54,7 +102,7 @@ def main():
     global splash_screen
     gobject.threads_init()
 
-    splash_screen = lib.ui.SplashScreen('images/splash.svg', 600, 400)
+    splash_screen = condensation.ui.SplashScreen('images/splash.svg', 600, 400)
     splash_screen.show()
 
     gobject.idle_add(start_up)

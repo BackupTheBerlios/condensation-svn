@@ -23,6 +23,7 @@ __all__ = []
 from apacheconfigparser import ApacheConfigParser
 from logsink import LogSink
 from main import Main
-from server import Server
+from pluginmanager import PluginManager
 from serverlist import ServerList
+from server import Server
 from vhost import VHost

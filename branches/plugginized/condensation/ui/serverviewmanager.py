@@ -20,6 +20,8 @@
 
 import gtk
 
+import condensation
+
 from resources import Resources
 from serverconfigview import ServerConfigView
 from viewmanager import ViewManager
@@ -41,9 +43,9 @@ class ServerViewManager(ViewManager):
         serverconfig = ServerConfigView(self.view_object)
         self.add_view(serverconfig, 'Config', 'configuration-icon')
 
-        #sshterminal = SSHTerminalView(self.view_object)
-        #self.add_view(sshterminal, 'SSH Terminal', 'ssh-terminal-icon')
-
+        for view_class in ViewManager._available_views[condensation.Server]:
+            view = view_class(view_object)
+            self.add_view(view, 'Python Console', 'python-console-icon')
 
         # populate toolbar
         self.connect_button = gtk.ToolButton(gtk.STOCK_CONNECT)

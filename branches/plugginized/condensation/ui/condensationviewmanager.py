@@ -20,6 +20,7 @@
 
 import gtk
 
+import condensation.ui
 from viewmanager import ViewManager
 
 
@@ -34,11 +35,9 @@ class CondensationViewManager(ViewManager):
         condensation.ui.Resources.load_pixbuf('python-console-icon', 'images/icons/python-terminal.svg')
 
         # add views
-        logview = condensation.ui.LogView(self.view_object._logsink)
-        self.add_view(logview, 'Application Log', 'view-log-icon')
-
-        #consoleview = PythonConsoleView()
-        #self.add_view(consoleview, 'Python Console', 'python-console-icon')
+        for view_class in ViewManager._available_views[condensation.Main]:
+            view = view_class(view_object)
+            self.add_view(view, 'Python Console', 'python-console-icon')
 
 
 

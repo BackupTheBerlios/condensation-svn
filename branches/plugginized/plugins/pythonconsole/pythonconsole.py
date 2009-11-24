@@ -42,9 +42,7 @@ import re
 
 import __main__
 
-import lib
-import lib.core
-
+from consolehistory import ConsoleHistory
 
 
 class PythonConsole(gtk.TextView, code.InteractiveConsole):
@@ -105,7 +103,7 @@ class PythonConsole(gtk.TextView, code.InteractiveConsole):
         self.ps2 = "... "
         self.in_raw_input = False
         self.tab_pressed = 0
-        self.history = lib.ConsoleHistory()
+        self.history = ConsoleHistory()
 
         self.__start()
         self.raw_input(self.ps1)

@@ -23,14 +23,7 @@ import gtkmozembed
 import logging
 
 
-# work around for segfault (not needed?)
-# see: https://bugs.launchpad.net/firefox/+bug/26436/comments/58
-#import os
-#if os.path.exists('/usr/lib/xulrunner-1.9.1'):
-#    gtkmozembed.set_comp_path('/usr/lib/xulrunner-1.9.1')
-
-
-class VHostMozEmbedView(gtk.VBox):
+class MozEmbedView(gtk.VBox):
 
 
     def __init__(self, vhost):
@@ -42,8 +35,8 @@ class VHostMozEmbedView(gtk.VBox):
 
         # controls
         self.combobox = gtk.combo_box_entry_new_text()
-        for domain in vhost.domains:
-            self.combobox.append_text('http://'+domain)
+        #for domain in vhost.domains:
+        #    self.combobox.append_text('http://'+domain)
         self.pack_start(self.combobox, expand=False, fill=True, padding=0)
 
         self.combobox.child.connect('activate', self.on_combobox_activate)

@@ -20,6 +20,10 @@
 
 
 __plugin_name__ = 'Python Console'
-__plugin_type__ = 'view'
-__plugin_object__ = 'Main'
 __doc__ = """provides a Python console"""
+
+def __install_plugin__():
+    import condensation
+    import condensation.ui
+    from pythonconsoleview import PythonConsoleView
+    condensation.ui.ViewManager.register_view(condensation.Main, PythonConsoleView)

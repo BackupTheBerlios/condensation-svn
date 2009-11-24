@@ -18,12 +18,12 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__plugin_name__ = 'Mozembed'
-__doc__ = """Provides a simple embedded browser."""
+__plugin_name__ = 'LogView'
+__doc__ = """display the application's logfile"""
 
 def __install_plugin__():
     import condensation
     import condensation.ui
-    from mozembedview import MozEmbedView
-    condensation.ui.ViewManager.register_view(condensation.Main, MozEmbedView)
+    from logview import LogView
+    condensation.ui.ViewManager.register_view(condensation.Main, LogView)
 

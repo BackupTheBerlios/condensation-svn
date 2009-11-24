@@ -30,18 +30,14 @@ class VHostViewManager(ViewManager):
     def __init__(self, containing_notebook, view_object):
         ViewManager.__init__(self, containing_notebook, view_object)
 
-        lib.ui.Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
-        lib.ui.Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
+        Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
+        Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
 
-        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+        Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
 
         # add views
         vhostconfig = VHostConfigView(self.view_object)
         self.add_view(vhostconfig, 'Config', 'configuration-icon')
-
-        #self.vhostmozembed = VHostMozEmbedView(self.view_object)
-        #self.add_view(self.vhostmozembed, 'MozEmbed', None)
-
 
 
 
@@ -51,7 +47,7 @@ class VHostViewManager(ViewManager):
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('vhost-disabled')
+        return Resources.get_pixbuf('vhost-disabled')
 
 
 

@@ -18,12 +18,45 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__plugin_name__ = 'Mozembed'
-__doc__ = """Provides a simple embedded browser."""
+import logging
+import os
+import sys
 
-def __install_plugin__():
-    import condensation
-    import condensation.ui
-    from mozembedview import MozEmbedView
-    condensation.ui.ViewManager.register_view(condensation.Main, MozEmbedView)
+import condensation.core
+
+class PluginManager(condensation.core.CONBorg):
+
+
+    _attribute_definitions = (())
+    _signal_list = (())
+
+
+    def __init__(self):
+        condensation.core.CONBorg.__init__(self)
+
+
+
+    def load_plugins(self):
+        for cname in os.listdir('plugins'):
+            path = os.path.abspath('plugins/'+cname)
+            if not os.path.isdir(path):
+                continue
+            if cname == '.svn':
+                continue
+            package_name = 'plugins.'+cname
+            if package_name in sys.modules:
+                print "Skipping already loaded plugin %s." % cname
+            else:
+                __import__(package_name)
+            self.install_plugin(sys.modules[package_name])
+
+
+
+    def install_plugin(self, module):
+        logger = logging.getLogger('PluginManager')
+        logger.info("installing plugin '%s'" % module.__plugin_name__)
+        if '__install_plugin__' not in module.__dict__:
+            logger.error("plugin %s is missing the __install_plugin__() function" % module.__plugin_name__)
+            return
+        module.__install_plugin__()
 

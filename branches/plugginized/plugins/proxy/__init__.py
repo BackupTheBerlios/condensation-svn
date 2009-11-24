@@ -20,6 +20,7 @@
 
 
 __plugin_name__ = 'Proxy Server'
-__plugin_type__ = 'global'
-__plugin_object__ = None # doesn't apply
 __doc__ = """With this Proxy Server you can redirect and intercept the communication between your browser and the server. This can be used in setting up and developing web-applications."""
+
+def __install_plugin__():
+    print "DUMMY INSTALL PROXY SERVER"

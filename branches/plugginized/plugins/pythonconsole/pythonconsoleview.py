@@ -20,14 +20,14 @@
 
 import gtk
 
-import lib.ui
+from pythonconsole import PythonConsole
 
 
 class PythonConsoleView(gtk.ScrolledWindow):
 
-    def __init__(self):
+    def __init__(self, main):
         gtk.ScrolledWindow.__init__(self)
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self._console = lib.ui.PythonConsole()
+        self._console = PythonConsole()
         self.add(self._console)
         self._console.show()

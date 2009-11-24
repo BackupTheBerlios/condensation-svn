@@ -19,6 +19,10 @@
 ############################################################################
 
 __plugin_name__ = 'SSH Terminal'
-__plugin_type__ = 'view'
-__plugin_object__ = 'Server'
 __doc__ = """Provides a SSH Terminal for each server."""
+
+def __install_plugin__():
+    import condensation
+    import condensation.ui
+    from sshterminalview import SSHTerminalView
+    condensation.ui.ViewManager.register_view(condensation.Server, SSHTerminalView)

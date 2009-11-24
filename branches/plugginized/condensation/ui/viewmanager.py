@@ -25,10 +25,18 @@ from resources import Resources
 
 class ViewManager(gtk.VBox):
 
-    def __init__(self, container_notebook):
+    # list of all available views for each object type
+    _available_views = {}
+
+
+    def __init__(self, container_notebook, view_object):
         gtk.VBox.__init__(self)
+
         self._container_notebook = container_notebook
         self._container_notebook_page = self._container_notebook.append_page(self)
+
+        self.view_object = view_object
+
         self._view_map = {}
 
         self._toolbar = gtk.Toolbar()
@@ -84,6 +92,14 @@ class ViewManager(gtk.VBox):
 
     def destroy(self):
         self._container_notebook.remove_page(self._container_notebook_page)
+
+
+
+    @classmethod
+    def register_view(cls, object_type, view):
+        if object_type not in cls._available_views:
+            cls._available_views[object_type] = []
+        cls._available_views[object_type].append(view)
 
 
 
