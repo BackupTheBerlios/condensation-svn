@@ -25,7 +25,6 @@ from coloredframe import ColoredFrame
 from condensationviewmanager import CondensationViewManager
 from conobjectview import CONObjectView
 from integerlistwidget import IntegerListWidget
-from logview import LogView
 from mainwindow import MainWindow
 from navigationhistory import NavigationHistory
 from resources import Resources
