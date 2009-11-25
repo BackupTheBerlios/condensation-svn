@@ -30,11 +30,10 @@ import condensation.ui
 
 class Main(condensation.core.CONObject):
 
-    _attribute_definitions = (
+    _attribute_definitions = [
         {'name': 'keymanager', 'type': 'KeyManager', 'default': None},
-#        {'name': 'proxy', 'type': 'ProxyServer', 'default': None},
         {'name': 'serverlist', 'type': 'ServerList', 'default': None},
-    )
+    ]
 
     _signal_list = (())
 

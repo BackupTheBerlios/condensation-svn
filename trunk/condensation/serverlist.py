@@ -25,9 +25,9 @@ from server import Server
 
 class ServerList(condensation.core.CONObject):
 
-    _attribute_definitions = (
+    _attribute_definitions = [
         {'name': 'servers', 'type': 'Server[]', 'default': []},
-    )
+    ]
 
     _signal_list = (())
 

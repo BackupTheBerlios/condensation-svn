@@ -24,11 +24,11 @@ import condensation.core
 
 class VHost(condensation.core.CONObject):
 
-    _attribute_definitions = (
+    _attribute_definitions = [
         {'name': 'name', 'type': 'string', 'default': ''},
         {'name': 'domains', 'type': 'string[]', 'default': ["test.com", "test2.com", "test3.com"]},
         {'name': 'document_root', 'type': 'string', 'default': '/var/www'},
-    )
+    ]
     _signal_list = (())
 
 

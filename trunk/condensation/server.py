@@ -36,7 +36,7 @@ class Server(condensation.core.CONObject):
     A (remote) apache installation including several VHosts.
     """
 
-    _attribute_definitions = (
+    _attribute_definitions = [
         {'name': 'name', 'type': 'string', 'default': 'no name'},
         {'name': 'host', 'type': 'string', 'default': 'example.com'},
         {'name': 'ssh_port', 'type': 'string', 'default': '22'},
@@ -55,7 +55,7 @@ class Server(condensation.core.CONObject):
         {'name': 'mysql_user', 'type': 'string', 'default': 'root'},
         {'name': 'mysql_password', 'type': 'string', 'default': ''},
         {'name': 'vhosts', 'type': 'VHost[]', 'default': []},
-    )
+    ]
 
     _signal_list = ('ask-password', 'changed', 'unknown-key', 'connected', 'disconnected')
 
