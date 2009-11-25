@@ -42,6 +42,7 @@ import re
 
 import __main__
 
+import condensation
 from consolehistory import ConsoleHistory
 
 
@@ -154,7 +155,7 @@ class PythonConsole(gtk.TextView, code.InteractiveConsole):
         completions = self.complete(word)
 
         if completions:
-            prefix = lib.core.Util.commonprefix(completions)
+            prefix = condensation.core.Util.commonprefix(completions)
             if prefix != word:
                 start_iter = self.__get_start()
                 start_iter.forward_chars(len(start))

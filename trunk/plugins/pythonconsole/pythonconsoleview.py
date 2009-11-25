@@ -42,5 +42,5 @@ class PythonConsoleView(gtk.ScrolledWindow):
 
 
     def get_name(self):
-        return "SSH Terminal"
+        return "Python Console"
 
