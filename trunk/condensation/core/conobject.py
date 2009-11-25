@@ -31,9 +31,9 @@ class CONObject(SignalSource):
     Base class for Condensation that provides typed attributes and serialization.
     """
 
-    _attribute_definitions = (
+    _attribute_definitions = [
             {'name': 'uuid', 'type': 'uuid', 'default': None},
-    )
+    ]
     _signal_list = ('attribute_changed',)
 
 
@@ -236,6 +236,22 @@ class CONObject(SignalSource):
             collection.add(val)
         return collection
 
+
+
+    @classmethod
+    def add_attribute(cls, attribute_definition):
+        cls._attribute_definitions.append(attribute_definition)
+        if cls in CONObject._class_registry:
+            # TODO: until there is a way to patch class instances (objects) this is disabled
+            raise Exception("Adding attributes to already realized classes is not yet fully implemented")
+            # class already realized -> patch class & subclasses
+            name = attribute_definition['name']
+            CONObject._class_registry[cls]['attributes'][name] = attribute_definition['default']
+            CONObject._class_registry[cls]['attributes_definition'][name] = attribute_definition
+
+            for c in cls.__subclasses__():
+                c.add_attribute(attribute_definition)
+            # TODO: patch objects ?!?!
 
 
     @classmethod
