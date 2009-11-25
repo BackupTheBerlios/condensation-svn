@@ -45,7 +45,7 @@ def setup_logging():
 
     # Log to sys.stderr
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(logging.WARNING)
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
@@ -62,6 +62,7 @@ def setup_logging():
 
 def start_up():
     global splash_screen
+    global main
 
     setup_logging()
 
@@ -72,7 +73,7 @@ def start_up():
     try:
         # try to load configuraion
         et = ET.parse("condensation.conf.xml")
-        condensation.Main.object_deserializer(et.getroot())
+        main = condensation.Main.object_deserializer(et.getroot())
     except IOError, e:
         # probably file not found
         logging.warn("Could not load configuration file")
@@ -94,8 +95,6 @@ def start_up():
     splash_screen.hide()
     splash_screen = None
 
-    #con = condensation.Main()
-    #con.setup()
 
 
 def main():
