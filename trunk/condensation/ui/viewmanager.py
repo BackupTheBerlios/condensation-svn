@@ -74,14 +74,25 @@ class ViewManager(gtk.VBox):
 
     def get_menu_icon(self):
         """
-        Return the item to be shown in the TreeView.
+        Return the icon to show in the TreeMenu.
         """
         raise Exception("Not Implemented!")
 
 
 
     def get_menu_name(self):
+        """
+        Return the text to show in the TreeMenu.
+        """
         raise Exception("Not Implemented!")
+
+
+
+    def get_uuid(self):
+        """
+        Return the uuid of the object the ViewManager manages.
+        """
+        return self.view_object.uuid
 
 
 

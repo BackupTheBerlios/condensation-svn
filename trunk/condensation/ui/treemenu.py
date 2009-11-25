@@ -67,10 +67,10 @@ class TreeMenu(gtk.TreeView):
     # add dapage to tree
     def append(self, viewmanager, parent=None):
         if parent != None:
-            piter = self._id_to_treeiter[id(parent)] # TODO: raise something if not found
-            self._id_to_treeiter[id(viewmanager)] = self.treestore.append(piter, (viewmanager,))
+            piter = self._id_to_treeiter[parent.get_uuid()] # TODO: raise something if not found
+            self._id_to_treeiter[viewmanager.get_uuid()] = self.treestore.append(piter, (viewmanager,))
         else:
-            self._id_to_treeiter[id(viewmanager)] = self.treestore.append(None, (viewmanager,))
+            self._id_to_treeiter[viewmanager.get_uuid()] = self.treestore.append(None, (viewmanager,))
         (path, col) = self.get_cursor()
         if path == None:
             self.set_cursor((0,))
@@ -78,8 +78,8 @@ class TreeMenu(gtk.TreeView):
 
     # remove dapage from tree
     def remove(self, viewmanager):
-        self.treestore.remove(self._id_to_treeiter[id(viewmanager)])
-        del self._id_to_treeiter[id(viewmanager)]
+        self.treestore.remove(self._id_to_treeiter[viewmanager.get_uuid()])
+        del self._id_to_treeiter[viewmanager.get_uuid()]
 
 
     # get selected dapage
@@ -89,12 +89,6 @@ class TreeMenu(gtk.TreeView):
             return self.treestore[path][0]
         else:
             return None
-
-
-
-
-
-
 
 
 
