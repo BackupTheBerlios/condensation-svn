@@ -23,4 +23,24 @@ __plugin_name__ = 'Proxy Server'
 __doc__ = """With this Proxy Server you can redirect and intercept the communication between your browser and the server. This can be used in setting up and developing web-applications."""
 
 def __install_plugin__():
-    print "DUMMY INSTALL PROXY SERVER"
+    import os.path
+    import condensation.core
+    import condensation
+    import condensation.ui
+    from proxyserver import ProxyServer
+    from proxyviewmanager import ProxyViewManager
+
+    condensation.core.CONObject.register_attribute_type(
+        'ProxyServer',
+        ProxyServer.object_serializer,
+        ProxyServer.object_deserializer
+    )
+
+    condensation.Main.add_attribute(
+        {'name': 'proxy', 'type': 'ProxyServer', 'default': None, 'navigatable': True}
+    )
+
+    condensation.ui.ViewManager.register_viewmanager('ProxyServer', ProxyViewManager)
+
+    condensation.ui.Resources.load_pixbuf('proxy-icon', os.path.join(__path__[0], 'proxy.svg'))
+

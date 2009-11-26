@@ -65,19 +65,18 @@ class MainWindow(gtk.Window):
         button.connect('clicked', self._quit_button_clicked)
         self._toolbar.insert(button, -1)
 
-
-        # treemenu
-        self._treemenu = TreeMenu()
-        sw_treemenu = gtk.ScrolledWindow()
-        sw_treemenu.add(self._treemenu)
-        sw_treemenu.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw_treemenu.set_size_request(200, 200)
-
         # notebook
         self._notebook = gtk.Notebook()
         self._notebook.set_property('show-border', False)
         self._notebook.set_property('scrollable', True)
         self._notebook.set_show_tabs(False)
+
+        # treemenu
+        self._treemenu = TreeMenu(self._notebook)
+        sw_treemenu = gtk.ScrolledWindow()
+        sw_treemenu.add(self._treemenu)
+        sw_treemenu.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        sw_treemenu.set_size_request(200, 200)
 
         paned = gtk.HPaned()
         paned.add1(sw_treemenu)

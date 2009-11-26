@@ -51,3 +51,6 @@ class VHostViewManager(ViewManager):
 
 
 
+# register with ViewManager
+ViewManager.register_viewmanager("VHost", VHostViewManager)
+

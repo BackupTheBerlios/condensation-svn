@@ -20,28 +20,26 @@
 
 import gtk
 
-import lib
-import lib.ui
+import condensation
+import condensation.ui
 
 from proxyconfigview import ProxyConfigView
 from proxyinterceptview import ProxyInterceptView
 from proxyredirectionsview import ProxyRedirectionsView
+from proxyserver import ProxyServer
 
 
-class ProxyViewManager(lib.ui.ViewManager):
+class ProxyViewManager(condensation.ui.ViewManager):
 
 
     def __init__(self, containing_notebook, view_object):
-        lib.ui.ViewManager.__init__(self, containing_notebook, view_object)
+        condensation.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
-        lib.ui.Resources.load_pixbuf('proxy-icon', 'images/icons/proxy.svg')
-        lib.ui.Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+        proxy = ProxyServer()
 
-        proxy = lib.ProxyServer()
-
-        self.add_view(ProxyConfigView(proxy), "Config", 'configuration-icon')
-        self.add_view(ProxyRedirectionsView(proxy), "Redirections", None)
-        self.add_view(ProxyInterceptView(), "Intercept", None)
+        self.add_view(ProxyConfigView(proxy))
+        self.add_view(ProxyRedirectionsView(proxy))
+        self.add_view(ProxyInterceptView(proxy))
 
 
     def get_menu_text(self):
@@ -49,5 +47,5 @@ class ProxyViewManager(lib.ui.ViewManager):
 
 
     def get_menu_icon(self):
-        return lib.ui.Resources.get_pixbuf('proxy-icon')
+        return condensation.ui.Resources.get_pixbuf('proxy-icon')
 

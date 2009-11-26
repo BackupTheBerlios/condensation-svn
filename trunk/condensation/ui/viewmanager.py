@@ -27,6 +27,7 @@ class ViewManager(gtk.VBox):
 
     # list of all available views for each object type
     _available_views = {}
+    _available_viewmanagers = {}
 
 
     def __init__(self, container_notebook, view_object):
@@ -113,6 +114,17 @@ class ViewManager(gtk.VBox):
         if object_type not in cls._available_views:
             cls._available_views[object_type] = []
         cls._available_views[object_type].append(view)
+
+
+
+    @classmethod
+    def register_viewmanager(cls, object_type, viewmanager):
+        """
+        :param object_type: this is the name, not the type object
+        """
+        if object_type in cls._available_viewmanagers:
+            raise Exception("Already registered a viewmanager for %s" % object_type.__name__)
+        cls._available_viewmanagers[object_type] = viewmanager
 
 
 

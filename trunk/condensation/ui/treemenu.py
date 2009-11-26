@@ -20,10 +20,14 @@
 
 import gtk
 
+from viewmanager import ViewManager
+
 class TreeMenu(gtk.TreeView):
 
-    def __init__(self):
+    def __init__(self, notebook):
         gtk.TreeView.__init__(self)
+
+        self._notebook = notebook
 
         # create the TreeView and related stuff
         self.cell_icon = gtk.CellRendererPixbuf()
@@ -64,17 +68,6 @@ class TreeMenu(gtk.TreeView):
         self.treestore[path][0].selected()
 
 
-    # add dapage to tree
-    def append(self, viewmanager, parent=None):
-        if parent != None:
-            piter = self._id_to_treeiter[parent.get_uuid()] # TODO: raise something if not found
-            self._id_to_treeiter[viewmanager.get_uuid()] = self.treestore.append(piter, (viewmanager,))
-        else:
-            self._id_to_treeiter[viewmanager.get_uuid()] = self.treestore.append(None, (viewmanager,))
-        (path, col) = self.get_cursor()
-        if path == None:
-            self.set_cursor((0,))
-
 
     # remove dapage from tree
     def remove(self, viewmanager):
@@ -82,7 +75,8 @@ class TreeMenu(gtk.TreeView):
         del self._id_to_treeiter[viewmanager.get_uuid()]
 
 
-    # get selected dapage
+
+    # get selected
     def get_selected(self):
         (path, col) = self.get_cursor()
         if path:
@@ -92,4 +86,29 @@ class TreeMenu(gtk.TreeView):
 
 
 
+    def build_menu(self, obj, parent=None):
+        if obj.__class__.__name__ in ViewManager._available_viewmanagers:
+            # create ViewManager
+            managerclass = ViewManager._available_viewmanagers[obj.__class__.__name__]
+            manager = managerclass(self._notebook, obj)
+            manager.show()
+            # add manager to tree
+            if parent != None:
+                piter = self._id_to_treeiter[parent.get_uuid()] # TODO: raise something if not found
+                self._id_to_treeiter[manager.get_uuid()] = self.treestore.append(piter, (manager,))
+            else:
+                self._id_to_treeiter[manager.get_uuid()] = self.treestore.append(None, (manager,))
+            (path, col) = self.get_cursor()
+            # if this is the first item in the tree, select it
+            if path == None:
+                self.set_cursor((0,))
+            # add children
+            for attr in obj.get_attribute_list():
+                attr_def = obj.get_attribute_definition(attr)
+                if attr_def.has_key('navigatable') and attr_def['navigatable']:
+                    if obj.is_attribute_collection(attr):
+                        for elem in obj.__getattr__(attr):
+                            self.build_menu(elem, manager)
+                    else:
+                        self.build_menu(obj.__getattr__(attr), manager)
 

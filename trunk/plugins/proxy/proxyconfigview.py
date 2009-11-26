@@ -26,10 +26,10 @@
 
 import gtk
 
-import lib.ui
+import condensation.ui
 
 
-class ProxyConfigView(lib.ui.CONObjectView):
+class ProxyConfigView(condensation.ui.CONObjectView):
 
     categories = (
         ('General', (
@@ -37,4 +37,12 @@ class ProxyConfigView(lib.ui.CONObjectView):
         )),
     )
 
+
+    def get_icon(self):
+        return condensation.ui.Resources.get_pixbuf('configuration-icon')
+
+
+
+    def get_name(self):
+        return "Configuration"
 

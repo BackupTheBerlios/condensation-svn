@@ -94,3 +94,6 @@ class ServerViewManager(ViewManager):
 
 
 
+
+# register with ViewManager
+ViewManager.register_viewmanager("Server", ServerViewManager)

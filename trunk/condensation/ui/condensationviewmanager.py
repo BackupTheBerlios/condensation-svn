@@ -20,7 +20,8 @@
 
 import gtk
 
-import condensation.ui
+import condensation
+from resources import Resources
 from viewmanager import ViewManager
 
 
@@ -30,7 +31,7 @@ class CondensationViewManager(ViewManager):
     def __init__(self, containing_notebook, view_object):
         ViewManager.__init__(self, containing_notebook, view_object)
 
-        condensation.ui.Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
+        Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
 
         # add views
         for view_class in ViewManager._available_views[condensation.Main]:
@@ -45,5 +46,8 @@ class CondensationViewManager(ViewManager):
 
 
     def get_menu_icon(self):
-        return condensation.ui.Resources.get_pixbuf('condensation-icon')
+        return Resources.get_pixbuf('condensation-icon')
 
+
+# register with ViewManager
+ViewManager.register_viewmanager('Main', CondensationViewManager)

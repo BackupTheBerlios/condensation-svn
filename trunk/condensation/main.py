@@ -21,7 +21,6 @@
 import gobject
 import gtk
 import logging
-import xml.etree.cElementTree as ET
 
 import condensation
 import condensation.core
@@ -31,8 +30,8 @@ import condensation.ui
 class Main(condensation.core.CONObject):
 
     _attribute_definitions = [
-        {'name': 'keymanager', 'type': 'KeyManager', 'default': None},
-        {'name': 'serverlist', 'type': 'ServerList', 'default': None},
+        {'name': 'keymanager', 'type': 'KeyManager', 'default': None, 'navigatable': True},
+        {'name': 'serverlist', 'type': 'ServerList', 'default': None, 'navigatable': True},
     ]
 
     _signal_list = (())
@@ -68,26 +67,9 @@ class Main(condensation.core.CONObject):
             main_window.connect("delete-event", self.delete_event)
             main_window.connect("save-action", self.save)
 
-            # create the manager objects
-            con_manager = condensation.ui.CondensationViewManager(main_window._notebook, self)
-            con_manager.show()
-            sl_manager = condensation.ui.ServerListViewManager(main_window._notebook, self.serverlist)
-            sl_manager.show()
-
             # populate treemenu
             treemenu = main_window._treemenu
-            treemenu.append(con_manager)
-            treemenu.append(sl_manager, con_manager)
-
-            for server in condensation.Server.servers:
-                svm = condensation.ui.ServerViewManager(main_window._notebook, server)
-                svm.show()
-                treemenu.append(svm, sl_manager)
-                for vhost in server.vhosts:
-                    vhvm = condensation.ui.VHostViewManager(main_window._notebook, vhost)
-                    vhvm.show()
-                    treemenu.append(vhvm, svm)
-
+            treemenu.build_menu(self)
             treemenu.expand_all()
 
             main_window.show()
@@ -101,6 +83,7 @@ class Main(condensation.core.CONObject):
 
 
     def save(self, source=None):
+        import xml.etree.cElementTree as ET
         logging.info("saving configuration ... ")
         root_elem = ET.Element("configuration")
         root_elem.text = "\n"

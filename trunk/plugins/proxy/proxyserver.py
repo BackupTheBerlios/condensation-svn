@@ -28,7 +28,7 @@ import condensation.core
 from proxyrequesthandler import ProxyRequestHandler
 
 
-class ProxyServer(lib.core.CONBorg):
+class ProxyServer(condensation.core.CONBorg):
 
     _attribute_definitions = (
         {'name': 'ports', 'type': 'integer[]', 'default': (8000,), 'min':1, 'max': 65535},
@@ -55,7 +55,13 @@ class ProxyServer(lib.core.CONBorg):
 
 
     def __init__(self):
-        lib.core.CONBorg.__init__(self)
+        condensation.core.CONBorg.__init__(self)
+        self._logger = logging.getLogger("ProxyServer")
+
+
+
+    def wakeup(self):
+        self.start()
 
 
 
@@ -66,9 +72,9 @@ class ProxyServer(lib.core.CONBorg):
         # check if they are running
         for port, thread in self._running_server_threads.iteritems():
             if thread.isAlive():
-                logging.getLogger("proxy").info("proxy on port %d is running" % port)
+                self._logger.info("proxy on port %d is running" % port)
             else:
-                logging.getLogger("proxy").error("proxy on port %d is NOT running" % port)
+                self._logger.error("proxy on port %d is NOT running" % port)
 
 
     def stop(self):
@@ -80,7 +86,7 @@ class ProxyServer(lib.core.CONBorg):
     def _start_server(self, port):
         if port in self._running_servers:
             raise Exception("A proxy already runs on port %d." % port)
-        logging.getLogger("proxy").info("starting proxy on port %d" % port)
+        self._logger.info("starting proxy on port %d" % port)
         server = self.ThreadedHTTPServer(('127.0.0.1', port), ProxyRequestHandler)
         name = "proxy%d" % port
         thread = threading.Thread(target=server.serve_forever, name=name)
@@ -92,14 +98,14 @@ class ProxyServer(lib.core.CONBorg):
 
 
     def _stop_server(self, port):
-        logging.getLogger("proxy").info("stopping proxy on port %d" % port)
+        self._logger.info("stopping proxy on port %d" % port)
         server = self._running_servers[port]
         server.shutdown()
         del self._running_servers[port]
         thread = self._running_server_threads[port]
         thread.join()
         del self._running_server_threads[port]
-        logging.getLogger("proxy").info("proxy on port %d stopped" % port)
+        self._logger.info("proxy on port %d stopped" % port)
 
 
 

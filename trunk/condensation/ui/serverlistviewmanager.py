@@ -42,3 +42,6 @@ class ServerListViewManager(ViewManager):
         return Resources.get_pixbuf('server')
 
 
+
+# register with ViewManager
+ViewManager.register_viewmanager("ServerList", ServerListViewManager)

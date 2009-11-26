@@ -23,5 +23,17 @@ import gtk
 
 class ProxyInterceptView(gtk.Label):
 
-    def __init__(self):
+    def __init__(self, view_object):
+        self.view_object = view_object
         gtk.Label.__init__(self, 'Placeholder')
+
+
+
+    def get_icon(self):
+        return None
+
+
+
+    def get_name(self):
+        return "Intercept"
+

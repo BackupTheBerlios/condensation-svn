@@ -132,6 +132,12 @@ class CONObject(SignalSource):
 
 
 
+    def is_attribute_collection(self, name):
+        m = self._re_collection.match(self.get_attribute_definition(name)['type'])
+        return m.group('indices') != None
+
+
+
     def wakeup(self):
         """
         This method gets called after deserialization.

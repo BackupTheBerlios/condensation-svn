@@ -56,3 +56,12 @@ class ProxyRedirectionsView(gtk.VBox):
 
 
 
+    def get_icon(self):
+        return None
+
+
+
+    def get_name(self):
+        return "Redirections"
+
+

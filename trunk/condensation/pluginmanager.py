@@ -27,7 +27,7 @@ import condensation.core
 class PluginManager(condensation.core.CONBorg):
 
 
-    _attribute_definitions = (())
+    _attribute_definitions = []
     _signal_list = (())
 
 

@@ -54,7 +54,7 @@ class Server(condensation.core.CONObject):
         {'name': 'mysql_host', 'type': 'string', 'default': 'localhost'},
         {'name': 'mysql_user', 'type': 'string', 'default': 'root'},
         {'name': 'mysql_password', 'type': 'string', 'default': ''},
-        {'name': 'vhosts', 'type': 'VHost[]', 'default': []},
+        {'name': 'vhosts', 'type': 'VHost[]', 'default': [], 'navigatable': True},
     ]
 
     _signal_list = ('ask-password', 'changed', 'unknown-key', 'connected', 'disconnected')
