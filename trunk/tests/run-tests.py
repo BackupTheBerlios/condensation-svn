@@ -18,7 +18,20 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import sys
+import unittest
 
-from lib_core import *
+sys.path.append('..')
+sys.path.append('.')
 
+import condensation_core
+# add more tests here
+
+
+suites = []
+for tc in unittest.TestCase.__subclasses__():
+    if tc.__module__ != 'unittest':
+        suites.append(unittest.TestLoader().loadTestsFromTestCase(tc))
+
+all_suites = unittest.TestSuite(suites)
+unittest.TextTestRunner(verbosity=2).run(all_suites)

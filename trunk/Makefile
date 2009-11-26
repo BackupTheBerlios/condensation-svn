@@ -18,12 +18,13 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-.PHONY: clean stats docs
+.PHONY: clean stats docs cachegrind tests
 
 
 clean:
 	@find . -regextype posix-extended -type f -iregex ".*(~|\.pyc)" -delete
 	@rm cachegrind.out
+	@rm .coverage
 
 
 stats:
@@ -38,3 +39,11 @@ docs:
 
 cachegrind:
 	@python scripts/pyprof2calltree.py -i profile.out -o cachegrind.out
+
+
+tests:
+	@echo -e "\n=========================== RUNNING TESTS ================================\n"
+	@python-coverage -x tests/run-tests.py
+	@echo -e "\n=========================== CODE COVERAGE ================================\n"
+	@python-coverage -r -o /usr
+

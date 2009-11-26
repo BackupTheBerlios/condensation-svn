@@ -196,8 +196,8 @@ class TestCore(unittest.TestCase):
 
         for x in xrange(20):
             obj = CONObjectTest()
-            obj.string = lib.core.Util.random_string(10)
-            obj.integer = lib.core.Util.random_integer(0, 100000)
+            obj.string = condensation.core.Util.random_string(10)
+            obj.integer = condensation.core.Util.random_integer(0, 100000)
             testobj.conobjtest.add(obj)
 
         print testobj.daobjtest
