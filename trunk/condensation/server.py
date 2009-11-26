@@ -64,7 +64,7 @@ class Server(condensation.core.CONObject):
 
     def __init__(self):
         """
-        Your standard init, calls DAObject.__init__().
+        Your standard init, calls `condensation.core.CONObject.__init__()`.
 
         Registers the signals 'ask-password', 'changed' and 'unknown-key'.
         """
@@ -97,7 +97,7 @@ class Server(condensation.core.CONObject):
         """
         Adds a vhost to the server and raises a 'changed' signal.
 
-        :param vhost: the `DAVHost` object
+        :param vhost: the `VHost` object
         """
         self.vhosts.append(vhost)
         vhost._server = self
@@ -223,7 +223,7 @@ class Server(condensation.core.CONObject):
 
     def get_sftp_filesystem(self):
         """
-        Open a SFTP connection from.
+        Open a SFTP connection and returns a `condensation.crypto.SFTPFileSystem`.
         """
         self.connect_to_server()
         if self._sftpfs == None:

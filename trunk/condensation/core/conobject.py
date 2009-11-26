@@ -118,7 +118,7 @@ class CONObject(SignalSource):
         """
         Returns the definition of an object-attribute.
 
-        :param attribute: attribute identifier
+        :param name: attribute name
         """
         return CONObject._class_registry[self.__class__]['attributes_definition'][name]
 

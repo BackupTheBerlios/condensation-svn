@@ -21,7 +21,7 @@
 
 class FileSystem(object):
     """
-    Base-class for all classes supporting filesystem functions. See `da.core.DALocalFileSystem` for one
+    Base-class for all classes supporting filesystem functions. See `condensation.core.LocalFileSystem` for one
     such class.
     """
 

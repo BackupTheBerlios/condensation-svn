@@ -34,7 +34,7 @@ class LocalFileSystem(FileSystem):
 
     def exists(self, path):
         """
-        See `DAFileSystem.exists`.
+        See `FileSystem.exists`.
         """
         return os.path.exists(self.construct_path(path))
 
@@ -42,7 +42,7 @@ class LocalFileSystem(FileSystem):
 
     def listdir(self, path):
         """
-        See `DAFileSystem.listdir`.
+        See `FileSystem.listdir`.
         """
         return os.listdir(self.construct_path(path))
 
@@ -50,7 +50,7 @@ class LocalFileSystem(FileSystem):
 
     def open(self, path, mode="r"):
         """
-        See `DAFileSystem.open`.
+        See `FileSystem.open`.
         """
         return open(self.construct_path(path), mode)
 
@@ -58,7 +58,7 @@ class LocalFileSystem(FileSystem):
 
     def mkdir(self, path):
         """
-        See `DAFileSystem.mkdir`.
+        See `FileSystem.mkdir`.
         """
         return os.mkdir(self.construct_path(path))
 
