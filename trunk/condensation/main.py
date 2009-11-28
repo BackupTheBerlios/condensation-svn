@@ -46,7 +46,7 @@ class Main(condensation.core.CONObject):
     def delete_event(widget, event, data=None):
         for server in condensation.Server.servers:
             server.disconnect()
-        #lib.ProxyServer().stop()
+        condensation.PluginManager().cleanup_plugins()
         gtk.main_quit()
 
 

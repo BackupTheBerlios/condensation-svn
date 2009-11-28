@@ -29,6 +29,7 @@ class PluginManager(condensation.core.CONBorg):
 
     _attribute_definitions = []
     _signal_list = (())
+    _plugin_modules = []
 
 
     def __init__(self):
@@ -55,8 +56,18 @@ class PluginManager(condensation.core.CONBorg):
     def install_plugin(self, module):
         logger = logging.getLogger('PluginManager')
         logger.info("installing plugin '%s'" % module.__plugin_name__)
+        self._plugin_modules.append(module)
         if '__install_plugin__' not in module.__dict__:
             logger.error("plugin %s is missing the __install_plugin__() function" % module.__plugin_name__)
             return
         module.__install_plugin__()
+
+
+
+    def cleanup_plugins(self):
+        logger = logging.getLogger('PluginManager')
+        for module in self._plugin_modules:
+            if '__cleanup_plugin__' in module.__dict__:
+                logger.info("cleaning up for plugin '%s'" % module.__plugin_name__)
+                module.__cleanup_plugin__()
 

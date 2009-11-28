@@ -44,3 +44,9 @@ def __install_plugin__():
 
     condensation.ui.Resources.load_pixbuf('proxy-icon', os.path.join(__path__[0], 'proxy.svg'))
 
+
+
+def __cleanup_plugin__():
+    from proxyserver import ProxyServer
+    ProxyServer().stop()
+
