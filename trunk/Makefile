@@ -18,27 +18,49 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-.PHONY: clean stats docs cachegrind tests
+.PHONY: cachegrind clean docs release stats tests
+
+VERSION=0.0.1
+#BUILDVERSION=$(VERSION)
+BUILDVERSION=$(VERSION)-svn.$(shell svnversion | sed 's/M$$//')
+
+# don't change the following
+RELEASEDIR=condensation-$(BUILDVERSION)
+RELEASEFILE=condensation-$(BUILDVERSION).tar.bz2
+DOCRELEASEFILE=condensation-docs-$(BUILDVERSION).tar.bz2
+
+cachegrind:
+	@python scripts/pyprof2calltree.py -i profile.out -o cachegrind.out
 
 
 clean:
+	@echo -e "\n============================ CLEANING UP =================================\n"
+	@rm -fr $(RELEASEDIR)
+	@rm -f $(RELEASEFILE)
 	@find . -regextype posix-extended -type f -iregex ".*(~|\.pyc)" -delete
-	@rm cachegrind.out
-	@rm .coverage
+	@rm -f cachegrind.out
+	@rm -f .coverage
 
+
+docs:
+	@echo -e "\n========================= BUILDING API DOCS ==============================\n"
+	@rm -fr docs
+	@epydoc --check --config scripts/epydoc.config
+
+
+release: docs clean
+	@echo -e "\n====================== MAKING REALEASE v$(BUILDVERSION) ===========================\n"
+	@mkdir $(RELEASEDIR)
+	@cp -R condensation images plugins COPYING run-condensation.py $(RELEASEDIR)
+	@tar --exclude=.svn -cjf $(RELEASEFILE) $(RELEASEDIR)
+	@rm -fr $(RELEASEDIR)
+	@tar -cjf $(DOCRELEASEFILE) docs
+	
 
 stats:
 	@echo "Statistics:"
 	@echo -n "Lines in .py files without empty lines: "
 	@find . -iname "*.py" | xargs cat -s | wc -l
-
-
-docs:
-	@epydoc --check --config scripts/epydoc.config
-
-
-cachegrind:
-	@python scripts/pyprof2calltree.py -i profile.out -o cachegrind.out
 
 
 tests:
