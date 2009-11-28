@@ -31,7 +31,7 @@ class Main(condensation.core.CONObject):
 
     _attribute_definitions = [
         {'name': 'keymanager', 'type': 'KeyManager', 'default': None, 'navigatable': True},
-        {'name': 'serverlist', 'type': 'ServerList', 'default': None, 'navigatable': True},
+        {'name': 'servers', 'type': 'Server[]', 'default': [], 'navigatable': True},
     ]
 
     _signal_list = (())
@@ -63,16 +63,16 @@ class Main(condensation.core.CONObject):
             self._navigationhistory = condensation.ui.NavigationHistory()
 
             # gui stuff
-            main_window = condensation.ui.MainWindow()
-            main_window.connect("delete-event", self.delete_event)
-            main_window.connect("save-action", self.save)
+            self._main_window = condensation.ui.MainWindow()
+            self._main_window.connect("delete-event", self.delete_event)
+            self._main_window.connect("save-action", self.save)
 
             # populate treemenu
-            treemenu = main_window._treemenu
+            treemenu = self._main_window._treemenu
             treemenu.build_menu(self)
             treemenu.expand_all()
 
-            main_window.show()
+            self._main_window.show()
 
             logging.info('setup finished!')
         except:
