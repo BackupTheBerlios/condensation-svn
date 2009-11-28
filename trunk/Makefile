@@ -22,7 +22,7 @@
 
 VERSION=0.0.1
 #BUILDVERSION=$(VERSION)
-BUILDVERSION=$(VERSION)-svn.$(shell svnversion | sed 's/M$$//')
+BUILDVERSION=$(VERSION)-svn.$(shell svnversion | sed 's/M$$//g' | sed 's/^.\+://g')
 
 # don't change the following
 RELEASEDIR=condensation-$(BUILDVERSION)
@@ -43,8 +43,10 @@ clean:
 
 
 docs:
-	@echo -e "\n========================= BUILDING API DOCS ==============================\n"
+	@echo -e "\n=========================== BUILDING DOCS ================================\n"
 	@rm -fr docs
+	@mkdir docs
+	@mkdir docs/api
 	@epydoc --check --config scripts/epydoc.config
 
 
