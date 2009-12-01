@@ -39,6 +39,13 @@ class CondensationViewManager(ViewManager):
             self.add_view(view)
 
 
+        # populate toolbar
+        button = gtk.ToolButton(gtk.STOCK_NEW)
+        button.show()
+        button.connect('clicked', self._new_server_button_clicked)
+        self._toolbar.insert(button, -1)
+
+
 
     def get_menu_text(self):
         return "Condensation"
@@ -47,6 +54,15 @@ class CondensationViewManager(ViewManager):
 
     def get_menu_icon(self):
         return Resources.get_pixbuf('condensation-icon')
+
+
+
+    def _new_server_button_clicked(self, button):
+        server = condensation.Server()
+        self.view_object.servers.append(server)
+        self.emit('children-changed')
+
+
 
 
 # register with ViewManager
