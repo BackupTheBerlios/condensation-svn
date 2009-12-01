@@ -38,8 +38,8 @@ class TreeMenu(gtk.TreeView):
         self.tvcol_icon_name.set_cell_data_func(self.cell_icon, self._object_pixbuf)
         self.tvcol_icon_name.set_cell_data_func(self.cell_name, self._object_str)
 
-        self.treestore = gtk.TreeStore(object)
-        self.set_model(self.treestore)
+        self._treestore = gtk.TreeStore(object)
+        self.set_model(self._treestore)
         self.append_column(self.tvcol_icon_name)
         self.connect("cursor_changed", self._cursor_changed)
         self.set_enable_search(False)
@@ -48,7 +48,7 @@ class TreeMenu(gtk.TreeView):
         self.get_selection().set_mode(gtk.SELECTION_SINGLE)
 
         # id => path mapping for inserting new children
-        self._id_to_treeiter = {}
+        self._uuid_to_treeiter = {}
 
 
     # cell data func for TreeView
@@ -65,14 +65,14 @@ class TreeMenu(gtk.TreeView):
     # callback for TreeView
     def _cursor_changed(self, treeview):
         (path, col) = self.get_cursor()
-        self.treestore[path][0].selected()
+        self._treestore[path][0].selected()
 
 
 
     # remove dapage from tree
     def remove(self, viewmanager):
-        self.treestore.remove(self._id_to_treeiter[viewmanager.get_uuid()])
-        del self._id_to_treeiter[viewmanager.get_uuid()]
+        self._treestore.remove(self._uuid_to_treeiter[viewmanager.get_uuid()])
+        del self._uuid_to_treeiter[viewmanager.get_uuid()]
 
 
 
@@ -80,26 +80,30 @@ class TreeMenu(gtk.TreeView):
     def get_selected(self):
         (path, col) = self.get_cursor()
         if path:
-            return self.treestore[path][0]
+            return self._treestore[path][0]
         else:
             return None
 
 
 
-    def build_menu(self, obj, parent=None):
+    def build_menu(self, root_obj):
+        self.root_obj = root_obj
+        self._treestore.clear()
+        self._build_menu(self.root_obj)
+
+
+
+    def _build_menu(self, obj, parent=None):
         if obj.__class__.__name__ in ViewManager._available_viewmanagers:
-            # create ViewManager
-            managerclass = ViewManager._available_viewmanagers[obj.__class__.__name__]
-            manager = managerclass(self._notebook, obj)
-            manager.show()
+            manager = self._create_manager_for_object(obj)
             # add manager to tree
             if parent != None:
-                piter = self._id_to_treeiter[parent.get_uuid()] # TODO: raise something if not found
-                self._id_to_treeiter[manager.get_uuid()] = self.treestore.append(piter, (manager,))
+                piter = self._uuid_to_treeiter[parent.get_uuid()]
+                self._uuid_to_treeiter[manager.get_uuid()] = self._treestore.append(piter, (manager,))
             else:
-                self._id_to_treeiter[manager.get_uuid()] = self.treestore.append(None, (manager,))
+                self._uuid_to_treeiter[manager.get_uuid()] = self._treestore.append(None, (manager,))
+            # if no object is selected (yet) select this
             (path, col) = self.get_cursor()
-            # if this is the first item in the tree, select it
             if path == None:
                 self.set_cursor((0,))
             # add children
@@ -108,7 +112,65 @@ class TreeMenu(gtk.TreeView):
                 if attr_def.has_key('navigatable') and attr_def['navigatable']:
                     if obj.is_attribute_collection(attr):
                         for elem in obj.__getattr__(attr):
-                            self.build_menu(elem, manager)
+                            self._build_menu(elem, manager)
                     else:
-                        self.build_menu(obj.__getattr__(attr), manager)
+                        self._build_menu(obj.__getattr__(attr), manager)
+            return manager
+        else:
+            return None
+
+
+    def _create_manager_for_object(self, obj):
+        manager = ViewManager.build_manager_for_object(self._notebook, obj)
+        manager.connect('children-changed', self._manager_children_changed)
+        manager.show()
+        return manager
+
+
+
+    def _manager_children_changed(self, manager):
+        print 'children changed'
+        child_uuids = [] # list of uuids as objects found
+        object_uuids = {} # map uuid -> object
+        menu_uuids = [] # uuids of managers already in menu
+        manager_uuids = {} # map uuid -> manager
+
+        # scan object for navigatable attributes
+        obj = manager.view_object
+        for attr_name in obj.get_attribute_list():
+            attr_def = obj.get_attribute_definition(attr_name)
+            if attr_def.has_key('navigatable') and attr_def['navigatable']:
+                attr_value = obj.__getattr__(attr_name)
+                if obj.is_attribute_collection(attr_name):
+                    for elem in attr_value:
+                        # add, if a viewmanager for the object exists
+                        if ViewManager.get_managerclass_for_object(elem):
+                            child_uuids.append(elem.uuid)
+                            object_uuids[elem.uuid] = elem
+                else:
+                    # add, if a viewmanager for the object exists
+                    if ViewManager.get_managerclass_for_object(attr_value):
+                        child_uuids.append(attr_value.uuid)
+                        object_uuids[attr_value.uuid] = attr_value
+
+        # collect uuid of children in treemenu
+        it = self._uuid_to_treeiter[manager.get_uuid()]
+        it = self._treestore.iter_children(it)
+        while it:
+            m = self._treestore.get_value(it, 0)
+            manager_uuids[m.get_uuid()] = m
+            menu_uuids.append(m.get_uuid())
+            it = self._treestore.iter_next(it)
+
+        # remove items that got deleted
+        for uuid in set(menu_uuids) - set(child_uuids):
+            print "removed "+str(uuid)
+            raise Exception('not implemented yet')
+        # add items that were inserted
+        for uuid in set(child_uuids) - set(menu_uuids):
+            print "added "+str(uuid)
+            self._build_menu(object_uuids[uuid], manager)
+            menu_uuids.append(uuid)
+
+        # TODO: sort
 
