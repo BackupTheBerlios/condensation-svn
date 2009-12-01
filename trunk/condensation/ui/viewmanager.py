@@ -77,7 +77,7 @@ class ViewManager(gtk.VBox):
         """
         Return the icon to show in the TreeMenu.
         """
-        raise Exception("Not Implemented!")
+        raise Exception('Not Implemented!')
 
 
 
@@ -85,7 +85,7 @@ class ViewManager(gtk.VBox):
         """
         Return the text to show in the TreeMenu.
         """
-        raise Exception("Not Implemented!")
+        raise Exception('Not Implemented!')
 
 
 
@@ -128,8 +128,27 @@ class ViewManager(gtk.VBox):
 
 
 
+    @classmethod
+    def get_managerclass_for_object(cls, obj):
+        if obj.__class__.__name__ in cls._available_viewmanagers:
+            return cls._available_viewmanagers[obj.__class__.__name__]
+        else:
+            return None
+
+
+
+    @classmethod
+    def build_manager_for_object(cls, container_notebook, obj):
+        managerclass = cls._available_viewmanagers[obj.__class__.__name__]
+        manager = managerclass(container_notebook, obj)
+        return manager
+
+
+
+
 # register signal 'changed' with gobject
 gobject.type_register(ViewManager)
-gobject.signal_new("view-selected", ViewManager, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+gobject.signal_new('view-selected', ViewManager, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+gobject.signal_new('children-changed', ViewManager, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
 
 
