@@ -173,4 +173,4 @@ class TreeMenu(gtk.TreeView):
             menu_uuids.append(uuid)
 
         # TODO: sort
-
+        # see: http://library.gnome.org/devel/pygtk/stable/class-gtktreestore.html#method-gtktreestore--reorder
