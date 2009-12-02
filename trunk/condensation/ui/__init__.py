@@ -29,7 +29,6 @@ from mainwindow import MainWindow
 from navigationhistory import NavigationHistory
 from resources import Resources
 from splashscreen import SplashScreen
-from serverlistviewmanager import ServerListViewManager
 from serverviewmanager import ServerViewManager
 from stringlistwidget import StringListWidget
 from treemenu import TreeMenu
