@@ -50,7 +50,12 @@ docs:
 	@epydoc --check --config scripts/epydoc.config
 
 
-release: docs clean
+release:
+	@if svn st | grep -v "^?" > /dev/null; then\
+		echo "Local modifications found, commit them first"; \
+		exit -1; \
+	fi;
+	@make docs clean
 	@echo -e "\n====================== MAKING REALEASE v$(BUILDVERSION) ===========================\n"
 	@mkdir $(RELEASEDIR)
 	@cp -R condensation images plugins COPYING run-condensation.py $(RELEASEDIR)
