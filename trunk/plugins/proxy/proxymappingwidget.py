@@ -21,6 +21,7 @@
 import gobject
 import gtk
 
+import condensation
 
 class ProxyMappingWidget(gtk.Frame):
     """
@@ -65,7 +66,7 @@ class ProxyMappingWidget(gtk.Frame):
 
         # target column
         self._target_values = gtk.ListStore(gobject.TYPE_STRING)
-        self._target_values.append(('Test',))
+        self._update_target_values()
 
         self.column_target = gtk.TreeViewColumn('Connect To')
         self.treeview.append_column(self.column_target)
@@ -112,7 +113,10 @@ class ProxyMappingWidget(gtk.Frame):
 
 
 
-
+    def _update_target_values(self):
+        self._target_values.clear()
+        for server in condensation.Main().servers:
+            self._target_values.append((server.host,))
 
 
 

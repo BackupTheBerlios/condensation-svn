@@ -42,7 +42,7 @@ class ProxyRedirectionsView(gtk.VBox):
                         domains_suggested[domain] = []
                     domains_suggested[domain].append(vhost)
                     if domain not in domain_map:
-                        domain_map[domain] = (False, vhost._server.name)
+                        domain_map[domain] = (False, vhost._server.host)
 
         if '*' not in domain_map:
             domain_map['*'] = (False, '')

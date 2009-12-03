@@ -66,7 +66,7 @@ release:
 
 stats:
 	@echo "Statistics:"
-	@echo -n "Lines in .py files without empty lines: "
+	@echo -n "Lines in .py files not counting empty lines: "
 	@find . -iname "*.py" | xargs cat -s | wc -l
 
 
