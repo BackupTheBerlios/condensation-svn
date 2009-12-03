@@ -62,7 +62,6 @@ def setup_logging():
 
 def start_up():
     global splash_screen
-    global main
 
     setup_logging()
 

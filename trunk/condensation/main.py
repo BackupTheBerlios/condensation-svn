@@ -27,7 +27,7 @@ import condensation.core
 import condensation.ui
 
 
-class Main(condensation.core.CONObject):
+class Main(condensation.core.CONBorg):
 
     _attribute_definitions = [
         {'name': 'keymanager', 'type': 'KeyManager', 'default': None, 'navigatable': True},
@@ -39,7 +39,7 @@ class Main(condensation.core.CONObject):
 
 
     def __init__(self):
-        condensation.core.CONObject.__init__(self)
+        condensation.core.CONBorg.__init__(self)
 
 
 
