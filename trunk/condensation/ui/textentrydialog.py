@@ -18,12 +18,49 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
+import gtk
 
-from apacheconfigparser import ApacheConfigParser
-from exceptions import *
-from logsink import LogSink
-from main import Main
-from pluginmanager import PluginManager
-from server import Server
-from vhost import VHost
+class TextEntryDialog(gtk.MessageDialog):
+
+    def __init__(self, title, text, label, info='', input_hidden=False):
+        gtk.MessageDialog.__init__(
+            self,
+            parent=None,
+            flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            type=gtk.MESSAGE_QUESTION,
+            buttons=gtk.BUTTONS_OK_CANCEL,
+            message_format=None)
+        self.set_title(title)
+        self.set_markup(text)
+        self.entry = gtk.Entry()
+        self.entry.set_visibility(not input_hidden)
+        self.entry.connect("activate", self._entry_activated, gtk.RESPONSE_OK)
+
+        hbox = gtk.HBox()
+        hbox.pack_start(gtk.Label(label), False, 5, 5)
+        hbox.pack_end(self.entry)
+
+        self.format_secondary_markup(info)
+        self.vbox.pack_end(hbox, True, True, 0)
+        self.vbox.show_all()
+
+
+
+    def _entry_activated(self, entry, response):
+        self.response(response)
+
+
+
+    def get_entry_text(self):
+        return self.entry.get_text()
+
+
+
+    @classmethod
+    def run_dialog(cls, title, text, label, info, input_hidden):
+        dia = cls(title, text, label, info, input_hidden)
+        dia.run()
+        text_input = dia.get_entry_text()
+        dia.hide()
+        dia.destroy()
+        return text_input

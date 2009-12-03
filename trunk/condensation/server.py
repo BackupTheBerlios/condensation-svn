@@ -29,6 +29,7 @@ import socket
 import condensation.crypto
 import condensation.core
 
+from exceptions import *
 from vhost import VHost
 
 class Server(condensation.core.CONObject):
@@ -57,7 +58,7 @@ class Server(condensation.core.CONObject):
         {'name': 'vhosts', 'type': 'VHost[]', 'default': [], 'navigatable': True},
     ]
 
-    _signal_list = ('ask-password', 'changed', 'unknown-key', 'connected', 'disconnected')
+    _signal_list = ('changed', 'unknown-key', 'connected', 'disconnected')
 
     servers = [] #: list of all Server objects
 
@@ -154,23 +155,21 @@ class Server(condensation.core.CONObject):
                     raise e
                 # Try password authentication
                 self._logger.info("%s : trying password based authentication" % self.host)
-                while 1: # Try until the user provides the right password
-                    self.raise_signal('ask-password') # get us a password
-                    try:
-                        self._transport.auth_password(username=self.ssh_user, password=self._ssh_password, fallback=True)
-                    except Exception, e:
-                        if isinstance(e, paramiko.BadAuthenticationType):
-                            self._logger.warning("%s : password authentication not supported" % self.host)
-                            self._transport.close()
-                            self._logger.warning("%s : Giving up..." % self.host)
-                            return
-                        elif isinstance(e, paramiko.AuthenticationException):
-                            self._logger.warning("%s : password authentication FAILED (probably wrong password)" % self.host)
-                        else:
-                            self._logger.error("something strange happened")
-                            raise e
+                if not self._ssh_password:
+                    raise PasswordRequiredException()
+                try:
+                    self._transport.auth_password(username=self.ssh_user, password=self._ssh_password, fallback=True)
+                except Exception, e:
+                    if isinstance(e, paramiko.BadAuthenticationType):
+                        self._logger.warning("%s : password authentication not supported" % self.host)
+                        self._transport.close()
+                        self._logger.warning("%s : Giving up..." % self.host)
+                        return
+                    elif isinstance(e, paramiko.AuthenticationException):
+                        self._logger.warning("%s : password authentication FAILED (probably wrong password)" % self.host)
                     else:
-                        break # it worked .....
+                        self._logger.error("something strange happened")
+                        raise e
 
             self._logger.info("authenticated connection to server %s" % self.host)
             self._transport_live = True

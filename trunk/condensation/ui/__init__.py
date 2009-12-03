@@ -31,6 +31,7 @@ from resources import Resources
 from splashscreen import SplashScreen
 from serverviewmanager import ServerViewManager
 from stringlistwidget import StringListWidget
+from textentrydialog import TextEntryDialog
 from treemenu import TreeMenu
 from vhostviewmanager import VHostViewManager
 from viewmanager import ViewManager

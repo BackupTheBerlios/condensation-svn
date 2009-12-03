@@ -24,6 +24,7 @@ import condensation
 
 from resources import Resources
 from serverconfigview import ServerConfigView
+from textentrydialog import TextEntryDialog
 from viewmanager import ViewManager
 
 class ServerViewManager(ViewManager):
@@ -62,7 +63,18 @@ class ServerViewManager(ViewManager):
 
 
     def action_connect(self, action=None):
-         self.view_object.connect_to_server()
+        try:
+            self.view_object.connect_to_server()
+        except condensation.PasswordRequiredException, e:
+            passwd = TextEntryDialog.run_dialog(
+                'password required',
+                'Please enter your password for user <b>%s</b> on <b>%s</b>' % (self.view_object.ssh_user, self.view_object.host),
+                'password',
+                'The password will <b>not</b> be saved.',
+                True)
+            self.view_object._ssh_password = passwd
+            self.view_object.connect_to_server()
+
 
 
 

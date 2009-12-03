@@ -18,12 +18,5 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
-
-from apacheconfigparser import ApacheConfigParser
-from exceptions import *
-from logsink import LogSink
-from main import Main
-from pluginmanager import PluginManager
-from server import Server
-from vhost import VHost
+class PasswordRequiredException(Exception):
+    """Raised, when a password is required to continue."""
