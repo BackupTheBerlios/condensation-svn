@@ -32,20 +32,7 @@ class ServerViewManager(ViewManager):
     def __init__(self, containing_notebook, view_object):
         ViewManager.__init__(self, containing_notebook, view_object)
 
-        Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
-        Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
-
-        Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
-
         self.view_object.connect_signal('changed', self.on_server_changed)
-
-        # add views
-        serverconfig = ServerConfigView(self.view_object)
-        self.add_view(serverconfig)
-
-        for view_class in ViewManager._available_views[condensation.Server]:
-            view = view_class(view_object)
-            self.add_view(view)
 
         # populate toolbar
         self.connect_button = gtk.ToolButton(gtk.STOCK_CONNECT)

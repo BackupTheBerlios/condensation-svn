@@ -28,10 +28,23 @@ from integerlistwidget import IntegerListWidget
 from mainwindow import MainWindow
 from navigationhistory import NavigationHistory
 from resources import Resources
-from splashscreen import SplashScreen
+from serverconfigview import ServerConfigView
 from serverviewmanager import ServerViewManager
+from splashscreen import SplashScreen
 from stringlistwidget import StringListWidget
 from textentrydialog import TextEntryDialog
 from treemenu import TreeMenu
+from vhostconfigview import VHostConfigView
 from vhostviewmanager import VHostViewManager
 from viewmanager import ViewManager
+
+
+Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
+Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
+Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
+Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
+Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+
+
+ViewManager.register_view('Server', ServerConfigView)
+ViewManager.register_view('VHost', VHostConfigView)

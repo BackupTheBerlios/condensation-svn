@@ -33,12 +33,6 @@ class CondensationViewManager(ViewManager):
 
         Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
 
-        # add views
-        for view_class in ViewManager._available_views[condensation.Main]:
-            view = view_class(view_object)
-            self.add_view(view)
-
-
         # populate toolbar
         button = gtk.ToolButton(gtk.STOCK_NEW)
         button.show()

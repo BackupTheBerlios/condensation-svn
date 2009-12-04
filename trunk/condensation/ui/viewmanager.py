@@ -49,6 +49,13 @@ class ViewManager(gtk.VBox):
         self.pack_start(self._toolbar, expand=False)
         self.pack_start(self._notebook, expand=True)
 
+        # add views
+        if view_object.__class__.__name__ in self._available_views:
+            for view_class in self._available_views[view_object.__class__.__name__]:
+                view = view_class(view_object)
+                self.add_view(view)
+
+
 
 
     def add_view(self, widget):

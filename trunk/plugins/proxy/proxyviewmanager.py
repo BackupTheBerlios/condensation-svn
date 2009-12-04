@@ -35,12 +35,6 @@ class ProxyViewManager(condensation.ui.ViewManager):
     def __init__(self, containing_notebook, view_object):
         condensation.ui.ViewManager.__init__(self, containing_notebook, view_object)
 
-        proxy = ProxyServer()
-
-        self.add_view(ProxyConfigView(proxy))
-        self.add_view(ProxyRedirectionsView(proxy))
-        self.add_view(ProxyInterceptView(proxy))
-
 
     def get_menu_text(self):
         return "Proxy"

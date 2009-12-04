@@ -25,5 +25,5 @@ def __install_plugin__():
     import condensation
     import condensation.ui
     from mozembedview import MozEmbedView
-    condensation.ui.ViewManager.register_view(condensation.Main, MozEmbedView)
+    condensation.ui.ViewManager.register_view('Main', MozEmbedView)
 

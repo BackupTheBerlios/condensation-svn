@@ -28,6 +28,6 @@ def __install_plugin__():
     import condensation
     import condensation.ui
     from pythonconsoleview import PythonConsoleView
-    condensation.ui.ViewManager.register_view(condensation.Main, PythonConsoleView)
+    condensation.ui.ViewManager.register_view('Main', PythonConsoleView)
     condensation.ui.Resources.load_pixbuf('python-console-icon', os.path.join(__path__[0], 'python-console.svg'))
 

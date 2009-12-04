@@ -30,16 +30,6 @@ class VHostViewManager(ViewManager):
     def __init__(self, containing_notebook, view_object):
         ViewManager.__init__(self, containing_notebook, view_object)
 
-        Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
-        Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
-
-        Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
-
-        # add views
-        vhostconfig = VHostConfigView(self.view_object)
-        self.add_view(vhostconfig)
-
-
 
     def get_menu_text(self):
         return self.view_object.name

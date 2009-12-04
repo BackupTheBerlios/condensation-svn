@@ -27,5 +27,5 @@ def __install_plugin__():
     import condensation
     import condensation.ui
     from logview import LogView
-    condensation.ui.ViewManager.register_view(condensation.Main, LogView)
+    condensation.ui.ViewManager.register_view('Main', LogView)
     condensation.ui.Resources.load_pixbuf('log-view-icon', os.path.join(__path__[0], 'log-view.svg'))
