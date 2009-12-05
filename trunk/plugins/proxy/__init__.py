@@ -40,7 +40,7 @@ def __install_plugin__():
     )
 
     condensation.Main.add_attribute(
-        {'name': 'proxy', 'type': 'ProxyServer', 'default': None, 'navigatable': True}
+        {'name': 'proxy', 'type': 'ProxyServer', 'default': ProxyServer(), 'navigatable': True}
     )
 
     condensation.ui.ViewManager.register_viewmanager('ProxyServer', ProxyViewManager)
