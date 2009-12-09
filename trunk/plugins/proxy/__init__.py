@@ -33,6 +33,8 @@ def __install_plugin__():
     from proxyinterceptview import ProxyInterceptView
     from proxyredirectionsview import ProxyRedirectionsView
 
+    condensation.ui.Resources.load_pixbuf('proxy-icon', os.path.join(__path__[0], 'proxy.svg'))
+
     condensation.core.CONObject.register_attribute_type(
         'ProxyServer',
         ProxyServer.object_serializer,
@@ -44,8 +46,6 @@ def __install_plugin__():
     )
 
     condensation.ui.ViewManager.register_viewmanager('ProxyServer', ProxyViewManager)
-
-    condensation.ui.Resources.load_pixbuf('proxy-icon', os.path.join(__path__[0], 'proxy.svg'))
 
     condensation.ui.ViewManager.register_view('ProxyServer', ProxyConfigView)
     condensation.ui.ViewManager.register_view('ProxyServer', ProxyInterceptView)
