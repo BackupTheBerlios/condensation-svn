@@ -25,12 +25,13 @@ import logging
 import condensation
 import condensation.core
 import condensation.ui
+import condensation.crypto
 
 
 class Main(condensation.core.CONBorg):
 
     _attribute_definitions = [
-        {'name': 'keymanager', 'type': 'KeyManager', 'default': None, 'navigatable': True},
+        {'name': 'keymanager', 'type': 'KeyManager', 'default': condensation.crypto.KeyManager(), 'navigatable': True},
         {'name': 'servers', 'type': 'Server[]', 'default': [], 'navigatable': True},
     ]
 
