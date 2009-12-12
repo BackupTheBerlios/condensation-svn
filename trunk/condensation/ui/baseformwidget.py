@@ -18,34 +18,64 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-__all__ = []
-
+import gobject
 
 from coloredframe import ColoredFrame
-from condensationviewmanager import CondensationViewManager
-from conobjectview import CONObjectView
-from formwidgetfactory import FormWidgetFactory
-from integerlistwidget import IntegerListWidget
-from mainwindow import MainWindow
-from navigationhistory import NavigationHistory
-from resources import Resources
-from serverconfigview import ServerConfigView
-from serverviewmanager import ServerViewManager
-from splashscreen import SplashScreen
-from stringlistwidget import StringListWidget
-from textentrydialog import TextEntryDialog
-from treemenu import TreeMenu
-from vhostconfigview import VHostConfigView
-from vhostviewmanager import VHostViewManager
-from viewmanager import ViewManager
+
+class BaseFormWidget(ColoredFrame):
 
 
-Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
-Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
-Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
-Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
-Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+    def __init__(self, conobj, attr):
+        ColoredFrame.__init__(self)
+        self._conobj = conobj
+        self._attr = attr
+        self._start_value = self._conobj.__getattr__(self._attr)
+        self._modified = False
 
 
-ViewManager.register_view('Server', ServerConfigView)
-ViewManager.register_view('VHost', VHostConfigView)
+    def _get_value(self):
+        """
+        Get the widget's value.
+        """
+        raise Exception('Not implemented!')
+
+
+    def _set_value(self, value):
+        """
+        Set the widget's value.
+        """
+        raise Exception('Not implemented!')
+
+
+    def apply(self):
+        value = self._get_value()
+        self._conobj.__setattr__(self._attr, value)
+        self._start_value = value
+        self._update_modified()
+
+
+    def reset(self):
+        self._set_value(self._start_value)
+        self._update_modified()
+
+
+    def _update_modified(self):
+        old_modified = self._modified
+        if self._get_value() == self._start_value:
+            self._modified = False
+            self.set_color()
+        else:
+            self._modified = True
+            self.set_color('#ff0000')
+
+        if self._modified != old_modified:
+            self.emit('changed')
+
+
+    def is_modified(self):
+        return self._modified
+
+
+# register signal 'changed' with gobject
+gobject.type_register(BaseFormWidget)
+gobject.signal_new('changed', BaseFormWidget, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
