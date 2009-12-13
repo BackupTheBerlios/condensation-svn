@@ -44,7 +44,7 @@ class Main(condensation.core.CONBorg):
 
 
 
-    def delete_event(widget, event, data=None):
+    def delete(widget=None, event=None, data=None):
         for server in condensation.Server.servers:
             server.disconnect()
         condensation.PluginManager().cleanup_plugins()
@@ -65,7 +65,7 @@ class Main(condensation.core.CONBorg):
 
             # gui stuff
             self._main_window = condensation.ui.MainWindow()
-            self._main_window.connect("delete-event", self.delete_event)
+            self._main_window.connect("delete-event", self.delete)
             self._main_window.connect("save-action", self.save)
 
             # populate treemenu
