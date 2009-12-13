@@ -92,7 +92,3 @@ class ServerViewManager(ViewManager):
             return Resources.get_pixbuf('server-disconnected')
 
 
-
-
-# register with ViewManager
-ViewManager.register_viewmanager("Server", ServerViewManager)

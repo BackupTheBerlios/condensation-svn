@@ -40,7 +40,3 @@ class VHostViewManager(ViewManager):
         return Resources.get_pixbuf('vhost-disabled')
 
 
-
-# register with ViewManager
-ViewManager.register_viewmanager("VHost", VHostViewManager)
-

@@ -25,7 +25,7 @@ from stringlistformwidget import StringListFormWidget
 
 class FormWidgetFactory(object):
 
-
+    _registry = []
 
     def __init__(self):
         pass
@@ -33,18 +33,13 @@ class FormWidgetFactory(object):
 
     def create_widget(self, conobj, attr):
         definition = conobj.get_attribute_definition(attr)
-        if definition['type'] == 'boolean':
-            return BooleanFormWidget(conobj, attr)
-        elif definition['type'] == 'integer[]':
-            return IntegerListFormWidget(conobj, attr)
-        elif definition['type'] == 'string':
-            return StringFormWidget(conobj, attr)
-        elif definition['type'] == 'string[]':
-            return StringListFormWidget(conobj, attr)
-        else:
-            raise Exception("Unknown type '%s'" % type)
+        for widget in self._registry:
+            if widget.can_handle(definition):
+                return widget(conobj, attr)
+        raise Exception("Found no widget to handle attribute with definition "+str(definition))
 
 
 
-    def register_widget(self, attribute_definition):
-        pass
+    @classmethod
+    def register_widget(cls, widget):
+        cls._registry.append(widget)

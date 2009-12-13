@@ -30,6 +30,11 @@ class StringListFormWidget(BaseFormWidget):
         self.add(self._widget)
 
 
+    @classmethod
+    def can_handle(cls, attribute_definition):
+        return attribute_definition['type'] == 'string[]'
+
+
     def _get_value(self):
         return self._widget.get_list()
 

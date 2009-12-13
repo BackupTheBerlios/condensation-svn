@@ -56,8 +56,3 @@ class CondensationViewManager(ViewManager):
         self.view_object.servers.append(server)
         self.emit('children-changed')
 
-
-
-
-# register with ViewManager
-ViewManager.register_viewmanager('Main', CondensationViewManager)

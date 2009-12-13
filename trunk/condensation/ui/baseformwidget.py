@@ -33,6 +33,15 @@ class BaseFormWidget(ColoredFrame):
         self._modified = False
 
 
+    @classmethod
+    def can_handle(cls, attribute_definition):
+        """
+        Check wether the class can handle a attribute with the given
+        definition or not.
+        """
+        raise Exception('Not implemented!')
+
+
     def _get_value(self):
         """
         Get the widget's value.

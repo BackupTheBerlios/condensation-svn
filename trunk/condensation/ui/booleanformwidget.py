@@ -31,6 +31,11 @@ class BooleanFormWidget(BaseFormWidget):
         self._widget.connect('toggled', self._toggled_callback)
 
 
+    @classmethod
+    def can_handle(cls, attribute_definition):
+        return attribute_definition['type'] == 'boolean'
+
+
     def _get_value(self):
         return self._widget.get_active()
 
