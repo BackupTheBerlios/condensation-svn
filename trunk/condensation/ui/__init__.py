@@ -18,6 +18,8 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
+import gtk
+
 __all__ = []
 
 
@@ -51,6 +53,16 @@ Resources.register_iconset('condensation-server-connected', 'images/icons/server
 Resources.register_iconset('condensation-server-disconnected', 'images/icons/server-disconnected.svg')
 Resources.register_iconset('condensation-vhost-disabled', 'images/icons/vhost-disabled.svg')
 Resources.register_iconset('condensation-vhost-enabled', 'images/icons/vhost-enabled.svg')
+
+gtk.stock_add([
+    ('condensation', 'Condensation', 0, 0, None),
+    ('condensation-configuration', '_Configuration', 0, 0, None),
+    ('condensation-install-key', '_Install Key', 0, 0, None),
+    ('condensation-server-connected', 'Server Connected', 0, 0, None),
+    ('condensation-server-disconnected', 'Server Disconnected', 0, 0, None),
+    ('condensation-vhost-disabled', 'VHost Disabled', 0, 0, None),
+    ('condensation-vhost-enabled', 'VHost Enabled', 0, 0, None),
+])
 
 # register viewmanagers
 ViewManager.register_viewmanager('Main', CondensationViewManager)
