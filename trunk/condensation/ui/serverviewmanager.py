@@ -45,6 +45,11 @@ class ServerViewManager(ViewManager):
         self._toolbar.insert(self.disconnect_button, -1)
         self.disconnect_button.show()
 
+        self.install_key_button = gtk.ToolButton('condensation-install-key')
+        self.install_key_button.connect('clicked', self.action_install_key)
+        self._toolbar.insert(self.install_key_button, -1)
+        self.install_key_button.show()
+
         self.update()
 
 
@@ -68,6 +73,9 @@ class ServerViewManager(ViewManager):
     def action_disconnect(self, action=None):
         self.view_object.disconnect()
 
+
+    def action_install_key(self, action=None):
+        self.view_object.install_auth_key()
 
 
     def on_server_changed(self, server):
