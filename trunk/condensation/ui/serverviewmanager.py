@@ -59,10 +59,10 @@ class ServerViewManager(ViewManager):
             self.view_object.connect_to_server()
         except condensation.PasswordRequiredException, e:
             passwd = TextEntryDialog.run_dialog(
-                'password required',
-                'Please enter your password for user <b>%s</b> on <b>%s</b>' % (self.view_object.ssh_user, self.view_object.host),
-                'password',
-                'The password will <b>not</b> be saved.',
+                _('password required'),
+                _('Please enter your password for user <b>%s</b> on <b>%s</b>') % (self.view_object.ssh_user, self.view_object.host),
+                _('password'),
+                _('The password will <b>not</b> be saved.'),
                 True)
             self.view_object._ssh_password = passwd
             self.view_object.connect_to_server()

@@ -69,7 +69,7 @@ class CONBorg(CONObject):
         :param callback: the callback
         """
         if signal not in self.__class__._callbacks:
-            raise Exception("Can not connect unregistered signal '%s'." % signal)
+            raise Exception(_("Can not connect unregistered signal '%s'.") % signal)
         self.__class__._callbacks[signal].append(callback)
 
 
@@ -103,7 +103,7 @@ class CONBorg(CONObject):
         else:
             #attribute, check stuff, todo
             if name not in self.__class__._attributes:
-                raise Exception("Attribute '%s' doesn't exist and therefore can't be set." % name)
+                raise Exception(_("Attribute '%s' doesn't exist and therefore can't be set.") % name)
 
             oldvalue = self.__class__._attributes[name]
             self.__class__._attributes[name] = value

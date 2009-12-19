@@ -75,9 +75,9 @@ class Main(condensation.core.CONBorg):
 
             self._main_window.show()
 
-            logging.info('setup finished!')
+            logging.info(_('setup finished!'))
         except:
-            print "ERROR occured, shutting down..."
+            print _("ERROR occured, shutting down...")
             gtk.main_quit()
             raise
 
@@ -85,13 +85,13 @@ class Main(condensation.core.CONBorg):
 
     def save(self, source=None):
         import xml.etree.cElementTree as ET
-        logging.info("saving configuration ... ")
+        logging.info(_("saving configuration ... "))
         root_elem = ET.Element("configuration")
         root_elem.text = "\n"
         tree = ET.ElementTree(root_elem)
         self.__class__.object_serializer(root_elem, self)
         tree.write("new-condensation.conf.xml", "UTF-8")
-        logging.info("saving configuration done")
+        logging.info(_("saving configuration done"))
 
 
 

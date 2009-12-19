@@ -46,7 +46,7 @@ class PluginManager(condensation.core.CONBorg):
                 continue
             package_name = 'plugins.'+cname
             if package_name in sys.modules:
-                print "Skipping already loaded plugin %s." % cname
+                print _("Skipping already loaded plugin %s.") % cname
             else:
                 __import__(package_name)
             self.install_plugin(sys.modules[package_name])
@@ -55,10 +55,10 @@ class PluginManager(condensation.core.CONBorg):
 
     def install_plugin(self, module):
         logger = logging.getLogger('PluginManager')
-        logger.info("installing plugin '%s'" % module.__plugin_name__)
+        logger.info(_("installing plugin '%s'") % module.__plugin_name__)
         self._plugin_modules.append(module)
         if '__install_plugin__' not in module.__dict__:
-            logger.error("plugin %s is missing the __install_plugin__() function" % module.__plugin_name__)
+            logger.error(_("plugin %s is missing the __install_plugin__() function") % module.__plugin_name__)
             return
         module.__install_plugin__()
 
@@ -68,6 +68,6 @@ class PluginManager(condensation.core.CONBorg):
         logger = logging.getLogger('PluginManager')
         for module in self._plugin_modules:
             if '__cleanup_plugin__' in module.__dict__:
-                logger.info("cleaning up for plugin '%s'" % module.__plugin_name__)
+                logger.info(_("cleaning up for plugin '%s'") % module.__plugin_name__)
                 module.__cleanup_plugin__()
 

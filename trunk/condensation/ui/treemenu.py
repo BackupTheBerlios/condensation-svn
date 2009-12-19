@@ -165,11 +165,11 @@ class TreeMenu(gtk.TreeView):
 
         # remove items that got deleted
         for uuid in set(menu_uuids) - set(child_uuids):
-            print "removed "+str(uuid)
-            raise Exception('not implemented yet')
+            #print "removed "+str(uuid)
+            raise Exception(_('not implemented yet'))
         # add items that were inserted
         for uuid in set(child_uuids) - set(menu_uuids):
-            print "added "+str(uuid)
+            #print "added "+str(uuid)
             self._build_menu(object_uuids[uuid], manager)
             menu_uuids.append(uuid)
 

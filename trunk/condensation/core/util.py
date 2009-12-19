@@ -27,7 +27,7 @@ class Util(object):
 
     @classmethod
     def commonprefix(cls, m):
-        "Given a list of pathnames, returns the longest common leading component"
+        """Given a list of pathnames, returns the longest common leading component"""
         if not m: return ''
         prefix = m[0]
         for item in m:

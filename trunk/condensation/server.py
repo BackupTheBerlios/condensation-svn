@@ -72,7 +72,7 @@ class Server(condensation.core.CONObject):
         condensation.core.CONObject.__init__(self)
 
         # get us a logger
-        self._logger = logging.getLogger('server')
+        self._logger = logging.getLogger('Server')
 
         # add to gloabl list of servers
         self.servers.append(self)
@@ -123,23 +123,23 @@ class Server(condensation.core.CONObject):
         if not self._transport_live:
             keymanager = condensation.crypto.KeyManager()
 
-            self._logger.info("%s : connecting" % self.host)
+            self._logger.info(_("%s : connecting") % self.host)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect((self.host, int(self.ssh_port)))
 
-            self._logger.info("%s : opening transport" % self.host)
+            self._logger.info(_("%s : opening transport") % self.host)
             self._transport = paramiko.Transport(sock)
             self._transport.start_client()
 
             fingerprint = md5.new(str(self._transport.get_remote_server_key())).hexdigest()
             if not self.ssh_key_fingerprint:
-                self._logger.warning("%s : no known fingerprint" % self.host)
+                self._logger.warning(_("%s : no known fingerprint") % self.host)
                 self.raise_signal("unknown-key", fingerprint)
                 # TODO: respect 'cancel' (ie catch exception from daserverwidgets)
             else:
                 if self.ssh_key_fingerprint != fingerprint:
-                    raise Exception("%s : presented key has wrong fingerprint (is %s expected %s" % (self.host,fingerprint,self.ssh_key_fingerprint))
-            self._logger.info("%s : Fingerprint matches" % self.host)
+                    raise Exception(_("%s : presented key has wrong fingerprint (is %s expected %s") % (self.host,fingerprint,self.ssh_key_fingerprint))
+            self._logger.info(_("%s : Fingerprint matches") % self.host)
 
             try: # Try public key authentication
                 self._transport.auth_publickey(
@@ -147,31 +147,31 @@ class Server(condensation.core.CONObject):
                     keymanager.get_ssh_auth_key()._key)
             except (paramiko.BadAuthenticationType, paramiko.AuthenticationException), e:
                 if isinstance(e, paramiko.BadAuthenticationType):
-                    self._logger.warning("%s : public key authentication not supported" % self.host)
+                    self._logger.warning(_("%s : public key authentication not supported") % self.host)
                 elif isinstance(e, paramiko.AuthenticationException):
-                    self._logger.warning("%s : public key authentication FAILED (is the key installed on the server?)" % self.host)
+                    self._logger.warning(_("%s : public key authentication FAILED (is the key installed on the server?)") % self.host)
                 else:
-                    self._logger.error("something strange happened")
+                    self._logger.error(_("something strange happened"))
                     raise e
                 # Try password authentication
-                self._logger.info("%s : trying password based authentication" % self.host)
+                self._logger.info(_("%s : trying password based authentication") % self.host)
                 if not self._ssh_password:
                     raise PasswordRequiredException()
                 try:
                     self._transport.auth_password(username=self.ssh_user, password=self._ssh_password, fallback=True)
                 except Exception, e:
                     if isinstance(e, paramiko.BadAuthenticationType):
-                        self._logger.warning("%s : password authentication not supported" % self.host)
+                        self._logger.warning(_("%s : password authentication not supported") % self.host)
                         self._transport.close()
-                        self._logger.warning("%s : Giving up..." % self.host)
+                        self._logger.warning(_("%s : Giving up...") % self.host)
                         return
                     elif isinstance(e, paramiko.AuthenticationException):
-                        self._logger.warning("%s : password authentication FAILED (probably wrong password)" % self.host)
+                        self._logger.warning(_("%s : password authentication FAILED (probably wrong password)") % self.host)
                     else:
-                        self._logger.error("something strange happened")
+                        self._logger.error(_("something strange happened"))
                         raise e
 
-            self._logger.info("authenticated connection to server %s" % self.host)
+            self._logger.info(_("authenticated connection to server %s") % self.host)
             self._transport_live = True
             self._post_connect()
             self.raise_signal("connected")
@@ -202,10 +202,10 @@ class Server(condensation.core.CONObject):
             self._sftpfs = None
         # Close the SSH Transport.
         if self._transport_live:
-            self._logger.info("Closing Transport to %s" % self.host)
+            self._logger.info(_("Closing Transport to %s") % self.host)
             self._transport.close()
             self._transport_live = False
-            self._logger.info("closed")
+            self._logger.info(_("closed"))
         self.raise_signal("disconnected")
 
 
@@ -233,17 +233,17 @@ class Server(condensation.core.CONObject):
 
 
     def install_auth_key(self):
-        self._logger.info("%s : installing public key for authentication" % self.host)
+        self._logger.info(_("%s : installing public key for authentication") % self.host)
         if '.ssh' not in self._sftpfs.listdir('~'):
-            self._logger.debug("%s : creating ~/.ssh directory" % self.host)
+            self._logger.debug(_("%s : creating ~/.ssh directory") % self.host)
             self._sftpfs.mkdir('~/.ssh')
-        self._logger.debug("%s : adding key to ~/.ssh/authorized_keys" % self.host)
+        self._logger.debug(_("%s : adding key to ~/.ssh/authorized_keys") % self.host)
         file = self._sftpfs.open('a', '~/.ssh/authorized_keys')
         keymanager = condensation.crypto.KeyManager()
         key = keymanager.get_ssh_auth_key()
         file.write(key.get_authorized_keys_line())
         file.close()
-        self._logger.debug("%s : installed key" % self.host)
+        self._logger.debug(_("%s : installed key") % self.host)
 
 
 

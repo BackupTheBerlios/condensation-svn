@@ -38,7 +38,7 @@ class KeyManager(condensation.core.CONBorg):
 
     def get_ssh_auth_key(self):
         if self.ssh_auth_key == None:
-            print "generating new key"
+            print _("generating new key")
             new_key = Key.generate_rsa_key(4096)
             self.ssh_auth_key = new_key
         return self.ssh_auth_key

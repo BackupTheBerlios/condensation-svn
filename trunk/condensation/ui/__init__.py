@@ -55,13 +55,13 @@ Resources.register_iconset('condensation-vhost-disabled', 'images/icons/vhost-di
 Resources.register_iconset('condensation-vhost-enabled', 'images/icons/vhost-enabled.svg')
 
 gtk.stock_add([
-    ('condensation', 'Condensation', 0, 0, None),
-    ('condensation-configuration', '_Configuration', 0, 0, None),
-    ('condensation-install-key', '_Install Key', 0, 0, None),
-    ('condensation-server-connected', 'Server Connected', 0, 0, None),
-    ('condensation-server-disconnected', 'Server Disconnected', 0, 0, None),
-    ('condensation-vhost-disabled', 'VHost Disabled', 0, 0, None),
-    ('condensation-vhost-enabled', 'VHost Enabled', 0, 0, None),
+    ('condensation', 'Condensation', 0, 0, 'Condensation'),
+    ('condensation-configuration', '_Configuration', 0, 0, 'Condensation'),
+    ('condensation-install-key', '_Install Key', 0, 0, 'Condensation'),
+    ('condensation-server-connected', 'Server Connected', 0, 0, 'Condensation'),
+    ('condensation-server-disconnected', 'Server Disconnected', 0, 0, 'Condensation'),
+    ('condensation-vhost-disabled', 'VHost Disabled', 0, 0, 'Condensation'),
+    ('condensation-vhost-enabled', 'VHost Enabled', 0, 0, 'Condensation'),
 ])
 
 # register viewmanagers

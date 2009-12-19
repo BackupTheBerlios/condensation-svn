@@ -46,9 +46,9 @@ class Key(condensation.core.CONObject):
         if self._type == 'ssh-rsa':
             line = 'ssh-rsa '
             line += self._key.get_base64()
-            line += " Key added by DrupalAdmin\n"
+            line += " " + _("Key added by Condensation") +"\n"
         else:
-            raise Exception("Unsupported key type")
+            raise Exception(_("Unsupported key type"))
         return line
 
 
@@ -113,7 +113,7 @@ class Key(condensation.core.CONObject):
             dakey._key = paramiko.RSAKey(file_obj=strio)
             strio.close()
         else:
-            raise Exception('Unknown key-type %s' % dakey._type)
+            raise Exception(_('Unknown key-type %s') % dakey._type)
         return dakey
 
 

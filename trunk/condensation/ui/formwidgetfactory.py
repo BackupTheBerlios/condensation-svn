@@ -36,7 +36,7 @@ class FormWidgetFactory(object):
         for widget in self._registry:
             if widget.can_handle(definition):
                 return widget(conobj, attr)
-        raise Exception("Found no widget to handle attribute with definition "+str(definition))
+        raise Exception(_("Found no widget to handle attribute with definition %s") % str(definition))
 
 
 

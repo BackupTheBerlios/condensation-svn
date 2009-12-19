@@ -124,12 +124,12 @@ class StringListWidget(gtk.Frame):
 
 
     def _sort_asc_button_callback(self, button):
-        raise Exception("NOT IMPLEMENTED!")
+        raise Exception(_("NOT IMPLEMENTED!"))
 
 
 
     def _sort_dsc_button_callback(self, button):
-        raise Exception("NOT IMPLEMENTED!")
+        raise Exception(_("NOT IMPLEMENTED!"))
 
 
 

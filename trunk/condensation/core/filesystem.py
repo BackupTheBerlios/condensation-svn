@@ -33,7 +33,7 @@ class FileSystem(object):
 
         :param path: file path as in `construct_path`
         """
-        raise Exception("Not implemented")
+        raise Exception(_("Not implemented"))
 
 
 
@@ -45,7 +45,7 @@ class FileSystem(object):
 
         :param path: file path as in `construct_path`
         """
-        raise Exception("Not implemented")
+        raise Exception(_("Not implemented"))
 
 
 
@@ -62,7 +62,7 @@ class FileSystem(object):
         :param path: file path as in `construct_path`
         :param mode: mode for opening the file
         """
-        raise Exception("Not implemented")
+        raise Exception(_("Not implemented"))
 
 
 
@@ -74,7 +74,7 @@ class FileSystem(object):
 
         :todo: add mode parameter
         """
-        raise Exception("Not implemented")
+        raise Exception(_("Not implemented"))
 
 
 
@@ -86,7 +86,7 @@ class FileSystem(object):
         Subclasses should not need to override it.
         """
         realpath = self.construct_path(path)
-        self._logger.debug("SFTP-FS : read_file %s" % realpath)
+        self._logger.debug(_("SFTP-FS : read_file %s") % realpath)
         file = self.sftp_client.file(realpath, mode="r")
         string = file.read()
         file.close()

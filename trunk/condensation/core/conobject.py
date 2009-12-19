@@ -86,7 +86,7 @@ class CONObject(SignalSource):
         else:
             #conobject attribute, check stuff
             if name not in self._attributes:
-                raise Exception("Attribute '%s' doesn't exist and therefore can't be set." % name)
+                raise Exception(_("Attribute '%s' doesn't exist and therefore can't be set.") % name)
 
             oldvalue = self._attributes[name]
             self._attributes[name] = value
@@ -110,7 +110,7 @@ class CONObject(SignalSource):
                 self.__dict__['_attributes']['uuid'] = uuid.uuid4()
             return self.__dict__['_attributes'][name]
         else:
-            raise AttributeError('No attribute with the name %s' % name)
+            raise AttributeError(_('No attribute with the name %s') % name)
 
 
 
@@ -171,10 +171,10 @@ class CONObject(SignalSource):
         :param class_obj: the class to be registered
         """
         if class_obj in cls._class_registry:
-            raise Exception('Class already registered')
+            raise Exception(_('Class already registered'))
 
         if (CONObject not in class_obj.__bases__) and (cls != CONObject):
-            raise Exception('Not a decendant of CONObject')
+            raise Exception(_('Not a decendant of CONObject'))
 
         eff_attributes = {}
         eff_attributes_definition = {}
@@ -194,20 +194,20 @@ class CONObject(SignalSource):
 
         for definition in class_obj._attribute_definitions:
             if 'name' not in definition:
-                raise Exception("Error in attribute defintion of class %s: missing attribute name." % class_obj.__name__)
+                raise Exception(_("Error in attribute defintion of class %s: missing attribute name.") % class_obj.__name__)
             if 'type' not in definition:
-                raise Exception("Error in attribute defintion of class %s: missing attribute type." % class_obj.__name__)
+                raise Exception(_("Error in attribute defintion of class %s: missing attribute type.") % class_obj.__name__)
             if 'default' not in definition:
-                raise Exception("Error in attribute defintion of class %s: missing default attribute value." % class_obj.__name__)
+                raise Exception(_("Error in attribute defintion of class %s: missing default attribute value.") % class_obj.__name__)
 
             if not isinstance(definition['type'], basestring):
-                raise Exception('String expected here, got %s' % type.__class__)
+                raise Exception(_('String expected here, got %s') % type.__class__)
 
             m = cls._re_collection.match(definition['type'])
             basetype = m.group('basetype')
 
             if basetype not in cls._attribute_type_registry:
-                raise Exception("Class %s tried to register attribute %s of unregistered type '%s'." % (class_obj.__name__, definition['name'], basetype))
+                raise Exception(_("Class %s tried to register attribute %s of unregistered type '%s'.") % (class_obj.__name__, definition['name'], basetype))
 
             if m.group('indices') != None:
                 value = cls._construct_collection(basetype, [], definition['default'])
@@ -216,11 +216,11 @@ class CONObject(SignalSource):
                 eff_attributes[definition['name']] = definition['default']
                 eff_attributes_definition[definition['name']] = definition
             else:
-                raise Exception("Class %s tried to override attribute '%s'." % (class_obj.__name__, definition['name']))
+                raise Exception(_("Class %s tried to override attribute '%s'.") % (class_obj.__name__, definition['name']))
 
         for name in class_obj._signal_list:
             if name in eff_callbacks:
-                raise Exception("Already in list")
+                raise Exception(_("Already in list"))
             eff_callbacks.add(name)
 
 
@@ -249,7 +249,7 @@ class CONObject(SignalSource):
         cls._attribute_definitions.append(attribute_definition)
         if cls in CONObject._class_registry:
             # TODO: until there is a way to patch class instances (objects) this is disabled
-            raise Exception("Adding attributes to already realized classes is not yet fully implemented")
+            raise Exception(_("Adding attributes to already realized classes is not yet fully implemented"))
             # class already realized -> patch class & subclasses
             name = attribute_definition['name']
             CONObject._class_registry[cls]['attributes'][name] = attribute_definition['default']
@@ -410,11 +410,11 @@ class CONObject(SignalSource):
         for element in et:
             name = element.tag
             if name not in attr_list:
-                raise Exception("No object attribute of name '%s'." % name)
+                raise Exception(_("No object attribute of name '%s'.") % name)
 
             type = conobj.get_attribute_definition(name)['type']
             if not isinstance(type, basestring):
-                raise Exception('String expected here, got %s' % type.__class__)
+                raise Exception(_('String expected here, got %s') % type.__class__)
 
             m = cls._re_collection.match(type)
             if m.group('indices') != None:

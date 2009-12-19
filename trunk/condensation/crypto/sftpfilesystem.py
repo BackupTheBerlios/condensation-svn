@@ -29,7 +29,7 @@ class SFTPFileSystem(condensation.core.FileSystem):
         """
         """
         self.path_separator = '/'
-        self._logger = logging.getLogger('da.dasftpfilesystem')
+        self._logger = logging.getLogger('SFTP-FS')
         self.sftp_client = paramiko_transport.open_sftp_client()
 
 
@@ -38,7 +38,7 @@ class SFTPFileSystem(condensation.core.FileSystem):
         """
         """
         realpath = self.construct_path(path)
-        self._logger.debug("SFTP-FS : listdir %s" % realpath)
+        self._logger.debug("listdir %s" % realpath)
         return self.sftp_client.listdir(realpath)
 
 
@@ -47,7 +47,7 @@ class SFTPFileSystem(condensation.core.FileSystem):
         """
         """
         realpath = self.construct_path(path)
-        self._logger.debug("SFTP-FS : mkdir %s" % realpath)
+        self._logger.debug("mkdir %s" % realpath)
         return self.sftp_client.mkdir(realpath)
 
 
@@ -56,7 +56,7 @@ class SFTPFileSystem(condensation.core.FileSystem):
         """
         """
         realpath = self.construct_path(path)
-        self._logger.debug("SFTP-FS : open %s" % realpath)
+        self._logger.debug("open %s" % realpath)
         return self.sftp_client.open(realpath, mode)
 
 

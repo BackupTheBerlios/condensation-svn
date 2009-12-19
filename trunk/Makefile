@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-.PHONY: cachegrind clean docs release stats tests
+.PHONY: cachegrind clean docs lang pot release stats tests
 
 VERSION=0.0.1
 #BUILDVERSION=$(VERSION)
@@ -28,6 +28,9 @@ BUILDVERSION=$(VERSION)-svn.$(shell svnversion | sed 's/M$$//g' | sed 's/^.\+://
 RELEASEDIR=condensation-$(BUILDVERSION)
 RELEASEFILE=condensation-$(BUILDVERSION).tar.bz2
 DOCRELEASEFILE=condensation-docs-$(BUILDVERSION).tar.bz2
+
+POFILES = $(wildcard i18n/po-files/*.po)
+MOFILES = $(patsubst i18n/po-files/%.po, i18n/%/LC_MESSAGES/Condensation.mo, $(POFILES))
 
 cachegrind:
 	@python scripts/pyprof2calltree.py -i profile.out -o cachegrind.out
@@ -48,6 +51,19 @@ docs:
 	@mkdir docs
 	@mkdir docs/api
 	@epydoc --check --config scripts/epydoc.config
+
+
+$(MOFILES) : i18n/%/LC_MESSAGES/Condensation.mo : i18n/po-files/%.po
+	@mkdir -p $(dir $@)
+	msgfmt -c -v -o $@ $^
+
+
+lang: $(MOFILES)
+
+
+pot:
+	@echo -e "\n=========================== BUILDING POT ================================\n"
+	@find . -iname "*.py" | xargs pygettext -p i18n
 
 
 release:

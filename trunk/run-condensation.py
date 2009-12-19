@@ -20,6 +20,8 @@
 ############################################################################
 
 import gtk
+
+
 class SplashScreen(gtk.Window):
 
     def __init__(self, image_path, size_x, size_y):
@@ -65,7 +67,7 @@ def setup_logging():
     logsink.setFormatter(formatter)
     logger.addHandler(logsink)
 
-    logging.info('Logging started ...')
+    logging.info(_('Logging started ...'))
 
 
 
@@ -75,16 +77,25 @@ def start_up():
     global splash_screen
 
     import time
-    time.sleep(0.5)
+    time.sleep(0.5) # give the splash-screen time to show
 
-    import condensation
+    # setup gettext
+    import gettext
+    #import __builtin__
+    #__builtin__._ = gettext.gettext
+    #gettext.bindtextdomain('Condensation', 'i18n')
+    #gettext.textdomain('Condensation')
+    gettext.install('Condensation', 'i18n', unicode=1)
 
+    # logging
     setup_logging()
 
     # load plugins
+    import condensation
     pluginmanager = condensation.PluginManager()
     pluginmanager.load_plugins()
 
+    # load configuration
     try:
         # try to load configuraion
         import xml.etree.cElementTree as ET
@@ -92,7 +103,7 @@ def start_up():
         main = condensation.Main.object_deserializer(et.getroot())
     except IOError, e:
         # probably file not found
-        logging.warn("Could not load configuration file")
+        logging.warn(_("Could not load configuration file"))
         main = condensation.Main()
         main.setup()
     except:

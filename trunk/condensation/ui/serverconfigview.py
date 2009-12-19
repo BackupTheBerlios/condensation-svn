@@ -27,31 +27,31 @@ from resources import Resources
 class ServerConfigView(CONObjectView):
 
     categories = (
-        ('General', (
-            ('name', 'Name'),
-            ('host', 'Host'),
+        (_('General'), (
+            ('name', _('Name')),
+            ('host', _('Host')),
         )),
-        ('SSH', (
-            ('ssh_port', 'Port'),
-            ('ssh_user', 'User'),
-            ('ssh_key_fingerprint', 'Key Fingerprint'),
-            ('ssh_autoconnect', 'Auto Connect'),
+        (_('SSH'), (
+            ('ssh_port', _('Port')),
+            ('ssh_user', _('User')),
+            ('ssh_key_fingerprint', _('Key Fingerprint')),
+            ('ssh_autoconnect', _('Auto Connect')),
         )),
-        ('Apache', (
-            ('apache_base', 'Base dir'),
-            ('apache_confbase', 'Config dir'),
-            ('apache_available', 'Available vhosts'),
-            ('apache_enabled', 'Enabled vhosts'),
-            ('apache_user', 'User'),
-            ('apache_group', 'Group'),
+        (_('Apache'), (
+            ('apache_base', _('Base dir')),
+            ('apache_confbase', _('Config dir')),
+            ('apache_available', _('Available vhosts')),
+            ('apache_enabled', _('Enabled vhosts')),
+            ('apache_user', _('User')),
+            ('apache_group', _('Group')),
         )),
-        ('Drupal', (
-            ('drupal_cronfile', 'Cronfile'),
+        (_('Drupal'), (
+            ('drupal_cronfile', _('Cronfile')),
         )),
-        ('MySQL', (
-            ('mysql_host', 'Server host'),
-            ('mysql_user', 'Adminstrative user'),
-            ('mysql_password', 'Adminstrative password'),
+        (_('MySQL'), (
+            ('mysql_host', _('Server host')),
+            ('mysql_user', _('Adminstrative user')),
+            ('mysql_password', _('Adminstrative password')),
         )),
     )
 

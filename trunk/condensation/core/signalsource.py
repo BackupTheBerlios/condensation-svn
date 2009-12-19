@@ -41,7 +41,7 @@ class SignalSource(object):
         :param callback: the callback
         """
         if signal not in self._callbacks:
-            raise Exception("Can not connect unregistered signal '%s'." % signal)
+            raise Exception(_("Can not connect unregistered signal '%s'.") % signal)
         self._callbacks[signal].append(callback)
 
 

@@ -111,7 +111,7 @@ class ApacheConfigParser(object):
             match = cls.re_section_end.match(line)
             if match:
                 if node.name != match.group("name"):
-                    raise Exception("Section mismatch: '"+match.group("name")+"' should be '"+node.name+"'")
+                    raise Exception(_("Section mismatch: '%s' should be '%s'") % (match.group("name"), node.name))
                 node = node.parent
                 continue
             values = line.split()

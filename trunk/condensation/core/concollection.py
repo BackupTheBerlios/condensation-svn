@@ -78,7 +78,7 @@ class CONCollection(SignalSource):
     def add(self, element):
         for name, index in self._unique_indices.iteritems():
             if getattr(element, name) in index:
-                raise Exception('Two objects with the same unique index.')
+                raise Exception(_('Two objects with the same unique index.'))
 
         elem_index = len(self._elements)
         self._elements[elem_index:] = [element]
@@ -104,7 +104,7 @@ class CONCollection(SignalSource):
             for i, elem in enumerate(self._elements):
                 value = getattr(elem, name)
                 if value in index:
-                    raise Exception('Two objects with the same unique index.')
+                    raise Exception(_('Two objects with the same unique index.'))
                 index[value] = i
 
 
@@ -124,18 +124,18 @@ class CONCollection(SignalSource):
 
     def get_element(self, index, value):
         if index not in self._unique_indices:
-            raise Exception('no such index')
+            raise Exception(_('no such index'))
         if value not in self._unique_indices[index]:
-            raise Exception('no element with this value')
+            raise Exception(_('no element with this value'))
         return self._elements[self._unique_indices[index][value]]
 
 
 
     def get_elements(self, index, value):
         if index not in self._indices:
-            raise Exception('no such unique index')
+            raise Exception(_('no such unique index'))
         if value not in self._indices[index]:
-            raise Exception('no element with this value')
+            raise Exception(_('no element with this value'))
         retlist = []
         for i in self._indices[index][value]:
             retlist.append(self._elements[i])

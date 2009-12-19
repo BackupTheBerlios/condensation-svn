@@ -29,10 +29,10 @@ class VHostConfigView(CONObjectView):
 
 
     categories = (
-        ('General', (
-            ('name', 'Name'),
-            ('domains', 'Domains'),
-            ('document_root', 'Document Root'),
+        (_('General'), (
+            ('name', _('Name')),
+            ('domains', _('Domains')),
+            ('document_root', _('Document Root')),
         )),
     )
 

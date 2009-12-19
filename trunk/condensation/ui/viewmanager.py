@@ -84,7 +84,7 @@ class ViewManager(gtk.VBox):
         """
         Return the icon to show in the TreeMenu.
         """
-        raise Exception('Not Implemented!')
+        raise Exception(_('Not Implemented!'))
 
 
 
@@ -92,7 +92,7 @@ class ViewManager(gtk.VBox):
         """
         Return the text to show in the TreeMenu.
         """
-        raise Exception('Not Implemented!')
+        raise Exception(_('Not Implemented!'))
 
 
 
@@ -130,7 +130,7 @@ class ViewManager(gtk.VBox):
         :param object_type: this is the name, not the type object
         """
         if object_type in cls._available_viewmanagers:
-            raise Exception("Already registered a viewmanager for %s" % object_type.__name__)
+            raise Exception(_("Already registered a viewmanager for %s") % object_type.__name__)
         cls._available_viewmanagers[object_type] = viewmanager
 
 

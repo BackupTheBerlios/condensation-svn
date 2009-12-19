@@ -45,18 +45,5 @@ class VHost(condensation.core.CONObject):
         #self.config.print_r()
 
 
-
-    def install_drupal(self, package):
-        if not package.isDrupal():
-            raise Exception("Only Drupal packages allowed here")
-        package.extract(self._install_callback)
-
-
-
-    def _install_callback(self):
-        pass
-
-
-
 condensation.core.CONObject.register_attribute_type('VHost', VHost.object_serializer, VHost.object_deserializer)
 
