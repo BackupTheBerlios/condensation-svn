@@ -35,7 +35,7 @@ class MainWindow(gtk.Window):
         self.set_title("Condensation")
         self.set_default_size(800, 600)
 
-        self.set_icon(self.render_icon('condensation-icon', gtk.ICON_SIZE_MENU))
+        self.set_icon(self.render_icon('condensation', gtk.ICON_SIZE_MENU))
 
         # toolbar
         self._toolbar = gtk.Toolbar()

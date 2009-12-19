@@ -34,7 +34,7 @@ def __install_plugin__():
     from proxyredirectionsview import ProxyRedirectionsView
 
     condensation.ui.Resources.register_iconset(
-        'condensation-proxy-icon',
+        'condensation-proxy',
         os.path.join(__path__[0], 'proxy.svg'))
 
     condensation.core.CONObject.register_attribute_type(

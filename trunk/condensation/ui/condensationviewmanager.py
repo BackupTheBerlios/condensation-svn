@@ -45,7 +45,7 @@ class CondensationViewManager(ViewManager):
 
 
     def get_menu_icon(self):
-        return 'condensation-icon'
+        return 'condensation'
 
 
 

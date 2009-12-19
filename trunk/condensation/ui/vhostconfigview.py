@@ -39,7 +39,7 @@ class VHostConfigView(CONObjectView):
 
 
     def get_icon(self):
-        return 'condensation-configuration-icon'
+        return 'condensation-configuration'
 
 
 
