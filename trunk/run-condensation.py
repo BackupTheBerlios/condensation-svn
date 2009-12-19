@@ -19,19 +19,30 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-import cProfile
-import gobject
 import gtk
-import logging
-import tempfile
-import time
-import xml.etree.cElementTree as ET
+class SplashScreen(gtk.Window):
 
-import condensation
-import condensation.ui
+    def __init__(self, image_path, size_x, size_y):
+        gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
+        self.set_size_request(size_x, size_y)
+        self.set_decorated(False)
+        self.set_resizable(False)
+        self.set_keep_above(True)
+        self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_SPLASHSCREEN)
+
+        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(image_path, size_x, size_y)
+        image = gtk.Image()
+        image.set_from_pixbuf(pixbuf)
+        self.add(image)
+        image.show()
+
 
 
 def setup_logging():
+    import logging
+    import tempfile
+    import condensation
+
     # logging
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -63,6 +74,11 @@ def setup_logging():
 def start_up():
     global splash_screen
 
+    import time
+    time.sleep(0.5)
+
+    import condensation
+
     setup_logging()
 
     # load plugins
@@ -71,6 +87,7 @@ def start_up():
 
     try:
         # try to load configuraion
+        import xml.etree.cElementTree as ET
         et = ET.parse("condensation.conf.xml")
         main = condensation.Main.object_deserializer(et.getroot())
     except IOError, e:
@@ -98,9 +115,12 @@ def start_up():
 
 def main():
     global splash_screen
+
+    import gobject
+    import gtk
     gobject.threads_init()
 
-    splash_screen = condensation.ui.SplashScreen('images/splash.svg', 600, 400)
+    splash_screen = SplashScreen('images/splash.svg', 600, 400)
     splash_screen.show()
 
     gobject.idle_add(start_up)
@@ -109,4 +129,5 @@ def main():
 
 # this is needed so pydoc doesn't run the module while importing it
 if __name__ == "__main__":
+    import cProfile
     cProfile.run('main()', 'profile.out')

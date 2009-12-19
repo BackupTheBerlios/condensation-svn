@@ -34,7 +34,6 @@ from navigationhistory import NavigationHistory
 from resources import Resources
 from serverconfigview import ServerConfigView
 from serverviewmanager import ServerViewManager
-from splashscreen import SplashScreen
 from stringformwidget import StringFormWidget
 from stringlistformwidget import StringListFormWidget
 from stringlistwidget import StringListWidget
