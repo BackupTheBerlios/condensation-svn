@@ -69,7 +69,7 @@ class SSHTerminalView(gtk.HBox):
 
 
     def get_icon(self):
-        return condensation.ui.Resources.get_pixbuf('ssh-terminal-icon')
+        return 'condensation-ssh-terminal-icon'
 
 
 

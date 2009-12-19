@@ -28,4 +28,6 @@ def __install_plugin__():
     import condensation.ui
     from sshterminalview import SSHTerminalView
     condensation.ui.ViewManager.register_view('Server', SSHTerminalView)
-    condensation.ui.Resources.load_pixbuf('ssh-terminal-icon', os.path.join(__path__[0], 'ssh-terminal.svg'))
+    condensation.ui.Resources.register_iconset(
+        'condensation-ssh-terminal-icon',
+        os.path.join(__path__[0], 'ssh-terminal.svg'))

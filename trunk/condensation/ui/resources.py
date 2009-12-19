@@ -22,27 +22,7 @@ import gtk
 
 class Resources(object):
 
-    #: Global cache for pixbufs
-    _pixbuf = {}
-
-
-    @classmethod
-    def load_pixbuf(cls, id, file, width=24, height=24):
-        """
-        Load a pixbuf from a graphics file and associate it with the id.
-        """
-        if id not in cls._pixbuf:
-            cls._pixbuf[id] = gtk.gdk.pixbuf_new_from_file_at_size(file, width, height)
-
-
-    @classmethod
-    def get_pixbuf(cls, id):
-        """
-        Return the pixbuf associated with the id.
-        """
-        return cls._pixbuf[id]
-
-
+    _iconfactory = None
 
     @classmethod
     def image_label_button(cls, image_id, label_text):
@@ -70,15 +50,19 @@ class Resources(object):
 
     @classmethod
     def register_iconsets(cls, icon_info):
-        iconfactory = gtk.IconFactory()
-        stock_ids = gtk.stock_list_ids()
         for stock_id, file in icon_info:
-            # only load image files when our stock_id is not present
-            if stock_id not in stock_ids:
-                pixbuf = gtk.gdk.pixbuf_new_from_file(file)
-                iconset = gtk.IconSet(pixbuf)
-                iconfactory.add(stock_id, iconset)
-        iconfactory.add_default()
+            cls.register_iconset(stock_id, file)
+
+
+    @classmethod
+    def register_iconset(cls, stock_id, file):
+        if not cls._iconfactory:
+            cls._iconfactory = gtk.IconFactory()
+            cls._iconfactory.add_default()
+
+        pixbuf = gtk.gdk.pixbuf_new_from_file(file)
+        iconset = gtk.IconSet(pixbuf)
+        cls._iconfactory.add(stock_id, iconset)
 
 
 

@@ -58,7 +58,7 @@ class ServerConfigView(CONObjectView):
 
 
     def get_icon(self):
-        return Resources.get_pixbuf('configuration-icon')
+        return 'condensation-configuration-icon'
 
 
 

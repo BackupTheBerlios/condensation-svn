@@ -37,7 +37,7 @@ class PythonConsoleView(gtk.ScrolledWindow):
 
 
     def get_icon(self):
-        return condensation.ui.Resources.get_pixbuf('python-console-icon')
+        return 'condensation-python-console-icon'
 
 
 

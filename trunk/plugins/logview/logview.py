@@ -60,7 +60,8 @@ class LogView(gtk.VBox):
 
 
     def get_icon(self):
-        return condensation.ui.Resources.get_pixbuf('log-view-icon')
+        return 'condensation-log-view-icon'
+
 
 
 

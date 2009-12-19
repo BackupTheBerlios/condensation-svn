@@ -44,11 +44,12 @@ from vhostviewmanager import VHostViewManager
 from viewmanager import ViewManager
 
 # load icons
-Resources.load_pixbuf('vhost-enabled', 'images/icons/vhost-enabled.svg')
-Resources.load_pixbuf('vhost-disabled', 'images/icons/vhost-disabled.svg')
-Resources.load_pixbuf('server-connected', 'images/icons/server-connected.svg')
-Resources.load_pixbuf('server-disconnected', 'images/icons/server-disconnected.svg')
-Resources.load_pixbuf('configuration-icon', 'images/icons/configuration.svg')
+Resources.register_iconset('condensation-icon', 'images/icons/condensation.svg')
+Resources.register_iconset('condensation-vhost-enabled', 'images/icons/vhost-enabled.svg')
+Resources.register_iconset('condensation-vhost-disabled', 'images/icons/vhost-disabled.svg')
+Resources.register_iconset('condensation-server-connected', 'images/icons/server-connected.svg')
+Resources.register_iconset('condensation-server-disconnected', 'images/icons/server-disconnected.svg')
+Resources.register_iconset('condensation-configuration-icon', 'images/icons/configuration.svg')
 
 # register viewmanagers
 ViewManager.register_viewmanager('Main', CondensationViewManager)

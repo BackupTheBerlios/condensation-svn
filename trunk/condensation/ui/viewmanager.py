@@ -64,7 +64,7 @@ class ViewManager(gtk.VBox):
         if icon:
             label = gtk.HBox()
             image = gtk.Image()
-            image.set_from_pixbuf(icon)
+            image.set_from_pixbuf(self.render_icon(icon, gtk.ICON_SIZE_LARGE_TOOLBAR))
             label.pack_start(image, False, False, 3)
             label.pack_start(gtk.Label(name), False, False, 3)
             label.show_all()

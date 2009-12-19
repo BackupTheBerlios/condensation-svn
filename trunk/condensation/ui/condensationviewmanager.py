@@ -31,8 +31,6 @@ class CondensationViewManager(ViewManager):
     def __init__(self, containing_notebook, view_object):
         ViewManager.__init__(self, containing_notebook, view_object)
 
-        Resources.load_pixbuf('condensation-icon', 'images/icons/condensation.svg')
-
         # populate toolbar
         button = gtk.ToolButton(gtk.STOCK_NEW)
         button.show()
@@ -47,7 +45,7 @@ class CondensationViewManager(ViewManager):
 
 
     def get_menu_icon(self):
-        return Resources.get_pixbuf('condensation-icon')
+        return 'condensation-icon'
 
 
 

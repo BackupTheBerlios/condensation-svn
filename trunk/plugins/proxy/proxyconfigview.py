@@ -39,7 +39,7 @@ class ProxyConfigView(condensation.ui.CONObjectView):
 
 
     def get_icon(self):
-        return condensation.ui.Resources.get_pixbuf('configuration-icon')
+        return 'condensation-configuration-icon'
 
 
 

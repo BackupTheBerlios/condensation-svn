@@ -41,5 +41,5 @@ class ProxyViewManager(condensation.ui.ViewManager):
 
 
     def get_menu_icon(self):
-        return condensation.ui.Resources.get_pixbuf('proxy-icon')
+        return 'condensation-proxy-icon'
 

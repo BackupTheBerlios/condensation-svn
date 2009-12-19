@@ -37,6 +37,6 @@ class VHostViewManager(ViewManager):
 
 
     def get_menu_icon(self):
-        return Resources.get_pixbuf('vhost-disabled')
+        return 'condensation-vhost-disabled'
 
 

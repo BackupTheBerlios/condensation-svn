@@ -87,8 +87,8 @@ class ServerViewManager(ViewManager):
 
     def get_menu_icon(self):
         if self.view_object.get_connected():
-            return Resources.get_pixbuf('server-connected')
+            return 'condensation-server-connected'
         else:
-            return Resources.get_pixbuf('server-disconnected')
+            return 'condensation-server-disconnected'
 
 
