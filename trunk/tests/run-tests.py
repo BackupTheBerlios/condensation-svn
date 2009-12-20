@@ -24,6 +24,15 @@ import unittest
 sys.path.append('..')
 sys.path.append('.')
 
+# dummy gettext
+def dummy_gettext(str_in):
+    return str_in
+
+import __builtin__
+__builtin__._ = dummy_gettext
+
+
+# import tests
 import condensation_core
 # add more tests here
 
