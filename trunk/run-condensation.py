@@ -81,10 +81,6 @@ def start_up():
 
     # setup gettext
     import gettext
-    #import __builtin__
-    #__builtin__._ = gettext.gettext
-    #gettext.bindtextdomain('Condensation', 'i18n')
-    #gettext.textdomain('Condensation')
     gettext.install('Condensation', 'i18n', unicode=1)
 
     # logging
