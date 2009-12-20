@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Condensation 0.1\n"
-"POT-Creation-Date: 2009-12-19 23:05+CET\n"
+"POT-Creation-Date: 2009-12-20 14:14+CET\n"
 "PO-Revision-Date: 2009-12-19 23:40+CET\n"
 "Last-Translator: Thomas Hille <thomas.hille@nightsabers.org>\n"
 "Language-Team: German <DE@li.org>\n"
@@ -14,357 +14,343 @@ msgstr ""
 "Content-Transfer-Encoding: utf-8\n"
 "Generated-By: pygettext.py 1.5\n"
 
-
-#: ./condensation/apacheconfigparser.py:114
+#: condensation/apacheconfigparser.py:114
 msgid "Section mismatch: '%s' should be '%s'"
 msgstr ""
 
-#: ./condensation/core/conborg.py:72 ./condensation/core/signalsource.py:44
+#: condensation/core/conborg.py:72 condensation/core/signalsource.py:44
 msgid "Can not connect unregistered signal '%s'."
-msgstr ""
+msgstr "Kann nicht registriertes Signal '%s' nicht verbinden."
 
-#: ./condensation/core/conborg.py:106 ./condensation/core/conobject.py:89
+#: condensation/core/conborg.py:106 condensation/core/conobject.py:89
 msgid "Attribute '%s' doesn't exist and therefore can't be set."
 msgstr ""
 
-#: ./condensation/core/concollection.py:81
-#: ./condensation/core/concollection.py:107
+#: condensation/core/concollection.py:81
+#: condensation/core/concollection.py:107
 msgid "Two objects with the same unique index."
 msgstr ""
 
-#: ./condensation/core/concollection.py:127
+#: condensation/core/concollection.py:127
 msgid "no such index"
-msgstr ""
+msgstr "dieser Index existiert nicht"
 
-#: ./condensation/core/concollection.py:129
-#: ./condensation/core/concollection.py:138
+#: condensation/core/concollection.py:129
+#: condensation/core/concollection.py:138
 msgid "no element with this value"
 msgstr ""
 
-#: ./condensation/core/concollection.py:136
+#: condensation/core/concollection.py:136
 msgid "no such unique index"
-msgstr ""
+msgstr "dieser eindeutige Index existiert nicht"
 
-#: ./condensation/core/conobject.py:113
+#: condensation/core/conobject.py:113
 msgid "No attribute with the name %s"
 msgstr ""
 
-#: ./condensation/core/conobject.py:174
+#: condensation/core/conobject.py:174
 msgid "Class already registered"
 msgstr ""
 
-#: ./condensation/core/conobject.py:177
+#: condensation/core/conobject.py:177
 msgid "Not a decendant of CONObject"
 msgstr ""
 
-#: ./condensation/core/conobject.py:197
+#: condensation/core/conobject.py:197
 msgid "Error in attribute defintion of class %s: missing attribute name."
 msgstr ""
 
-#: ./condensation/core/conobject.py:199
+#: condensation/core/conobject.py:199
 msgid "Error in attribute defintion of class %s: missing attribute type."
 msgstr ""
 
-#: ./condensation/core/conobject.py:201
-msgid "Error in attribute defintion of class %s: missing default attribute value."
+#: condensation/core/conobject.py:201
+msgid ""
+"Error in attribute defintion of class %s: missing default attribute value."
 msgstr ""
 
-#: ./condensation/core/conobject.py:204 ./condensation/core/conobject.py:417
+#: condensation/core/conobject.py:204 condensation/core/conobject.py:417
 msgid "String expected here, got %s"
 msgstr ""
 
-#: ./condensation/core/conobject.py:210
+#: condensation/core/conobject.py:210
 msgid "Class %s tried to register attribute %s of unregistered type '%s'."
 msgstr ""
 
-#: ./condensation/core/conobject.py:219
+#: condensation/core/conobject.py:219
 msgid "Class %s tried to override attribute '%s'."
 msgstr ""
 
-#: ./condensation/core/conobject.py:223
+#: condensation/core/conobject.py:223
 msgid "Already in list"
 msgstr ""
 
-#: ./condensation/core/conobject.py:252
-msgid "Adding attributes to already realized classes is not yet fully implemented"
+#: condensation/core/conobject.py:252
+msgid ""
+"Adding attributes to already realized classes is not yet fully implemented"
 msgstr ""
 
-#: ./condensation/core/conobject.py:413
+#: condensation/core/conobject.py:413
 msgid "No object attribute of name '%s'."
 msgstr ""
 
-#: ./condensation/core/filesystem.py:36 ./condensation/core/filesystem.py:48
-#: ./condensation/core/filesystem.py:65 ./condensation/core/filesystem.py:77
+#: condensation/core/filesystem.py:36 condensation/core/filesystem.py:48
+#: condensation/core/filesystem.py:65 condensation/core/filesystem.py:77
+#: condensation/ui/baseformwidget.py:42 condensation/ui/baseformwidget.py:49
+#: condensation/ui/baseformwidget.py:56
+#: condensation/ui/stringlistwidget.py:127
+#: condensation/ui/stringlistwidget.py:132 condensation/ui/treemenu.py:169
+#: condensation/ui/viewmanager.py:87 condensation/ui/viewmanager.py:95
 msgid "Not implemented"
-msgstr ""
+msgstr "Nicht implementiert"
 
-#: ./condensation/core/filesystem.py:89
+#: condensation/core/filesystem.py:89
 msgid "SFTP-FS : read_file %s"
 msgstr ""
 
-#: ./condensation/crypto/key.py:49
+#: condensation/crypto/key.py:49
 msgid "Key added by Condensation"
-msgstr ""
+msgstr "Schlüssel hinzugefügt von Condensation"
 
-#: ./condensation/crypto/key.py:51
+#: condensation/crypto/key.py:51
 msgid "Unsupported key type"
-msgstr ""
+msgstr "Nicht unterstützter Schlüssel-Typ"
 
-#: ./condensation/crypto/key.py:116
+#: condensation/crypto/key.py:116
 msgid "Unknown key-type %s"
-msgstr ""
+msgstr "Nicht bekannter Schlüssel-Typ %s"
 
-#: ./condensation/crypto/keymanager.py:41
+#: condensation/crypto/keymanager.py:41
 msgid "generating new key"
-msgstr ""
+msgstr "erstelle neuen Schlüssel"
 
-#: ./condensation/main.py:78
+#: condensation/main.py:78
 msgid "setup finished!"
-msgstr ""
+msgstr "Setup abgeschlossen"
 
-#: ./condensation/main.py:80
+#: condensation/main.py:80
 msgid "ERROR occured, shutting down..."
 msgstr ""
 
-#: ./condensation/main.py:88
+#: condensation/main.py:88
 msgid "saving configuration ... "
-msgstr ""
+msgstr "Speichern der Konfiguration ..."
 
-#: ./condensation/main.py:94
+#: condensation/main.py:94
 msgid "saving configuration done"
-msgstr ""
+msgstr "Speichern der Konfiguration abgeschlossen"
 
-#: ./condensation/pluginmanager.py:49
+#: condensation/pluginmanager.py:49
 msgid "Skipping already loaded plugin %s."
-msgstr ""
+msgstr "Überspringe breits geladenes Plugin %s."
 
-#: ./condensation/pluginmanager.py:58
+#: condensation/pluginmanager.py:58
 msgid "installing plugin '%s'"
-msgstr ""
+msgstr "Instaliere Plugin '%s'"
 
-#: ./condensation/pluginmanager.py:61
+#: condensation/pluginmanager.py:61
 msgid "plugin %s is missing the __install_plugin__() function"
 msgstr ""
 
-#: ./condensation/pluginmanager.py:71
+#: condensation/pluginmanager.py:71
 msgid "cleaning up for plugin '%s'"
 msgstr ""
 
-#: ./condensation/server.py:126
+#: condensation/server.py:126
 msgid "%s : connecting"
-msgstr ""
+msgstr "%s : verbinde"
 
-#: ./condensation/server.py:130
+#: condensation/server.py:130
 msgid "%s : opening transport"
-msgstr ""
+msgstr "%s : öffne Transport"
 
-#: ./condensation/server.py:136
+#: condensation/server.py:136
 msgid "%s : no known fingerprint"
-msgstr ""
+msgstr "%s : kein bekannter Fingerabdruck"
 
-#: ./condensation/server.py:141
+#: condensation/server.py:141
 msgid "%s : presented key has wrong fingerprint (is %s expected %s"
-msgstr ""
+msgstr "%s : presentierte einen Schlüssel mit dem falschen Fingerabdruck (präsentierte %s, erwartet wurde %s)"
 
-#: ./condensation/server.py:142
+#: condensation/server.py:142
 msgid "%s : Fingerprint matches"
-msgstr ""
+msgstr "%s : Fingerabdruck stimmt"
 
-#: ./condensation/server.py:150
+#: condensation/server.py:150
 msgid "%s : public key authentication not supported"
 msgstr ""
 
-#: ./condensation/server.py:152
+#: condensation/server.py:152
 msgid "%s : public key authentication FAILED (is the key installed on the server?)"
-msgstr ""
+msgstr "%s : Public Key Authentifizierung FEHLGESCHLAGEN (ist der Schlüssel auf dem Server installiert?)"
 
-#: ./condensation/server.py:154 ./condensation/server.py:171
+#: condensation/server.py:154 condensation/server.py:171
 msgid "something strange happened"
-msgstr ""
+msgstr "Etwas unerwartetes ist passiert"
 
-#: ./condensation/server.py:157
+#: condensation/server.py:157
 msgid "%s : trying password based authentication"
 msgstr ""
 
-#: ./condensation/server.py:164
+#: condensation/server.py:164
 msgid "%s : password authentication not supported"
 msgstr ""
 
-#: ./condensation/server.py:166
+#: condensation/server.py:166
 msgid "%s : Giving up..."
-msgstr ""
+msgstr "%s : Gebe auf ..."
 
-#: ./condensation/server.py:169
+#: condensation/server.py:169
 msgid "%s : password authentication FAILED (probably wrong password)"
 msgstr ""
 
-#: ./condensation/server.py:174
+#: condensation/server.py:174
 msgid "authenticated connection to server %s"
 msgstr ""
 
-#: ./condensation/server.py:205
+#: condensation/server.py:205
 msgid "Closing Transport to %s"
-msgstr ""
+msgstr "Schließe Transport zu %s"
 
-#: ./condensation/server.py:208
+#: condensation/server.py:208
 msgid "closed"
-msgstr ""
+msgstr "geschlossen"
 
-#: ./condensation/server.py:236
+#: condensation/server.py:236
 msgid "%s : installing public key for authentication"
 msgstr ""
 
-#: ./condensation/server.py:238
+#: condensation/server.py:238
 msgid "%s : creating ~/.ssh directory"
-msgstr ""
+msgstr "%s : erstelle Verzeichnis ~/.ssh"
 
-#: ./condensation/server.py:240
+#: condensation/server.py:240
 msgid "%s : adding key to ~/.ssh/authorized_keys"
-msgstr ""
+msgstr "%s : füge Schlüssel zu ~/.ssh/authorized_keys hinzu"
 
-#: ./condensation/server.py:246
+#: condensation/server.py:246
 msgid "%s : installed key"
-msgstr ""
+msgstr "%s : Schlüssel installiert"
 
-#: ./condensation/ui/baseformwidget.py:42
-#: ./condensation/ui/baseformwidget.py:49
-#: ./condensation/ui/baseformwidget.py:56
-msgid "Not implemented!"
-msgstr ""
-
-#: ./condensation/ui/formwidgetfactory.py:39
+#: condensation/ui/formwidgetfactory.py:39
 msgid "Found no widget to handle attribute with definition %s"
-msgstr ""
+msgstr "Kein Widget gefunden um Attribut mit folgender Definition zu verarbeiten: %s"
 
-#: ./condensation/ui/serverconfigview.py:30
-#: ./condensation/ui/vhostconfigview.py:32
+#: condensation/ui/serverconfigview.py:30
+#: condensation/ui/vhostconfigview.py:32
 msgid "General"
 msgstr "Allgemein"
 
-#: ./condensation/ui/serverconfigview.py:31
-#: ./condensation/ui/vhostconfigview.py:33
+#: condensation/ui/serverconfigview.py:31
+#: condensation/ui/vhostconfigview.py:33
 msgid "Name"
 msgstr "Name"
 
-#: ./condensation/ui/serverconfigview.py:32
+#: condensation/ui/serverconfigview.py:32
 msgid "Host"
 msgstr "Host"
 
-#: ./condensation/ui/serverconfigview.py:34
+#: condensation/ui/serverconfigview.py:34
 msgid "SSH"
 msgstr "SSH"
 
-#: ./condensation/ui/serverconfigview.py:35
+#: condensation/ui/serverconfigview.py:35
 msgid "Port"
 msgstr "Port"
 
-#: ./condensation/ui/serverconfigview.py:36
-#: ./condensation/ui/serverconfigview.py:45
+#: condensation/ui/serverconfigview.py:36
+#: condensation/ui/serverconfigview.py:45
 msgid "User"
 msgstr "Benutzer"
 
-#: ./condensation/ui/serverconfigview.py:37
+#: condensation/ui/serverconfigview.py:37
 msgid "Key Fingerprint"
 msgstr ""
 
-#: ./condensation/ui/serverconfigview.py:38
+#: condensation/ui/serverconfigview.py:38
 msgid "Auto Connect"
 msgstr "Automatisch Verbinden"
 
-#: ./condensation/ui/serverconfigview.py:40
+#: condensation/ui/serverconfigview.py:40
 msgid "Apache"
 msgstr "Apache"
 
-#: ./condensation/ui/serverconfigview.py:41
+#: condensation/ui/serverconfigview.py:41
 msgid "Base dir"
 msgstr "Basis Verzeichnis"
 
-#: ./condensation/ui/serverconfigview.py:42
+#: condensation/ui/serverconfigview.py:42
 msgid "Config dir"
 msgstr "Konfigurations Verzeichnis"
 
-#: ./condensation/ui/serverconfigview.py:43
+#: condensation/ui/serverconfigview.py:43
 msgid "Available vhosts"
 msgstr "Verfügbare VHosts"
 
-#: ./condensation/ui/serverconfigview.py:44
+#: condensation/ui/serverconfigview.py:44
 msgid "Enabled vhosts"
 msgstr "Aktivierte VHosts"
 
-#: ./condensation/ui/serverconfigview.py:46
+#: condensation/ui/serverconfigview.py:46
 msgid "Group"
 msgstr "Gruppe"
 
-#: ./condensation/ui/serverconfigview.py:48
+#: condensation/ui/serverconfigview.py:48
 msgid "Drupal"
 msgstr "Drupal"
 
-#: ./condensation/ui/serverconfigview.py:49
+#: condensation/ui/serverconfigview.py:49
 msgid "Cronfile"
 msgstr "Cron-Datei"
 
-#: ./condensation/ui/serverconfigview.py:51
+#: condensation/ui/serverconfigview.py:51
 msgid "MySQL"
 msgstr "MySQL"
 
-#: ./condensation/ui/serverconfigview.py:52
+#: condensation/ui/serverconfigview.py:52
 msgid "Server host"
-msgstr ""
+msgstr "Server Host"
 
-#: ./condensation/ui/serverconfigview.py:53
+#: condensation/ui/serverconfigview.py:53
 msgid "Adminstrative user"
 msgstr "Administrator Benutzer"
 
-#: ./condensation/ui/serverconfigview.py:54
+#: condensation/ui/serverconfigview.py:54
 msgid "Adminstrative password"
 msgstr "Administrator Passwort"
 
-#: ./condensation/ui/serverviewmanager.py:62
+#: condensation/ui/serverviewmanager.py:62
 msgid "password required"
 msgstr "Pesswort benötigt"
 
-#: ./condensation/ui/serverviewmanager.py:63
+#: condensation/ui/serverviewmanager.py:63
 msgid "Please enter your password for user <b>%s</b> on <b>%s</b>"
-msgstr ""
+msgstr "Bitte Passwort für Benutzer <b>%s</b> auf <b>%s</b> eingeben"
 
-#: ./condensation/ui/serverviewmanager.py:64
+#: condensation/ui/serverviewmanager.py:64
 msgid "password"
 msgstr "Passwort"
 
-#: ./condensation/ui/serverviewmanager.py:65
+#: condensation/ui/serverviewmanager.py:65
 msgid "The password will <b>not</b> be saved."
-msgstr ""
+msgstr "Da Passwort wird <b>nich</b> gespeichert werden"
 
-#: ./condensation/ui/stringlistwidget.py:127
-#: ./condensation/ui/stringlistwidget.py:132
-msgid "NOT IMPLEMENTED!"
-msgstr ""
-
-#: ./condensation/ui/treemenu.py:169
-msgid "not implemented yet"
-msgstr ""
-
-#: ./condensation/ui/vhostconfigview.py:34
+#: condensation/ui/vhostconfigview.py:34
 msgid "Domains"
-msgstr ""
+msgstr "Domains"
 
-#: ./condensation/ui/vhostconfigview.py:35
+#: condensation/ui/vhostconfigview.py:35
 msgid "Document Root"
-msgstr ""
+msgstr "Document Root"
 
-#: ./condensation/ui/viewmanager.py:87 ./condensation/ui/viewmanager.py:95
-msgid "Not Implemented!"
-msgstr ""
-
-#: ./condensation/ui/viewmanager.py:133
+#: condensation/ui/viewmanager.py:133
 msgid "Already registered a viewmanager for %s"
-msgstr ""
+msgstr "Ein ViewManager für %s is bereits registriert"
 
-#: ./run-condensation.py:70
+#: run-condensation.py:70
 msgid "Logging started ..."
-msgstr ""
+msgstr "Logging gestartet ..."
 
-#: ./run-condensation.py:106
+#: run-condensation.py:102
 msgid "Could not load configuration file"
-msgstr ""
-
+msgstr "Konnte Konfigurations-Datei nicht laden."

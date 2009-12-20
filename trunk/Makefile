@@ -40,7 +40,6 @@ cachegrind:
 
 clean:
 	@echo -e "\n============================ CLEANING UP =================================\n"
-	@rm -fr $(RELEASEDIR)
 	@rm -f $(RELEASEFILE)
 	@find . -regextype posix-extended -type f -iregex ".*(~|\.pyc)" -delete
 	@rm -f cachegrind.out
@@ -65,7 +64,8 @@ lang: $(POFILES) $(MOFILES)
 
 $(MOFILES) : i18n/%/LC_MESSAGES/Condensation.mo : i18n/po-files/%.po
 	@mkdir -p $(dir $@)
-	msgfmt -c -v -o $@ $^
+	@echo "$^ :"
+	@msgfmt -c -v -o $@ $^
 
 
 $(POFILES) : i18n/messages.pot
@@ -77,14 +77,19 @@ release:
 		echo "Local modifications found, commit them first"; \
 		exit -1; \
 	fi;
-	@make docs clean
 	@echo -e "\n====================== MAKING REALEASE v$(BUILDVERSION) ===========================\n"
+# epydoc is broken atm
+#	@make docs
+#	@tar -cjf $(DOCRELEASEFILE) docs
 	@mkdir $(RELEASEDIR)
+	@make lang
+	@mkdir $(RELEASEDIR)/i18n
+	@cp -R i18n/?? $(RELEASEDIR)/i18n
+	@make clean
 	@cp -R condensation images plugins COPYING run-condensation.py $(RELEASEDIR)
 	@tar --exclude=.svn -cjf $(RELEASEFILE) $(RELEASEDIR)
 	@rm -fr $(RELEASEDIR)
-	@tar -cjf $(DOCRELEASEFILE) docs
-	
+
 
 stats:
 	@echo "Statistics:"

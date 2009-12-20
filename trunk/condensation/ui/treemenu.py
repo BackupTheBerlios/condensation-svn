@@ -166,7 +166,7 @@ class TreeMenu(gtk.TreeView):
         # remove items that got deleted
         for uuid in set(menu_uuids) - set(child_uuids):
             #print "removed "+str(uuid)
-            raise Exception(_('not implemented yet'))
+            raise Exception(_('Not implemented'))
         # add items that were inserted
         for uuid in set(child_uuids) - set(menu_uuids):
             #print "added "+str(uuid)

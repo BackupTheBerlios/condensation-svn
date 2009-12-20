@@ -84,7 +84,7 @@ class ViewManager(gtk.VBox):
         """
         Return the icon to show in the TreeMenu.
         """
-        raise Exception(_('Not Implemented!'))
+        raise Exception(_('Not implemented'))
 
 
 
@@ -92,7 +92,7 @@ class ViewManager(gtk.VBox):
         """
         Return the text to show in the TreeMenu.
         """
-        raise Exception(_('Not Implemented!'))
+        raise Exception(_('Not implemented'))
 
 
 

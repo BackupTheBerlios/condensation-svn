@@ -39,21 +39,21 @@ class BaseFormWidget(ColoredFrame):
         Check wether the class can handle a attribute with the given
         definition or not.
         """
-        raise Exception(_('Not implemented!'))
+        raise Exception(_('Not implemented'))
 
 
     def _get_value(self):
         """
         Get the widget's value.
         """
-        raise Exception(_('Not implemented!'))
+        raise Exception(_('Not implemented'))
 
 
     def _set_value(self, value):
         """
         Set the widget's value.
         """
-        raise Exception(_('Not implemented!'))
+        raise Exception(_('Not implemented'))
 
 
     def apply(self):
