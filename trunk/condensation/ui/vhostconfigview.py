@@ -28,13 +28,13 @@ from resources import Resources
 class VHostConfigView(CONObjectView):
 
 
-    categories = (
-        (_('General'), (
+    categories = [
+        [_('General'), [
             ('name', _('Name')),
             ('domains', _('Domains')),
             ('document_root', _('Document Root')),
-        )),
-    )
+        ]],
+    ]
 
 
 

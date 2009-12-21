@@ -26,34 +26,34 @@ from resources import Resources
 
 class ServerConfigView(CONObjectView):
 
-    categories = (
-        (_('General'), (
+    categories = [
+        [_('General'), [
             ('name', _('Name')),
             ('host', _('Host')),
-        )),
-        (_('SSH'), (
+        ]],
+        [_('SSH'), [
             ('ssh_port', _('Port')),
             ('ssh_user', _('User')),
             ('ssh_key_fingerprint', _('Key Fingerprint')),
             ('ssh_autoconnect', _('Auto Connect')),
-        )),
-        (_('Apache'), (
+        ]],
+        [_('Apache'), [
             ('apache_base', _('Base dir')),
             ('apache_confbase', _('Config dir')),
             ('apache_available', _('Available vhosts')),
             ('apache_enabled', _('Enabled vhosts')),
             ('apache_user', _('User')),
             ('apache_group', _('Group')),
-        )),
-        (_('Drupal'), (
+        ]],
+        [_('Drupal'), [
             ('drupal_cronfile', _('Cronfile')),
-        )),
-        (_('MySQL'), (
+        ]],
+        [_('MySQL'), [
             ('mysql_host', _('Server host')),
             ('mysql_user', _('Adminstrative user')),
             ('mysql_password', _('Adminstrative password')),
-        )),
-    )
+        ]],
+    ]
 
 
 

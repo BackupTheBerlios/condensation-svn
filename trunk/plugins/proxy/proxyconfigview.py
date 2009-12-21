@@ -31,11 +31,11 @@ import condensation.ui
 
 class ProxyConfigView(condensation.ui.CONObjectView):
 
-    categories = (
-        ('General', (
+    categories = [
+        ['General', [
             ('ports', 'Ports'),
-        )),
-    )
+        ]],
+    ]
 
 
     def get_icon(self):
