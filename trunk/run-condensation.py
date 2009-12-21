@@ -113,6 +113,9 @@ def start_up():
             gtk.main_iteration()
         time.sleep(1)
 
+        splash_screen.hide()
+        splash_screen = None
+
     except:
         gtk.main_quit()
 
