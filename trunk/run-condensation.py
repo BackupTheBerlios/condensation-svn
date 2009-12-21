@@ -76,47 +76,50 @@ def setup_logging():
 def start_up():
     global splash_screen
 
-    import time
-    time.sleep(0.5) # give the splash-screen time to show
+    pluginmanager = None
 
-    # setup gettext
-    import gettext
-    gettext.install('Condensation', 'i18n', unicode=1)
-
-    # logging
-    setup_logging()
-
-    # load plugins
-    import condensation
-    pluginmanager = condensation.PluginManager()
-    pluginmanager.load_plugins()
-
-    # load configuration
     try:
-        # try to load configuraion
-        import xml.etree.cElementTree as ET
-        et = ET.parse("condensation.conf.xml")
-        main = condensation.Main.object_deserializer(et.getroot())
-    except IOError, e:
-        # probably file not found
-        logging.warn(_("Could not load configuration file"))
-        main = condensation.Main()
-        main.setup()
+        import time
+        time.sleep(0.5) # give the splash-screen time to show
+
+        # setup gettext
+        import gettext
+        gettext.install('Condensation', 'i18n', unicode=1)
+
+        # logging
+        setup_logging()
+
+        # load plugins
+        import condensation
+        pluginmanager = condensation.PluginManager()
+        pluginmanager.load_plugins()
+
+        # load configuration
+        try:
+            # try to load configuraion
+            import xml.etree.cElementTree as ET
+            et = ET.parse("condensation.conf.xml")
+            main = condensation.Main.object_deserializer(et.getroot())
+        except IOError, e:
+            # probably file not found
+            logging.warn(_("Could not load configuration file"))
+            main = condensation.Main()
+            main.setup()
+
+        while gtk.events_pending():
+            gtk.main_iteration()
+        time.sleep(0.5)
+        while gtk.events_pending():
+            gtk.main_iteration()
+        time.sleep(1)
+
     except:
-        # oh, oh....
         gtk.main_quit()
+
+        if pluginmanager:
+            pluginmanager.cleanup_plugins()
+
         raise
-
-    while gtk.events_pending():
-        gtk.main_iteration()
-    time.sleep(0.5)
-    while gtk.events_pending():
-        gtk.main_iteration()
-    time.sleep(1)
-
-    # finished, hide splash
-    splash_screen.hide()
-    splash_screen = None
 
 
 
