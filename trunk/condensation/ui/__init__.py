@@ -31,6 +31,7 @@ from conobjectview import CONObjectView
 from formwidgetfactory import FormWidgetFactory
 from integerlistformwidget import IntegerListFormWidget
 from integerlistwidget import IntegerListWidget
+from keyviewwidget import KeyViewWidget
 from mainwindow import MainWindow
 from navigationhistory import NavigationHistory
 from resources import Resources

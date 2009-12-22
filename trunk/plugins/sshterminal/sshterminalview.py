@@ -62,7 +62,7 @@ class SSHTerminalView(gtk.HBox):
         self.show_all()
 
 
-        if self.server.get_connected():
+        if self.server.is_connected():
             self.connect()
         else:
             self.terminal.feed('*** Not connected ***\n\r')

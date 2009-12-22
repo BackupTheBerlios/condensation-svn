@@ -19,9 +19,11 @@
 ############################################################################
 
 import gtk
+import md5
 
 import condensation
 
+from keyviewwidget import KeyViewWidget
 from resources import Resources
 from serverconfigview import ServerConfigView
 from textentrydialog import TextEntryDialog
@@ -55,18 +57,44 @@ class ServerViewManager(ViewManager):
 
 
     def action_connect(self, action=None):
-        try:
-            self.view_object.connect_to_server()
-        except condensation.PasswordRequiredException, e:
-            passwd = TextEntryDialog.run_dialog(
-                _('password required'),
-                _('Please enter your password for user <b>%s</b> on <b>%s</b>') % (self.view_object.ssh_user, self.view_object.host),
-                _('password'),
-                _('The password will <b>not</b> be saved.'),
-                True)
-            self.view_object._ssh_password = passwd
-            self.view_object.connect_to_server()
+        while not self.view_object.is_connected():
+            try:
+                self.view_object.connect_to_server()
+            except condensation.PasswordRequiredException, e:
+                passwd = TextEntryDialog.run_dialog(
+                    _('password required'),
+                    _('Please enter your password for user <b>%s</b> on <b>%s</b>') % (self.view_object.ssh_user, self.view_object.host),
+                    _('password'),
+                    _('The password will <b>not</b> be saved.'),
+                    True)
+                #TODO: when canceled, return
+                self.view_object._ssh_password = passwd
+                self.view_object.connect_to_server()
+            except condensation.NewServerKeyException, e:
+                dialog = gtk.MessageDialog(
+                parent=None,
+                flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                type=gtk.MESSAGE_WARNING,
+                buttons=gtk.BUTTONS_NONE,
+                message_format=None)
 
+                dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+                dialog.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
+
+                dialog.set_title(_('Unknown Key - %s') % self.view_object.host)
+                dialog.set_markup(_('There is no known key for the host %s, please ensure that the key presented below belongs to that host.') % self.view_object.host)
+                dialog.format_secondary_markup(_('The key will be saved to ensure the host\'s identity in the future.'))
+
+                keyview = KeyViewWidget(e.new_key)
+                dialog.vbox.pack_end(keyview, True, True, 0)
+                dialog.vbox.show_all()
+
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_ACCEPT:
+                    self.view_object.ssh_key_fingerprint = md5.new(str(e.new_key)).hexdigest()
+                else:
+                    return
 
 
 
@@ -84,8 +112,8 @@ class ServerViewManager(ViewManager):
 
 
     def update(self):
-        self.connect_button.set_property('sensitive', not self.view_object.get_connected())
-        self.disconnect_button.set_property('sensitive', self.view_object.get_connected())
+        self.connect_button.set_property('sensitive', not self.view_object.is_connected())
+        self.disconnect_button.set_property('sensitive', self.view_object.is_connected())
 
 
     def get_menu_text(self):
@@ -94,7 +122,7 @@ class ServerViewManager(ViewManager):
 
 
     def get_menu_icon(self):
-        if self.view_object.get_connected():
+        if self.view_object.is_connected():
             return 'condensation-server-connected'
         else:
             return 'condensation-server-disconnected'

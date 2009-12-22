@@ -58,7 +58,7 @@ class Server(condensation.core.CONObject):
         {'name': 'vhosts', 'type': 'VHost[]', 'default': [], 'navigatable': True},
     ]
 
-    _signal_list = ('changed', 'unknown-key', 'connected', 'disconnected')
+    _signal_list = ('changed', 'connected', 'disconnected')
 
     servers = [] #: list of all Server objects
 
@@ -131,14 +131,14 @@ class Server(condensation.core.CONObject):
             self._transport = paramiko.Transport(sock)
             self._transport.start_client()
 
-            fingerprint = md5.new(str(self._transport.get_remote_server_key())).hexdigest()
+            server_key = self._transport.get_remote_server_key()
             if not self.ssh_key_fingerprint:
                 self._logger.warning(_("%s : no known fingerprint") % self.host)
-                self.raise_signal("unknown-key", fingerprint)
-                # TODO: respect 'cancel' (ie catch exception from daserverwidgets)
-            else:
-                if self.ssh_key_fingerprint != fingerprint:
-                    raise Exception(_("%s : presented key has wrong fingerprint (is %s expected %s") % (self.host,fingerprint,self.ssh_key_fingerprint))
+                raise NewServerKeyException(self, server_key)
+
+            fingerprint = md5.new(str(server_key)).hexdigest()
+            if self.ssh_key_fingerprint != fingerprint:
+                raise Exception(_("%s : presented key has wrong fingerprint (is %s expected %s") % (self.host,fingerprint,self.ssh_key_fingerprint))
             self._logger.info(_("%s : Fingerprint matches") % self.host)
 
             try: # Try public key authentication
@@ -210,9 +210,9 @@ class Server(condensation.core.CONObject):
 
 
 
-    def get_connected(self):
+    def is_connected(self):
         """
-        Returns wether the connection is live or not.
+        Checks wether the connection is live or not.
 
         The SFTP connection is not taken into account, just the transport.
         """
