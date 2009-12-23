@@ -18,10 +18,6 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-class PasswordRequiredException(Exception):
-    """Raised, when a password is required to continue."""
-
-
 class NewServerKeyException(Exception):
     """The server presented a key and there were no key previously known."""
 
@@ -29,3 +25,13 @@ class NewServerKeyException(Exception):
         Exception.__init__(self, 'New key')
         self.server = server
         self.new_key = new_key
+
+
+class NotConnectedException(Exception):
+    """There is no connection but the operation needs one."""
+
+
+class PasswordRequiredException(Exception):
+    """Raised, when a password is required to continue."""
+
+

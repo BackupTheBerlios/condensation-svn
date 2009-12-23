@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Condensation 0.1\n"
-"POT-Creation-Date: 2009-12-20 14:14+CET\n"
+"POT-Creation-Date: 2009-12-23 08:17+CET\n"
 "PO-Revision-Date: 2009-12-19 23:40+CET\n"
 "Last-Translator: Thomas Hille <thomas.hille@nightsabers.org>\n"
 "Language-Team: German <DE@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: condensation/apacheconfigparser.py:114
 msgid "Section mismatch: '%s' should be '%s'"
-msgstr ""
+msgstr "Abschnitt passt nicht: '%s' sollte '%s' sein"
 
 #: condensation/core/conborg.py:72 condensation/core/signalsource.py:44
 msgid "Can not connect unregistered signal '%s'."
@@ -24,12 +24,12 @@ msgstr "Kann nicht registriertes Signal '%s' nicht verbinden."
 
 #: condensation/core/conborg.py:106 condensation/core/conobject.py:89
 msgid "Attribute '%s' doesn't exist and therefore can't be set."
-msgstr ""
+msgstr "Das Attribut '%s' existiert nicht, und kann deswegen auch nicht gesetzt werden."
 
 #: condensation/core/concollection.py:81
 #: condensation/core/concollection.py:107
 msgid "Two objects with the same unique index."
-msgstr ""
+msgstr "Zwei objecte mit dem selben eindeutigen Index."
 
 #: condensation/core/concollection.py:127
 msgid "no such index"
@@ -38,7 +38,7 @@ msgstr "dieser Index existiert nicht"
 #: condensation/core/concollection.py:129
 #: condensation/core/concollection.py:138
 msgid "no element with this value"
-msgstr ""
+msgstr "Kein Element mit diesem Wert"
 
 #: condensation/core/concollection.py:136
 msgid "no such unique index"
@@ -50,49 +50,47 @@ msgstr ""
 
 #: condensation/core/conobject.py:174
 msgid "Class already registered"
-msgstr ""
+msgstr "Klasse bereits registriert"
 
 #: condensation/core/conobject.py:177
 msgid "Not a decendant of CONObject"
-msgstr ""
+msgstr "Kein Abkömmling von CONObject"
 
 #: condensation/core/conobject.py:197
 msgid "Error in attribute defintion of class %s: missing attribute name."
-msgstr ""
+msgstr "Fehler in der Attribut-Definition der Klasse %s: fehlender Attribut Name"
 
 #: condensation/core/conobject.py:199
 msgid "Error in attribute defintion of class %s: missing attribute type."
-msgstr ""
+msgstr "Fehler in der Attribut-Definition der Klasse %s: fehlender Attribut Typ"
 
 #: condensation/core/conobject.py:201
-msgid ""
-"Error in attribute defintion of class %s: missing default attribute value."
-msgstr ""
+msgid "Error in attribute defintion of class %s: missing default attribute value."
+msgstr "Fehler in der Attribut-Definition der Klasse %s: fehlender Standard Wert"
 
 #: condensation/core/conobject.py:204 condensation/core/conobject.py:417
 msgid "String expected here, got %s"
-msgstr ""
+msgstr "String erwartet, aber %s bekommen"
 
 #: condensation/core/conobject.py:210
 msgid "Class %s tried to register attribute %s of unregistered type '%s'."
-msgstr ""
+msgstr "Klasse %s versuchte das Attribut %s mit unbekanntem Typ %s zu registrieren"
 
 #: condensation/core/conobject.py:219
 msgid "Class %s tried to override attribute '%s'."
-msgstr ""
+msgstr "Klasse %s versuchte Attrubut '%s' zu übergehen"
 
 #: condensation/core/conobject.py:223
 msgid "Already in list"
-msgstr ""
+msgstr "Bereits in der Liste"
 
 #: condensation/core/conobject.py:252
-msgid ""
-"Adding attributes to already realized classes is not yet fully implemented"
-msgstr ""
+msgid "Adding attributes to already realized classes is not yet fully implemented"
+msgstr "Hinzufügen von Attributen zu einer bereits realisierten Klasse is nicht richtig unterstützt"
 
 #: condensation/core/conobject.py:413
 msgid "No object attribute of name '%s'."
-msgstr ""
+msgstr "Kein Objekt-Attribut mit dem Namen '%s'."
 
 #: condensation/core/filesystem.py:36 condensation/core/filesystem.py:48
 #: condensation/core/filesystem.py:65 condensation/core/filesystem.py:77
@@ -106,7 +104,7 @@ msgstr "Nicht implementiert"
 
 #: condensation/core/filesystem.py:89
 msgid "SFTP-FS : read_file %s"
-msgstr ""
+msgstr "SFTP-FS : read_file %s"
 
 #: condensation/crypto/key.py:49
 msgid "Key added by Condensation"
@@ -130,7 +128,7 @@ msgstr "Setup abgeschlossen"
 
 #: condensation/main.py:80
 msgid "ERROR occured, shutting down..."
-msgstr ""
+msgstr "FEHLER, beende ..."
 
 #: condensation/main.py:88
 msgid "saving configuration ... "
@@ -154,7 +152,7 @@ msgstr ""
 
 #: condensation/pluginmanager.py:71
 msgid "cleaning up for plugin '%s'"
-msgstr ""
+msgstr "Räume hinter Plugin '%s' auf."
 
 #: condensation/server.py:126
 msgid "%s : connecting"
@@ -194,7 +192,7 @@ msgstr ""
 
 #: condensation/server.py:164
 msgid "%s : password authentication not supported"
-msgstr ""
+msgstr "%s : Authentifizierung über Passwort wird nicht unterstützt"
 
 #: condensation/server.py:166
 msgid "%s : Giving up..."
@@ -216,19 +214,19 @@ msgstr "Schließe Transport zu %s"
 msgid "closed"
 msgstr "geschlossen"
 
-#: condensation/server.py:236
+#: condensation/server.py:239
 msgid "%s : installing public key for authentication"
-msgstr ""
+msgstr "%s : Installiere öffentlichen Schlüssel für Authentifizierung"
 
-#: condensation/server.py:238
+#: condensation/server.py:241
 msgid "%s : creating ~/.ssh directory"
 msgstr "%s : erstelle Verzeichnis ~/.ssh"
 
-#: condensation/server.py:240
+#: condensation/server.py:243
 msgid "%s : adding key to ~/.ssh/authorized_keys"
 msgstr "%s : füge Schlüssel zu ~/.ssh/authorized_keys hinzu"
 
-#: condensation/server.py:246
+#: condensation/server.py:249
 msgid "%s : installed key"
 msgstr "%s : Schlüssel installiert"
 
@@ -236,15 +234,42 @@ msgstr "%s : Schlüssel installiert"
 msgid "Found no widget to handle attribute with definition %s"
 msgstr "Kein Widget gefunden um Attribut mit folgender Definition zu verarbeiten: %s"
 
-#: condensation/ui/serverconfigview.py:30
-#: condensation/ui/vhostconfigview.py:32
-msgid "General"
-msgstr "Allgemein"
-
+#: condensation/ui/keyviewwidget.py:37 condensation/ui/keyviewwidget.py:60
 #: condensation/ui/serverconfigview.py:31
 #: condensation/ui/vhostconfigview.py:33
 msgid "Name"
 msgstr "Name"
+
+#: condensation/ui/keyviewwidget.py:42
+msgid "Value"
+msgstr "Wert"
+
+#: condensation/ui/keyviewwidget.py:57
+msgid "SSH-RSA Key"
+msgstr "SSH-RSA Schlüssel"
+
+#: condensation/ui/keyviewwidget.py:58
+#, fuzzy
+msgid "Fingerprint"
+msgstr "%s : Fingerabdruck stimmt"
+
+#: condensation/ui/keyviewwidget.py:59
+msgid "Size"
+msgstr "Größe"
+
+#: condensation/ui/keyviewwidget.py:61
+msgid "Can Sign"
+msgstr "Kann signieren"
+
+#: condensation/ui/keyviewwidget.py:63
+#, fuzzy
+msgid "Unknown key type"
+msgstr "Nicht bekannter Schlüssel-Typ %s"
+
+#: condensation/ui/serverconfigview.py:30
+#: condensation/ui/vhostconfigview.py:32
+msgid "General"
+msgstr "Allgemein"
 
 #: condensation/ui/serverconfigview.py:32
 msgid "Host"
@@ -265,7 +290,7 @@ msgstr "Benutzer"
 
 #: condensation/ui/serverconfigview.py:37
 msgid "Key Fingerprint"
-msgstr ""
+msgstr "Schlüssel-Fingerabdruck"
 
 #: condensation/ui/serverconfigview.py:38
 msgid "Auto Connect"
@@ -319,21 +344,46 @@ msgstr "Administrator Benutzer"
 msgid "Adminstrative password"
 msgstr "Administrator Passwort"
 
-#: condensation/ui/serverviewmanager.py:62
-msgid "password required"
-msgstr "Pesswort benötigt"
+#: condensation/ui/serverviewmanager.py:47
+#, fuzzy
+msgid "Unknown Key - %s"
+msgstr "Unbekannter Schlüssel - %s"
 
-#: condensation/ui/serverviewmanager.py:63
+#: condensation/ui/serverviewmanager.py:48
+msgid "There is no known key for the host %s, please ensure that the key presented below belongs to that host."
+msgstr ""
+
+#: condensation/ui/serverviewmanager.py:49
+msgid "The key will be saved to ensure the host's identity in the future."
+msgstr "Der Schlüssel wird gespeichert um die Identität des Hosts in Zukunft sicherzustellen."
+
+#: condensation/ui/serverviewmanager.py:90
+msgid "password required"
+msgstr "Passwort benötigt"
+
+#: condensation/ui/serverviewmanager.py:91
 msgid "Please enter your password for user <b>%s</b> on <b>%s</b>"
 msgstr "Bitte Passwort für Benutzer <b>%s</b> auf <b>%s</b> eingeben"
 
-#: condensation/ui/serverviewmanager.py:64
+#: condensation/ui/serverviewmanager.py:92
 msgid "password"
 msgstr "Passwort"
 
-#: condensation/ui/serverviewmanager.py:65
+#: condensation/ui/serverviewmanager.py:93
 msgid "The password will <b>not</b> be saved."
 msgstr "Da Passwort wird <b>nich</b> gespeichert werden"
+
+#: condensation/ui/serverviewmanager.py:127
+msgid "Connect to server %s"
+msgstr "Verbinde mit Server %s"
+
+#: condensation/ui/serverviewmanager.py:128
+msgid "<b>Connect to the host %s now?</b>"
+msgstr "<b>Jetzt mit dem Host %s verbinden?</b>"
+
+#: condensation/ui/serverviewmanager.py:129
+msgid "To install a ssh key on the server you first need to connect to it."
+msgstr "Um einen SSH-Schlüssel zu installieren ist eine bestehende Verbindung zum Server nötig."
 
 #: condensation/ui/vhostconfigview.py:34
 msgid "Domains"
@@ -351,6 +401,6 @@ msgstr "Ein ViewManager für %s is bereits registriert"
 msgid "Logging started ..."
 msgstr "Logging gestartet ..."
 
-#: run-condensation.py:102
+#: run-condensation.py:105
 msgid "Could not load configuration file"
 msgstr "Konnte Konfigurations-Datei nicht laden."

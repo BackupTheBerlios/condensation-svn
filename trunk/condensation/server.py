@@ -224,7 +224,8 @@ class Server(condensation.core.CONObject):
         """
         Open a SFTP connection and returns a `condensation.crypto.SFTPFileSystem`.
         """
-        self.connect_to_server()
+        if not self.is_connected():
+            raise NotConnectedException()
         if self._sftpfs == None:
             self._sftpfs = condensation.crypto.SFTPFileSystem(self._transport)
             self._sftpfs.home_dir = self.ssh_user_home
@@ -233,6 +234,8 @@ class Server(condensation.core.CONObject):
 
 
     def install_auth_key(self):
+        if not self.is_connected():
+            raise NotConnectedException()
         self._logger.info(_("%s : installing public key for authentication") % self.host)
         if '.ssh' not in self._sftpfs.listdir('~'):
             self._logger.debug(_("%s : creating ~/.ssh directory") % self.host)

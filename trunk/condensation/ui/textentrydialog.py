@@ -32,6 +32,7 @@ class TextEntryDialog(gtk.MessageDialog):
             message_format=None)
         self.set_title(title)
         self.set_markup(text)
+        self.format_secondary_markup(info)
         self.entry = gtk.Entry()
         self.entry.set_visibility(not input_hidden)
         self.entry.connect("activate", self._entry_activated, gtk.RESPONSE_OK)
@@ -40,7 +41,6 @@ class TextEntryDialog(gtk.MessageDialog):
         hbox.pack_start(gtk.Label(label), False, 5, 5)
         hbox.pack_end(self.entry)
 
-        self.format_secondary_markup(info)
         self.vbox.pack_end(hbox, True, True, 0)
         self.vbox.show_all()
 

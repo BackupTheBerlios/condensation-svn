@@ -29,6 +29,31 @@ from serverconfigview import ServerConfigView
 from textentrydialog import TextEntryDialog
 from viewmanager import ViewManager
 
+
+class NewKeyDialog(gtk.MessageDialog):
+
+    def __init__(self, server, key):
+        gtk.MessageDialog.__init__(
+            self,
+            parent=None,
+            flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            type=gtk.MESSAGE_WARNING,
+            buttons=gtk.BUTTONS_NONE,
+            message_format=None)
+
+        self.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
+
+        self.set_title(_('Unknown Key - %s') % server.host)
+        self.set_markup(_('There is no known key for the host %s, please ensure that the key presented below belongs to that host.') % server.host)
+        self.format_secondary_markup(_('The key will be saved to ensure the host\'s identity in the future.'))
+
+        keyview = KeyViewWidget(key)
+        self.vbox.pack_end(keyview, True, True, 0)
+        self.vbox.show_all()
+
+
+
 class ServerViewManager(ViewManager):
 
     def __init__(self, containing_notebook, view_object):
@@ -71,24 +96,7 @@ class ServerViewManager(ViewManager):
                 self.view_object._ssh_password = passwd
                 self.view_object.connect_to_server()
             except condensation.NewServerKeyException, e:
-                dialog = gtk.MessageDialog(
-                parent=None,
-                flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                type=gtk.MESSAGE_WARNING,
-                buttons=gtk.BUTTONS_NONE,
-                message_format=None)
-
-                dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-                dialog.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
-
-                dialog.set_title(_('Unknown Key - %s') % self.view_object.host)
-                dialog.set_markup(_('There is no known key for the host %s, please ensure that the key presented below belongs to that host.') % self.view_object.host)
-                dialog.format_secondary_markup(_('The key will be saved to ensure the host\'s identity in the future.'))
-
-                keyview = KeyViewWidget(e.new_key)
-                dialog.vbox.pack_end(keyview, True, True, 0)
-                dialog.vbox.show_all()
-
+                dialog = NewKeyDialog(self.view_object, e.new_key)
                 response = dialog.run()
                 dialog.destroy()
                 if response == gtk.RESPONSE_ACCEPT:
@@ -103,7 +111,30 @@ class ServerViewManager(ViewManager):
 
 
     def action_install_key(self, action=None):
-        self.view_object.install_auth_key()
+        key_installed = False
+        while not key_installed:
+            try:
+                self.view_object.install_auth_key()
+                key_installed = True
+            except condensation.NotConnectedException, e:
+                dialog = gtk.MessageDialog(
+                    parent=None,
+                    flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                    type=gtk.MESSAGE_WARNING,
+                    buttons=gtk.BUTTONS_YES_NO,
+                    message_format=None)
+
+                dialog.set_title(_('Connect to server %s') % self.view_object.host)
+                dialog.set_markup(_('<b>Connect to the host %s now?</b>') % self.view_object.host)
+                dialog.format_secondary_markup(_('To install a ssh key on the server you first need to connect to it.'))
+
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    self.action_connect()
+                else:
+                    return
+
 
 
     def on_server_changed(self, server):
