@@ -40,13 +40,14 @@ class ProxyServer(condensation.core.CONBorg):
 
     # need to implement serve_forever() and shutdown(), because python2.5 has no shutdown()
     class ThreadedHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
+        """Threaded mixed-in subclass of BaseHTTPServer"""
 
         def serve_forever(self, poll_interval=0.5):
             self.__running = True
             while self.__running:
                 r, w, e = select.select([self], [], [], poll_interval)
                 if r:
-                    self._handle_request_noblock()
+                    self.handle_request()
 
 
         def shutdown(self):

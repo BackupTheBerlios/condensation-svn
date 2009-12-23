@@ -68,6 +68,8 @@ class PluginManager(condensation.core.CONBorg):
         logger = logging.getLogger('PluginManager')
         for module in self._plugin_modules:
             if '__cleanup_plugin__' in module.__dict__:
-                logger.info(_("cleaning up for plugin '%s'") % module.__plugin_name__)
+                #BUG/TODO: somehow i18n is broken here and results in a 'list' object not callable
+                #logger.info(_("cleaning up for plugin '%s'") % module.__plugin_name__)
+                logger.info("cleaning up for plugin '%s'" % module.__plugin_name__)
                 module.__cleanup_plugin__()
 

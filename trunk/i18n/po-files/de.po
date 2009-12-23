@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) 2009 Thomas Hille
+# Thomas Hille <thomas.hille@nightsabers.org>, 2009.
 #
 msgid ""
 msgstr ""
