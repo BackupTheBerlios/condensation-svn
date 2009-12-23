@@ -30,12 +30,14 @@ def __install_plugin__():
     from proxyserver import ProxyServer
     from proxyviewmanager import ProxyViewManager
     from proxyconfigview import ProxyConfigView
+    from proxyinspectview import ProxyInspectView
     from proxyinterceptview import ProxyInterceptView
     from proxyredirectionsview import ProxyRedirectionsView
 
-    condensation.ui.Resources.register_iconset(
-        'condensation-proxy',
+    condensation.ui.Resources.register_iconset('condensation-proxy',
         os.path.join(__path__[0], 'proxy.svg'))
+    condensation.ui.Resources.register_iconset('condensation-inspect',
+        os.path.join(__path__[0], 'inspect.svg'))
 
     condensation.core.CONObject.register_attribute_type(
         'ProxyServer',
@@ -50,6 +52,7 @@ def __install_plugin__():
     condensation.ui.ViewManager.register_viewmanager('ProxyServer', ProxyViewManager)
 
     condensation.ui.ViewManager.register_view('ProxyServer', ProxyConfigView)
+    condensation.ui.ViewManager.register_view('ProxyServer', ProxyInspectView)
     condensation.ui.ViewManager.register_view('ProxyServer', ProxyInterceptView)
     condensation.ui.ViewManager.register_view('ProxyServer', ProxyRedirectionsView)
 

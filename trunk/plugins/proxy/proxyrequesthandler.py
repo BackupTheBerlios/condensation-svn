@@ -32,6 +32,8 @@ class ProxyRequestHandler (BaseHTTPServer.BaseHTTPRequestHandler):
     mapping_table = {}
     map_all = None
 
+    proxyrecordlist = None
+
 
     @classmethod
     def add_mapping(cls, original_domain, new_domain, new_port):
@@ -47,6 +49,12 @@ class ProxyRequestHandler (BaseHTTPServer.BaseHTTPRequestHandler):
                 self.send_error(403)
         else:
             BaseHTTPServer.BaseHTTPRequestHandler.handle(self)
+
+
+
+    def log_request(self, code=None, size=None):
+        if self.proxyrecordlist:
+            self.proxyrecordlist.add_request(self)
 
 
 
@@ -105,8 +113,7 @@ class ProxyRequestHandler (BaseHTTPServer.BaseHTTPRequestHandler):
 
 
     def do_GET(self):
-        (scm, netloc, path, params, query, fragment) = urlparse.urlparse(
-            self.path, 'http')
+        (scm, netloc, path, params, query, fragment) = urlparse.urlparse(self.path, 'http')
         if scm != 'http' or fragment or not netloc:
             self.send_error(400, "bad url %s" % self.path)
             return

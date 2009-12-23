@@ -25,6 +25,8 @@ import threading
 import select
 
 import condensation.core
+
+from proxyrecordlist import ProxyRecordList
 from proxyrequesthandler import ProxyRequestHandler
 
 
@@ -32,11 +34,14 @@ class ProxyServer(condensation.core.CONBorg):
 
     _attribute_definitions = (
         {'name': 'ports', 'type': 'integer[]', 'default': (8000,), 'min':1, 'max': 65535},
+        #TODO: list of allowed clients, default 127.0.0.1
     )
     _signal_list = (())
 
     _running_servers = {}
     _running_server_threads = {}
+
+    _proxyrecordlist = None
 
     # need to implement serve_forever() and shutdown(), because python2.5 has no shutdown()
     class ThreadedHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
@@ -58,11 +63,19 @@ class ProxyServer(condensation.core.CONBorg):
     def __init__(self):
         condensation.core.CONBorg.__init__(self)
         self._logger = logging.getLogger("ProxyServer")
+        if not self._proxyrecordlist:
+            self._proxyrecordlist = ProxyRecordList()
+            ProxyRequestHandler.proxyrecordlist = self._proxyrecordlist
 
 
 
     def wakeup(self):
         self.start()
+
+
+
+    def get_recordlist(self):
+        return self._proxyrecordlist
 
 
 
