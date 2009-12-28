@@ -106,13 +106,6 @@ def start_up():
             main = condensation.Main()
             main.setup()
 
-        while gtk.events_pending():
-            gtk.main_iteration()
-        time.sleep(0.5)
-        while gtk.events_pending():
-            gtk.main_iteration()
-        time.sleep(1)
-
         splash_screen.hide()
         splash_screen = None
 
