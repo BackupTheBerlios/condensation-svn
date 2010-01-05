@@ -47,27 +47,16 @@ class ProxyRecordListWidget(gtk.ScrolledWindow):
         self.column_client.set_cell_data_func(self.cell_client, self._cell_data_client)
         self.column_client.set_property('resizable', True)
 
-        # type column
-        self.column_type = gtk.TreeViewColumn(_('Type'))
-        self.treeview.append_column(self.column_type)
-        self.cell_type = gtk.CellRendererText()
-        self.column_type.pack_start(self.cell_type, True)
-        self.column_type.set_cell_data_func(self.cell_type, self._cell_data_type)
-        self.column_type.set_property('resizable', True)
-
-        # path column
-        self.column_path = gtk.TreeViewColumn(_('Path'))
-        self.treeview.append_column(self.column_path)
-        self.cell_path = gtk.CellRendererText()
-        self.column_path.pack_start(self.cell_path, True)
-        self.column_path.set_cell_data_func(self.cell_path, self._cell_data_path)
-        self.column_path.set_property('resizable', True)
+        # add some columns
+        self._add_column_str(_('Method'), 'method')
+        self._add_column_str(_('URI'), 'uri')
 
         # general treeview stuff
         self.treeview.set_reorderable(False)
         self.treeview.set_headers_visible(True)
         self.treeview.set_rules_hint(True)
         self.treeview.get_selection().set_mode(gtk.SELECTION_SINGLE)
+        self.treeview.connect("cursor_changed", self._cursor_changed)
 
         self.show_all()
 
@@ -79,6 +68,16 @@ class ProxyRecordListWidget(gtk.ScrolledWindow):
 
 
 
+    def _add_column_str(self, name, attrib):
+        column = gtk.TreeViewColumn(name)
+        self.treeview.append_column(column)
+        cell = gtk.CellRendererText()
+        column.pack_start(cell, True)
+        column.set_cell_data_func(cell, self._cell_data_str, attrib)
+        column.set_property('resizable', True)
+
+
+
     def _record_added(self, recordlist, record):
         self.liststore.append((record,))
 
@@ -86,22 +85,30 @@ class ProxyRecordListWidget(gtk.ScrolledWindow):
 
     def _cell_data_client(self, column, cell_renderer, tree_model, iter):
         record = tree_model.get_value(iter, 0)
-        addr = str(record.client_address[0]) +':'+ str(record.client_address[1])
-        cell_renderer.set_property('text', addr)
+        if hasattr(record, 'client_address'):
+            addr = str(record.client_address[0])
+            cell_renderer.set_property('text', addr)
 
 
-
-    def _cell_data_type(self, column, cell_renderer, tree_model, iter):
+    def _cell_data_str(self, column, cell_renderer, tree_model, iter, attrib):
         record = tree_model.get_value(iter, 0)
-        cell_renderer.set_property('text', record.request_type)
+        if hasattr(record, attrib):
+            cell_renderer.set_property('text', getattr(record, attrib))
 
 
 
-    def _cell_data_path(self, column, cell_renderer, tree_model, iter):
-        record = tree_model.get_value(iter, 0)
-        cell_renderer.set_property('text', record.path)
+    def _cursor_changed(self, treeview):
+        self.emit('selected-changed')
 
 
 
+    def get_selected(self):
+        (path, col) = self.treeview.get_cursor()
+        return self.liststore[path][0]
 
+
+
+# register signal 'changed' with gobject
+gobject.type_register(ProxyRecordListWidget)
+gobject.signal_new("selected-changed", ProxyRecordListWidget, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
 

@@ -18,31 +18,46 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-import condensation.core
+import gtk
 
+from httpheaderwidget import HTTPHeaderWidget
 
-class ProxyRecord(object):
-    """represents a proxy record, ie. one request and it's associated data."""
-
-
-
-class ProxyRecordList(condensation.core.CONObject):
-    """List of ProxyRecords."""
-
-    _attribute_definitions = [
-    ]
-    _signal_list = ('record-added',)
-
+class ProxyRecordWidget(gtk.VBox):
 
     def __init__(self):
-        condensation.core.CONObject.__init__(self)
-        self._list = []
+        gtk.VBox.__init__(self)
+
+        # request header
+        expander = gtk.Expander(_('Request Header'))
+        self.request_header_widget = HTTPHeaderWidget()
+        expander.add(self.request_header_widget)
+        self.pack_start(expander, False, True)
+        expander.show_all()
+        # request Body
+        expander = gtk.Expander(_('Request Body'))
+        expander.add(gtk.Label('PLACEHOLDER'))
+        self.pack_start(expander, False, True)
+        expander.show_all()
+        # response header
+        expander = gtk.Expander(_('Response Header'))
+        self.response_header_widget = HTTPHeaderWidget()
+        expander.add(self.response_header_widget)
+        self.pack_start(expander, False, True)
+        expander.show_all()
+        # response body
+        expander = gtk.Expander(_('Response Body'))
+        expander.add(gtk.Label('PLACEHOLDER'))
+        self.pack_start(expander, False, True)
+        expander.show_all()
 
 
-    def new_record(self):
-        record = ProxyRecord()
-        self._list.append(record)
-        self.raise_signal('record-added', record)
-        return record
+
+    def set_record(self, record):
+        if hasattr(record, 'request_headers'):
+            self.request_header_widget.set_headers(record.request_headers)
+        if hasattr(record, 'response_headers'):
+            self.response_header_widget.set_headers(record.response_headers)
+
+
 
 

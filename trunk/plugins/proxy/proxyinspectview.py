@@ -21,6 +21,8 @@
 import gtk
 
 from proxyrecordlistwidget import ProxyRecordListWidget
+from proxyrecordwidget import ProxyRecordWidget
+
 
 class ProxyInspectView(gtk.VBox):
 
@@ -30,6 +32,18 @@ class ProxyInspectView(gtk.VBox):
 
         self.listwidget = ProxyRecordListWidget(self.view_object)
         self.pack_start(self.listwidget, True, True)
+        self.listwidget.connect('selected-changed', self._selected_changed)
+
+        self.recordwidget = ProxyRecordWidget()
+        frame = gtk.Frame()
+        frame.add(self.recordwidget)
+        frame.set_shadow_type(gtk.SHADOW_NONE)
+        frame.set_border_width(5)
+        expander = gtk.Expander(_('Details'))
+        expander.add(frame)
+        self.pack_end(expander, False, True)
+        expander.show_all()
+
 
 
     def get_icon(self):
@@ -39,4 +53,14 @@ class ProxyInspectView(gtk.VBox):
 
     def get_name(self):
         return _("Inspect")
+
+
+
+    def _selected_changed(self, listwidget):
+        record = self.listwidget.get_selected()
+        if record:
+            self.recordwidget.set_record(record)
+        else:
+            print "empty record!!" # TODO: shouldn't hapen, handle accordingly
+
 

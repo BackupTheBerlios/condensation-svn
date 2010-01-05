@@ -18,7 +18,6 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-import BaseHTTPServer
 import SocketServer
 import logging
 import threading
@@ -44,7 +43,7 @@ class ProxyServer(condensation.core.CONBorg):
     _proxyrecordlist = None
 
     # need to implement serve_forever() and shutdown(), because python2.5 has no shutdown()
-    class ThreadedHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
+    class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
         """Threaded mixed-in subclass of BaseHTTPServer"""
 
         def serve_forever(self, poll_interval=0.5):
@@ -101,7 +100,7 @@ class ProxyServer(condensation.core.CONBorg):
         if port in self._running_servers:
             raise Exception("A proxy already runs on port %d." % port)
         self._logger.info("starting proxy on port %d" % port)
-        server = self.ThreadedHTTPServer(('127.0.0.1', port), ProxyRequestHandler)
+        server = self.ThreadedTCPServer(('127.0.0.1', port), ProxyRequestHandler)
         name = "proxy%d" % port
         thread = threading.Thread(target=server.serve_forever, name=name)
         thread.daemon = True

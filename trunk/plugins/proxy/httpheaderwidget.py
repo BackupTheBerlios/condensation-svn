@@ -18,31 +18,36 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 
-import condensation.core
+import gtk
 
-
-class ProxyRecord(object):
-    """represents a proxy record, ie. one request and it's associated data."""
-
-
-
-class ProxyRecordList(condensation.core.CONObject):
-    """List of ProxyRecords."""
-
-    _attribute_definitions = [
-    ]
-    _signal_list = ('record-added',)
-
+class HTTPHeaderWidget(gtk.VBox):
 
     def __init__(self):
-        condensation.core.CONObject.__init__(self)
-        self._list = []
+        gtk.VBox.__init__(self)
+
+        self.liststore = gtk.ListStore(str, str)
+        self.treeview = gtk.TreeView(self.liststore)
+
+        self.column_name = gtk.TreeViewColumn(_('Name'))
+        self.treeview.append_column(self.column_name)
+        self.cell_name = gtk.CellRendererText()
+        self.column_name.pack_start(self.cell_name, True)
+        self.column_name.add_attribute(self.cell_name, 'text', 0)
+
+        self.column_value = gtk.TreeViewColumn(_('Value'))
+        self.treeview.append_column(self.column_value)
+        self.cell_value = gtk.CellRendererText()
+        self.column_value.pack_start(self.cell_value, True)
+        self.column_value.add_attribute(self.cell_value, 'text', 1)
+
+        self.add(self.treeview)
+        self.show_all()
 
 
-    def new_record(self):
-        record = ProxyRecord()
-        self._list.append(record)
-        self.raise_signal('record-added', record)
-        return record
-
+    def set_headers(self, headers):
+        self.liststore.clear()
+        keys = headers.keys()
+        keys.sort()
+        for key in keys:
+            self.liststore.append((key, headers[key]))
 
