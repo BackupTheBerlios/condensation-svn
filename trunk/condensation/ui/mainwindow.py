@@ -72,18 +72,16 @@ class MainWindow(gtk.Window):
 
         # treemenu
         self._treemenu = TreeMenu(self._notebook)
-        sw_treemenu = gtk.ScrolledWindow()
-        sw_treemenu.add(self._treemenu)
-        sw_treemenu.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw_treemenu.set_size_request(200, 200)
+        handlebox = gtk.HandleBox()
+        handlebox.add(self._treemenu)
 
-        paned = gtk.HPaned()
-        paned.add1(sw_treemenu)
-        paned.add2(self._notebook)
+        hbox = gtk.HBox()
+        hbox.pack_start(handlebox, expand=False, fill=True)
+        hbox.pack_start(self._notebook, expand=True, fill=True)
 
         vbox = gtk.VBox()
         vbox.pack_start(self._toolbar, expand=False, fill=True)
-        vbox.pack_start(paned, expand=True, fill=True)
+        vbox.pack_start(hbox, expand=True, fill=True)
         self.add(vbox)
         vbox.show_all()
 
