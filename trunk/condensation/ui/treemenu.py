@@ -59,8 +59,10 @@ class TreeMenu(gtk.TreeView):
 
     def _object_pixbuf(self, treeviewcolumn, cell_renderer, model, iter):
         obj = model.get_value(iter, 0)
-        pixbuf = self.render_icon(obj.get_menu_icon(), gtk.ICON_SIZE_MENU)
-        cell_renderer.set_property('pixbuf', pixbuf)
+        icon = obj.get_menu_icon()
+        if icon:
+            pixbuf = self.render_icon(obj.get_menu_icon(), gtk.ICON_SIZE_MENU)
+            cell_renderer.set_property('pixbuf', pixbuf)
 
 
     # callback for TreeView
