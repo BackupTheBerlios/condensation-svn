@@ -42,7 +42,6 @@ class ViewManager(gtk.VBox):
 
         self._toolbar = gtk.Toolbar()
         self._toolbar.set_style(gtk.TOOLBAR_BOTH)
-        self._toolbar.show()
         self._notebook = gtk.Notebook()
         self._notebook.show()
 
@@ -54,7 +53,6 @@ class ViewManager(gtk.VBox):
             for view_class in self._available_views[view_object.__class__.__name__]:
                 view = view_class(view_object)
                 self.add_view(view)
-
 
 
 
@@ -105,6 +103,21 @@ class ViewManager(gtk.VBox):
 
 
     def selected(self):
+        # show toolbar only, if it has some items in it
+        if self._toolbar.get_n_items() > 0:
+            self._toolbar.show()
+        else:
+            self._toolbar.hide()
+
+        # show notebook-tabs only if there is more than 1 page
+        if self._notebook.get_n_pages() > 1:
+            self._notebook.set_show_tabs(True)
+            self._notebook.set_show_border(True)
+        else:
+            self._notebook.set_show_tabs(False)
+            self._notebook.set_show_border(False)
+
+        # display our notebook page
         if self._container_notebook_page != None:
             self._container_notebook.set_current_page(self._container_notebook_page)
             self.emit('view-selected')
